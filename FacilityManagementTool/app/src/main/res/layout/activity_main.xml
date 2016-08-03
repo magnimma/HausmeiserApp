@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#ffffff">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -40,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notfall Anruf"
-            android:id="@+id/button" />
+            android:id="@+id/button"
+            android:background="#ff5a50" />
     </LinearLayout>
 
     <TextView
@@ -119,11 +121,17 @@
         android:id="@+id/textView5" />
 
     <EditText
-        android:layout_width="341dp"
-        android:layout_height="104dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_gravity="right"
+        android:gravity="start|left"
         android:maxLength="80"
-        android:lines="3"
-        android:id="@+id/editText" />
+        android:minLines="3"
+        android:maxLines="5"
+        android:background="#ffeeee" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -166,7 +174,7 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="210dp"
+        android:layout_width="116dp"
         android:layout_height="wrap_content"
         android:text="Störung abschicken"
         android:id="@+id/button2"

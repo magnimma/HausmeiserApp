@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">UR Störungs- Meldung</string>
 
+    <string name="main_name">UR Störungsmeldung</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_insert">insert</string>
