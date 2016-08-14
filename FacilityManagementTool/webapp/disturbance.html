@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Facility Management App</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+  </head>
+  <body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+        <p>Left panel content goes here</p>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+        <!-- Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <!-- We have home navbar without left link-->
+            <div class="center sliding">
+              <p data-l11n>Fault report</p>
+              <p data-l11n="de">Störungsmeldung</p>
+            </div>
+            <div class="right">
+              <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="disturbance" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block">
+                <p class="content-info-text" data-l11n>Please enter all necessary information.</p>
+                <p class="content-info-text" data-l11n="de">Bitte geben Sie nun alle erforderlichen Daten zur Störung ein.</p>
+              </div>
+              <div class="list-block">
+                <ul>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-title label">
+                          <span data-l11n>Building</span>
+                          <span data-l11n="de">Gebäude</span>
+                        </div>
+                        <div class="item-input">
+                          <select>
+                            <option>VG</option>
+                            <option>PT</option>
+                            <option>Wirtschaft</option>
+                            <option>Sammelgebäude</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-title label">
+                          <span data-l11n>Floor</span>
+                          <span data-l11n="de">Etage</span>
+                        </div>
+                        <div class="item-input">
+                          <select>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-title label">
+                          <span data-l11n>Room</span>
+                          <span data-l11n="de">Raum</span>
+                        </div>
+                        <div class="item-input">
+                          <select>
+                            <option>3.0.1</option>
+                            <option>3.0.2</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-title label">
+                          <span data-l11n>Specialist group</span>
+                          <span data-l11n="de">Fachgruppe</span>
+                        </div>
+                        <div class="item-input">
+                          <select>
+                            <option>Strom</option>
+                            <option>Heizung</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="align-top">
+                    <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-title label">
+                          <span data-l11n>Description</span>
+                          <span data-l11n="de">Beschreibung</span>
+                        </div>
+                        <div class="item-input">
+                          <textarea></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <a class="login" href="indexBu.html">
+                <button class="button center" data-l11n>Submit disturbance</button>
+                <button class="button center" data-l11n="de">Störung melden</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/scripts/Main.js"></script>
+  </body>
+</html>

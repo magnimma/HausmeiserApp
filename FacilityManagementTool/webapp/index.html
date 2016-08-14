@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Facility Management App</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+  </head>
+  <body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+        <p>Left panel content goes here</p>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+        <!-- Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <!-- We have home navbar without left link-->
+            <div class="center sliding">
+              <p data-l11n>Login</p>
+              <p data-l11n="de">Anmelden</p>
+            </div>
+            <div class="right">
+              <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block">
+                <p class="content-info-text" data-l11n>Please log in with a valid NDS-Account.</p>
+                <p class="content-info-text" data-l11n="de">Bitte melden Sie sich mit einer gültigen NDS-Kennung an.</p>
+              </div>
+              <div class="content-block-login">
+                <div class="list-block">
+                  <ul>
+                    <li>
+                      <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-input">
+                          <span data-l11n>
+                            <input id="login-input" type="text" placeholder="NDS-Account"/>
+                          </span>
+                          <span data-l11n="de">
+                            <input type="text" placeholder="NDS-Kennung"/>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    </li>
+                  </ul>
+                </div> 
+                <a class="login" href="login.html">
+                  <button class="button center" data-l11n>Login</button>
+                  <button class="button center" data-l11n="de">Anmelden</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
+    <!-- Mit reuiqre.js-->
+    <!--script data-main="js/Main" type="text/javascript" src="js/libs/require.js"></script>
+    <!-- Ohne reuiqre.js-->
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script >
+      (function() {
+          Main.init();
+      });
+    </script>
+  </body>
+</html>
