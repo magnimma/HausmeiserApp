@@ -1,5 +1,17 @@
 (function () {
-	// ... all vars and functions are in this scope only
-	// still maintains access to all globals
-	console.log('init');
-}());
+        if (Framework7.prototype.device.android) {
+              Dom7('head').append(
+                  '<link rel="stylesheet" href="css/framework7.material.min.css">' +
+                  '<link rel="stylesheet" href="css/framework7.material.colors.min.css">' +
+                  '<link rel="stylesheet" href="css/my-app.css">'
+              );
+          }
+          else {
+              Dom7('head').append(
+                  '<link rel="stylesheet" href="css/framework7.ios.min.css">' +
+                  '<link rel="stylesheet" href="css/framework7.ios.colors.min.css">' +
+                  '<link rel="stylesheet" href="css/my-app.css">'
+              );
+          }
+          console.log("css");
+      })();

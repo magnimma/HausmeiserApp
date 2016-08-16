@@ -6,11 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Facility Management App</title>
-    <!-- Path to Framework7 Library CSS-->
-    <link rel="stylesheet" href="css/framework7.ios.min.css">
-    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
-    <!-- Path to your custom app styles-->
-    <link rel="stylesheet" href="css/my-app.css">
   </head>
   <body>
     <!-- Status bar overlay for fullscreen mode-->
@@ -33,11 +28,12 @@
     <div class="views">
       <!-- Your main view, should have "view-main" class-->
       <div class="view view-main">
-        <!-- Top Navbar-->
+        <!-- Dynamic navbar for iOS theme -->
+        {{#if @global.ios}}
         <div class="navbar">
           <div class="navbar-inner">
-            <div class="left">
-              <a href="#" class="back link">
+            <div class="left sliding">
+              <a href="#" class="back">
                 <i class="icon icon-back"></i>
                 <span data-l11n>Back</span>
                 <span data-l11n="de">Zurück</span>
@@ -52,10 +48,27 @@
             </div>
           </div>
         </div>
+        {{/if}}
         <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
         <div class="pages navbar-through toolbar-through">
           <!-- Page, data-page contains page name-->
           <div data-page="estimation" class="page">
+            <!-- Fixed navbar for Material theme -->
+            {{#if @global.android}}
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="back icon-only">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center">
+                      <p data-l11n>Fault estimation</p>
+                      <p data-l11n="de">Störungseinschätzung</p>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
             <!-- Scrollable page content-->
             <div class="page-content">
               <div class="content-block">
@@ -81,7 +94,13 @@
     </div>
     <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/libs/framework7.min.js"></script>
+    <!--
+    We need the following script to include styles depending on device's OS
+    It is important to keep it as inline script or in separate JS file with this code only!
+    -->
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/disturbanceController.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </body>
 </html>

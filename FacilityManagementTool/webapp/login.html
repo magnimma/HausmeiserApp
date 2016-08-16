@@ -7,10 +7,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Facility Management App</title>
     <!-- Path to Framework7 Library CSS-->
-    <link rel="stylesheet" href="css/framework7.ios.min.css">
-    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
-    <!-- Path to your custom app styles-->
-    <link rel="stylesheet" href="css/my-app.css">
   </head>
   <body>
     <!-- Status bar overlay for fullscreen mode-->
@@ -123,7 +119,13 @@
     </div>
     <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/libs/framework7.min.js"></script>
+    <!--
+    We need the following script to include styles depending on device's OS
+    It is important to keep it as inline script or in separate JS file with this code only!
+    -->
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/disturbanceController.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </body>
 </html>
