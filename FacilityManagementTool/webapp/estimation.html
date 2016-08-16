@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
@@ -36,10 +36,16 @@
         <!-- Top Navbar-->
         <div class="navbar">
           <div class="navbar-inner">
-            <!-- We have home navbar without left link-->
+            <div class="left">
+              <a href="#" class="back link">
+                <i class="icon icon-back"></i>
+                <span data-l11n>Back</span>
+                <span data-l11n="de">Zurück</span>
+              </a>
+            </div>
             <div class="center sliding">
-              <p data-l11n>Login</p>
-              <p data-l11n="de">Anmelden</p>
+              <p data-l11n>Fault estimation</p>
+              <p data-l11n="de">Störungseinschätzung</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -49,37 +55,24 @@
         <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
         <div class="pages navbar-through toolbar-through">
           <!-- Page, data-page contains page name-->
-          <div data-page="index" class="page">
+          <div data-page="estimation" class="page">
             <!-- Scrollable page content-->
             <div class="page-content">
               <div class="content-block">
-                <p class="content-info-text" data-l11n>Please log in with a valid NDS-Account.</p>
-                <p class="content-info-text" data-l11n="de">Bitte melden Sie sich mit einer gültigen NDS-Kennung an.</p>
+                <p class="content-info-text" data-l11n>What kind of disturbance do you want to report?</p>
+                <p class="content-info-text" data-l11n="de">Welche Art von Störung möchten Sie melden?</p>
               </div>
-              <div class="content-block-login">
-                <div class="list-block">
-                  <ul>
-                    <li>
-                      <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-name"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-input">
-                          <span data-l11n>
-                            <input class="login-input" type="text" placeholder="NDS-Account"/>
-                          </span>
-                          <span data-l11n="de">
-                            <input class="login-input" type="text" placeholder="NDS-Kennung"/>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    </li>
-                  </ul>
-                </div> 
-                <!--a class="login" href="login.html"-->
-                  <button class="button center" data-l11n onclick="LoginController.checkForLogin()">Login</button>
-                  <button class="button center" data-l11n="de" onclick="LoginController.checkForLogin()">Anmelden</button>
-                <!--/a-->
+              <div class="content-block">
+                <div class="row">
+                  <div class="col-50">
+                    <a href="urgent.html" class="button button-big button-fill color-red" data-l11n>Urgent Disturbance</a>
+                    <a href="urgent.html" class="button button-big button-fill color-red" data-l11n="de">Dringende Störung</a>
+                  </div>
+                  <div class="col-50">
+                    <a href="disturbance.html" class="button button-big button-fill color-green" data-l11n>Normal Disturbance</a>
+                    <a href="disturbance.html" class="button button-big button-fill color-green" data-l11n="de">Normale Störung</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -90,6 +83,5 @@
     <script type="text/javascript" src="js/libs/framework7.min.js"></script>
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/loginController.js"></script>
   </body>
 </html>

@@ -36,10 +36,16 @@
         <!-- Top Navbar-->
         <div class="navbar">
           <div class="navbar-inner">
-            <!-- We have home navbar without left link-->
+            <div class="left">
+              <a href="#" class="back link">
+                <i class="icon icon-back"></i>
+                <span data-l11n>Back</span>
+                <span data-l11n="de">Zurück</span>
+              </a>
+            </div>
             <div class="center sliding">
-              <p data-l11n>Login</p>
-              <p data-l11n="de">Anmelden</p>
+              <p data-l11n>Report urgent disturbance</p>
+              <p data-l11n="de">Dringende Störung melden</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -53,33 +59,16 @@
             <!-- Scrollable page content-->
             <div class="page-content">
               <div class="content-block">
-                <p class="content-info-text" data-l11n>Please log in with a valid NDS-Account.</p>
-                <p class="content-info-text" data-l11n="de">Bitte melden Sie sich mit einer gültigen NDS-Kennung an.</p>
+                <p class="content-info-text" data-l11n>Click the Call-button to immediately report an urgent disturbance.</p>
+                <p class="content-info-text" data-l11n="de">Drücken Sie den Notruf-Knopf, um eine dringende Störung unverzüglich zu melden.</p>
               </div>
-              <div class="content-block-login">
-                <div class="list-block">
-                  <ul>
-                    <li>
-                      <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-name"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-input">
-                          <span data-l11n>
-                            <input class="login-input" type="text" placeholder="NDS-Account"/>
-                          </span>
-                          <span data-l11n="de">
-                            <input class="login-input" type="text" placeholder="NDS-Kennung"/>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    </li>
-                  </ul>
-                </div> 
-                <!--a class="login" href="login.html"-->
-                  <button class="button center" data-l11n onclick="LoginController.checkForLogin()">Login</button>
-                  <button class="button center" data-l11n="de" onclick="LoginController.checkForLogin()">Anmelden</button>
-                <!--/a-->
+              <div class="content-block">
+                <a href="tel:3333">
+                  <button class="button center button-big button-fill color-red" data-l11n>Emergency call</button>
+                </a>
+                <a href="tel:3333">
+                  <button class="button center button-big button-fill color-red" data-l11n="de">Notruf</button>
+                </a>
               </div>
             </div>
           </div>

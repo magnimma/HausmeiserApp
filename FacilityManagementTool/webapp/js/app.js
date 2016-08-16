@@ -1,10 +1,9 @@
 
-Main.app = (function() {
+var app = (function() {
 
-//  exampleModule = null,
-  loginController = null;
+  var appModule = {};
 
-  var init = function() {
+  appModule.init = function() {
     console.log("appinit");
     _initModules();
   };
@@ -19,15 +18,10 @@ Main.app = (function() {
   });
 
   _initModules = function() {
-//    exampleModule = Main.ExampleModule.init();
     console.log("logControll");
-    loginController = Main.loginController.init();
   };
 
-  return {
-    FMApp: FMApp,
-    mainView: mainView,
-    init: init
-  };
+  return appModule;
   
-})();
+}());
+
