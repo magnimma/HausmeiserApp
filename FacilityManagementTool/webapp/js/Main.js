@@ -1,5 +1,5 @@
 (function () {
-        if (Framework7.prototype.device.android) {
+        if (/*Framework7.prototype.device.android*/true) {
               Dom7('head').append(
                   '<link rel="stylesheet" href="css/framework7.material.min.css">' +
                   '<link rel="stylesheet" href="css/framework7.material.colors.min.css">' +

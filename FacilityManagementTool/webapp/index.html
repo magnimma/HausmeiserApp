@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Facility Management App</title>
   </head>
-  <body>
+  <body onload="LoginController.checkLoginStatus();">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -18,9 +18,22 @@
         <p data-l11n>Settings</p>
         <p data-l11n="de">Einstellungen</p>
         <div class="item-content">
-        <div class="item-media">
-          <i class="icon icon-form-gender"></i>
+        <div class="item-inner"> 
+          <div class="item-title label">
+            <span data-l11n>User</span>
+            <span data-l11n="de">Benutzer</span>
+          </div>
+          <div class="item-user">
+            <p class="menu-item-user-name" data-l11n>Please log in</p>
+            <p class="menu-item-user-name" data-l11n="de">Bitte anmelden</p>
+          </div>
+          <div class="item-logout">
+            <button class="menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n>Logout</button>
+            <button class="menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n="de">Abmelden</button>
+          </div>
         </div>
+      </div>
+      <div class="item-content">
         <div class="item-inner"> 
           <div class="item-title label">
             <span data-l11n>Language</span>

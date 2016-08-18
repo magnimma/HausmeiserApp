@@ -1,7 +1,7 @@
 var isAndroid = Framework7.prototype.device.android === true;
 var isIos = Framework7.prototype.device.ios === true;
-//isAndroid = false;
-//isIos = true;
+isAndroid = true;
+isIos = false;
 
 Template7.global = {
     android: isAndroid,
@@ -40,10 +40,23 @@ var mainView = FMApp.addView('.view-main', {
     dynamicNavbar: true
 });
 
-FMApp.onPageBeforeInit('disturbance', function (page) {
-//Fetch the building, floor and room data once the disturbance page is initialized
-  DisturbanceController.fetchBuildingData();
-});
+_initPageCallbacks();
+
+function _initPageCallbacks(){
+  FMApp.onPageBeforeInit('disturbance', function (page) {
+    //Fetch the building, floor and room data once the disturbance page is initialized
+    DisturbanceController.fetchBuildingData();
+  });
+
+  FMApp.onPageBeforeAnimation('index', function (page) {
+    //Set the user's NDS-Account when the index.html is loaded and reday to animate
+    LoginController.setNDSAccount();
+  });
+
+}
+
+
+
 
 
 
