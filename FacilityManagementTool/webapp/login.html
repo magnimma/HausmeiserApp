@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
@@ -29,11 +29,12 @@
     <div class="views">
       <!-- Your main view, should have "view-main" class-->
       <div class="view view-main">
-        <!-- Top Navbar-->
+<!-- Dynamic navbar for iOS theme -->
+        {{#if @global.ios}}
         <div class="navbar">
           <div class="navbar-inner">
-            <div class="left">
-              <a href="#" class="back link">
+            <div class="left sliding">
+              <a href="#" class="back">
                 <i class="icon icon-back"></i>
                 <span data-l11n>Back</span>
                 <span data-l11n="de">Zurück</span>
@@ -48,10 +49,29 @@
             </div>
           </div>
         </div>
+        {{/if}}
         <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
         <div class="pages navbar-through toolbar-through">
           <!-- Page, data-page contains page name-->
           <div data-page="login" class="page">
+            {{#if @global.android}}
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="back icon-only">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="center">
+                      <p data-l11n>Login information</p>
+                      <p data-l11n="de">Anmeldedaten</p>
+                    </div>
+                    <div class="right">
+                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
             <!-- Scrollable page content-->
             <div class="page-content">
               <div class="content-block">
@@ -69,7 +89,7 @@
                           <span data-l11n="de">Name</span>
                         </div>
                         <div class="item-input">
-                          <input type="text" placeholder="Name"/>
+                          <input class="name-input" onchange="LoginController.checkUserName();" type="text" placeholder="Name"/>
                         </div>
                       </div>
                     </div>
@@ -83,7 +103,7 @@
                           <span data-l11n="de">E-mail</span>
                         </div>
                         <div class="item-input">
-                          <input type="email" placeholder="E-mail"/>
+                          <input class="mail-input" onchange="LoginController.checkUserMail();" type="email" placeholder="E-mail"/>
                         </div>
                       </div>
                     </div>
@@ -98,20 +118,18 @@
                         </div>
                         <div class="item-input">
                           <span data-l11n>
-                            <input type="text" placeholder="Phone"/>
+                            <input class="phone-input" onchange="LoginController.checkUserPhone();" type="text" placeholder="Phone"/>
                           </span>
                           <span data-l11n="de">
-                            <input type="text" placeholder="Telefon"/>
+                            <input class="phone-input" onchange="LoginController.checkUserPhone();" type="text" placeholder="Telefon"/>
                         </div>
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
-              <a class="login" href="estimation.html">
-                <button class="button center" data-l11n>Login</button>
-                <button class="button center" data-l11n="de">Anmelden</button>
-              </a>
+              <button class="button center" data-l11n onclick="LoginController.checkUserInfo()">Login</button>
+              <button class="button center" data-l11n="de" onclick="LoginController.checkUserInfo()">Anmelden</button>
             </div>
           </div>
         </div>
@@ -125,6 +143,7 @@
     -->
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/loginController.js"></script>
     <script type="text/javascript" src="js/disturbanceController.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </body>

@@ -3,7 +3,11 @@ DisturbanceController = (function() {
 
   var newUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv";
   var localCSV = "csv/raumliste.csv";
-  var csvDataRows;
+  var sendURL = 'form.html',
+      csvDataRows,
+      roomCode,
+      specialGroup,
+      description;
 
   //change the html site when the user entered a correct NDS-account
   //or show an error alert when the NDS-account is wrong
@@ -71,9 +75,12 @@ DisturbanceController = (function() {
 
   //react to user building selections
   function onBuildingChanged(){
-    var myselect = document.getElementById("buildingSelect");
+    var mySelect = document.getElementById("floorSelect");
+    mySelect.disabled = false;
+    mySelect = document.getElementById("buildingSelect");
+    roomCode = undefined;
 
-    _extractFloorData(myselect.options[myselect.selectedIndex].value);
+    _extractFloorData(mySelect.options[mySelect.selectedIndex].value);
   }
 
   //react to user floor selections
@@ -82,11 +89,12 @@ DisturbanceController = (function() {
     var myFloorSelect = document.getElementById("floorSelect");
     var activeBuilding = myBuildingSelect.options[myBuildingSelect.selectedIndex].value;
     var activeFloor = myFloorSelect.options[myFloorSelect.selectedIndex].value;
+    roomCode = undefined;
 
     _extractRoomData(activeBuilding, activeFloor);
   }
 
-  //react to user floor selections
+  //react to user room selections
   function onRoomChanged(){
     var myBuildingSelect = document.getElementById("buildingSelect");
     var myFloorSelect = document.getElementById("floorSelect");
@@ -98,9 +106,8 @@ DisturbanceController = (function() {
     _extractRoomCode(activeBuilding, activeFloor, activeRoom);
   }
 
-  //extract the necessary room data from the csv file
+  //Extract the necessary room data from the csv file
   function _extractRoomCode(building, floor, room){
-    var roomCode;
     var allRows = csvDataRows;
     for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
       var rowCells = allRows[singleRow];
@@ -111,32 +118,95 @@ DisturbanceController = (function() {
     }
   }
 
-  //extract the necessary room data from the csv file
+  //Check whether the user provided all the necessary disturbance information
+  //If yes move on
+  //Else show error alert
+  function checkDisturbanceData(){
+    var errMsg = 'Following fields are missing: \n',
+        myGroupSelect1 = document.getElementsByClassName('groupSelect')[0],
+        myGroupSelect2 = document.getElementsByClassName('groupSelect')[1],
+        myTextArea1 = document.getElementsByClassName('desc-text')[0],
+        myTextArea2 = document.getElementsByClassName('desc-text')[1],
+        err = false;   
+    if(document.documentElement.lang == 'de'){
+      errMsg = 'Folgende Felder fehlen: \n';
+      if(roomCode == undefined){
+        errMsg += '- Raum\n';
+        err = true;
+      }
+      if(myGroupSelect2.selectedIndex == 0){
+        errMsg += '- Fachgruppe\n';
+        err = true;
+      }
+      if(myTextArea2.value == ''){
+        errMsg += '- Beschreibung\n';
+        err = true;
+      }
+      //Save the disturbance data(specialGroup, description)
+      specialGroup = myGroupSelect2.options[myGroupSelect2.selectedIndex].value;
+      description = myTextArea2.value;
+    }else{
+      if(roomCode == undefined){
+        errMsg += '- Room\n';
+        err = true;
+      }
+      if(myGroupSelect1.selectedIndex == 0){
+        errMsg += '- Specialist group\n';
+        err = true;
+      }
+      if(myTextArea1.value == ''){
+        errMsg += '- Description\n';
+        err = true;
+      }
+      //Save the disturbance data(specialGroup, description)
+      specialGroup = myGroupSelect1.options[myGroupSelect1.selectedIndex].value;
+      description = myTextArea1.value;
+    }
+    if(err == false){
+//      mainView.router.loadPage(sendURL);
+      _submitDisturbance();
+    }else{
+      alert(errMsg);
+    }
+  }
+
+  //Submit the disturbance with all the necessary data
+  function _submitDisturbance(){
+    var disturbance = '',
+        userData = LoginController.getUserData();
+    //First, append the user data
+    for(var i = 0; i < userData.length; i++){
+      disturbance += userData[i] + ', ';
+    }
+    //Then append the disturbance data
+    disturbance += roomCode + ', ';
+    disturbance += specialGroup + ', ';
+    disturbance += description;
+    alert(disturbance);
+  }
+
+  //Extract the necessary room data from the csv file
   function _extractRoomData(building, floor){
-    console.log(building, floor);
     var room = [];
     var allRows = csvDataRows;
     for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
       var rowCells = allRows[singleRow];
       if(rowCells != "" && rowCells.split('*')[1] == building && rowCells.split('*')[2] == floor){
-        console.log(rowCells.split('*')[2] + 'floor' + floor);
         room.push(rowCells.split('*')[3]);
       }
     }
     _appendRoomData(_uniqArray(room));
   }
 
-   //append the current room data from the csv file to the html site
+   //Append the current room data from the csv file to the html site
   function _appendRoomData(roomList){
-    //first clear the old options from the select item
+    //First, clear the old options from the select item and enable the select input field
     var mySelect = document.getElementById("roomSelect");
-    while (mySelect.firstChild) {
-        mySelect.removeChild(mySelect.firstChild);
-    }
+    _resetSelectOptions(mySelect);
+    mySelect.disabled = false;
 
-    //afterwards append the current data
+    //Afterwards append the current data
     for(var i = 0; i < roomList.length; i++){
-      var mySelect = document.getElementById('roomSelect');
       var newOption = document.createElement('option');
       newOption.value = roomList[i];
       if (typeof newOption.textContent === 'undefined'){
@@ -149,7 +219,41 @@ DisturbanceController = (function() {
     }
   }
 
-  //extract the necessary floor data from the csv file
+  //Reset options of a given select input field
+  function _resetSelectOptions(mySelect){
+    while (mySelect.firstChild) {
+        mySelect.removeChild(mySelect.firstChild);
+    }
+    //Then create a placeholder option for the select input field
+    //Depending on the header's lang attribute in english or german
+    _createPlaceHolderOption(mySelect);
+  }
+
+  //Create a german/english placeholderoption for a given select input field 
+  function _createPlaceHolderOption(mySelect){
+    var newOption = document.createElement('option');
+    if(document.documentElement.lang == 'de'){
+      newOption.value = 'platzhalter';
+      if (typeof newOption.textContent === 'undefined'){
+        newOption.innerText = 'Bitte wählen';
+      }
+      else{
+        newOption.textContent = 'Bitte wählen';
+      }
+      mySelect.appendChild(newOption);
+    }else{
+      newOption.value = 'placeholder';
+      if (typeof newOption.textContent === 'undefined'){
+        newOption.innerText = 'Please choose';
+      }
+      else{
+        newOption.textContent = 'Please choose';
+      }
+      mySelect.appendChild(newOption);
+    }
+  }
+
+  //Extract the necessary floor data from the csv file
   function _extractFloorData(building){
     var floor = [];
     var allRows = csvDataRows;
@@ -162,17 +266,16 @@ DisturbanceController = (function() {
     _appendFloorData(_uniqArray(floor));
   }
 
-  //append the current floor data from the csv file to the html site
+  //Append the current floor data from the csv file to the html site
   function _appendFloorData(floorList){
-    //first clear the old options from the select item
+    //First clear the old options from the select item fields(floorSelect, roomSelect)
+    var mySelect = document.getElementById("roomSelect");
+    _resetSelectOptions(mySelect);
     var mySelect = document.getElementById("floorSelect");
-    while (mySelect.firstChild) {
-        mySelect.removeChild(mySelect.firstChild);
-    }
+    _resetSelectOptions(mySelect);
 
-    //afterwards append the current data
+    //Afterwards append the current data
     for(var i = 0; i < floorList.length; i++){
-      var mySelect = document.getElementById('floorSelect');
       var newOption = document.createElement('option');
       newOption.value = floorList[i];
       if (typeof newOption.textContent === 'undefined'){
@@ -183,12 +286,29 @@ DisturbanceController = (function() {
         }
       mySelect.appendChild(newOption);
     }
+    //Disable the room select input field, as the user has to specify a floor first
+    mySelect = document.getElementById('roomSelect');
+    _resetSelectOptions(mySelect);
+    mySelect.disabled = true;
   }
 
-  //append the buildings data from the csv file to the html site
+  //Append the buildings data from the csv file to the html site
   function _appendBuildingData(buildingList){
+    //First, create a placeholder option for the select input field
+    //(buildingSelect, floorSelect, roomSelect)
+    //Depending on the header's lang attribute in english or german
+    var mySelect = document.getElementById('floorSelect');
+    _resetSelectOptions(mySelect);
+    //Disable the floor and the room select input fields, as the user has to specify a building and a floor first
+    mySelect.disabled = true;
+    mySelect = document.getElementById('roomSelect');
+    _resetSelectOptions(mySelect);
+    mySelect.disabled = true;
+    mySelect = document.getElementById('buildingSelect');
+    _resetSelectOptions(mySelect);
+
+    //Afterwards append the current data
     for(var i = 0; i < buildingList.length; i++){
-      var mySelect = document.getElementById('buildingSelect');
       var newOption = document.createElement('option');
       newOption.value = buildingList[i];
       if (typeof newOption.textContent === 'undefined'){
@@ -201,7 +321,7 @@ DisturbanceController = (function() {
     }
   }
 
-  // deletes the redundant items of an array
+  //Delete the redundant items of an array
   function _uniqArray(array) {
     var seen = {};
     return array.filter(function(item) {
@@ -213,7 +333,8 @@ DisturbanceController = (function() {
     fetchBuildingData: fetchBuildingData,
     onBuildingChanged: onBuildingChanged,
     onFloorChanged: onFloorChanged,
-    onRoomChanged: onRoomChanged
+    onRoomChanged: onRoomChanged,
+    checkDisturbanceData: checkDisturbanceData
   };
   
 })();

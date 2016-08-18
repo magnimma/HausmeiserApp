@@ -1,5 +1,7 @@
 var isAndroid = Framework7.prototype.device.android === true;
 var isIos = Framework7.prototype.device.ios === true;
+//isAndroid = false;
+//isIos = true;
 
 Template7.global = {
     android: isAndroid,
@@ -10,7 +12,8 @@ var $$ = Dom7;
 
 if (isAndroid) {
     // Change class
-    $$('.view.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
+    // BU: '$$('.view(s).navbar-through')' 
+    $$('.pages.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
     // And move Navbar into Page
     $$('.view .navbar').prependTo('.view .page');
 }
@@ -37,11 +40,10 @@ var mainView = FMApp.addView('.view-main', {
     dynamicNavbar: true
 });
 
-FMApp.onPageInit('disturbance', function (page) {
-// Do something here for "about" page
-  console.log("dist init");
+FMApp.onPageBeforeInit('disturbance', function (page) {
+//Fetch the building, floor and room data once the disturbance page is initialized
   DisturbanceController.fetchBuildingData();
-})
+});
 
 
 

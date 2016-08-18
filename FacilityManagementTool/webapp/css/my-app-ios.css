@@ -1,0 +1,33 @@
+.content-info-text{
+	text-align: center;
+}
+
+.center{
+	position: relative;
+	display: block;
+	margin: 5px auto;
+}
+
+.icon-form-home{
+	width:24px;
+	height:24px;
+	background-image:url(../img/ic_home_white_24px.svg)
+}
+
+.icon-form-building{
+	width:24px;
+	height:24px;
+	background-image:url(../img/ic_store_white_24px.svg)
+}
+
+[data-l11n=de] {
+    display: none;
+}
+
+:lang(de) > [data-l11n] {
+    display: none;
+}
+
+:lang(de) > [data-l11n=de] {
+    display: block;
+}

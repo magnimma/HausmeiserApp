@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
@@ -15,7 +15,25 @@
     <!-- Left panel with reveal effect-->
     <div class="panel panel-left panel-reveal">
       <div class="content-block">
-        <p>Left panel content goes here</p>
+        <p data-l11n>Settings</p>
+        <p data-l11n="de">Einstellungen</p>
+        <div class="item-content">
+        <div class="item-media">
+          <i class="icon icon-form-gender"></i>
+        </div>
+        <div class="item-inner"> 
+          <div class="item-title label">
+            <span data-l11n>Language</span>
+            <span data-l11n="de">Sprache</span>
+          </div>
+          <div class="item-input">
+            <select id="languageSelect" onchange="SettingsController.changeLanguage()">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            </select>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
     <!-- Right panel with cover effect-->
@@ -37,7 +55,7 @@
               <p data-l11n="de">Anmelden</p>
             </div>
             <div class="right">
-              <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+              <!-- Right link contains only icon - additional "icon-only" class--><a href="#" onclick="SettingsController.setDefaultLanguage();" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
             </div>
           </div>
         </div>
@@ -72,8 +90,8 @@
                   </ul>
                 </div> 
                 <!--a class="login" href="login.html"-->
-                  <button class="button center" data-l11n onclick="LoginController.checkForLogin()">Login</button>
-                  <button class="button center" data-l11n="de" onclick="LoginController.checkForLogin()">Anmelden</button>
+                <button class="button center" data-l11n onclick="LoginController.checkUserNDS()">Login</button>
+                <button class="button center" data-l11n="de" onclick="LoginController.checkUserNDS()">Anmelden</button>
                 <!--/a-->
               </div>
             </div>
@@ -89,7 +107,9 @@
     -->
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/settingsController.js"></script>
     <script type="text/javascript" src="js/loginController.js"></script>
+    <script type="text/javascript" src="js/disturbanceController.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   </body>
 </html>

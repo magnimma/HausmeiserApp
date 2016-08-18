@@ -66,6 +66,9 @@
                       <p data-l11n>Fault report</p>
                       <p data-l11n="de">Störungsmeldung</p>
                     </div>
+                    <div class="right">
+                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                    </div>
                 </div>
             </div>
             {{/if}}
@@ -79,7 +82,7 @@
                 <ul>
                   <li>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-media"><i class="icon icon-form-home"></i></div>
                       <div class="item-inner"> 
                         <div class="item-title label">
                           <span data-l11n>Building</span>
@@ -94,7 +97,7 @@
                   </li>
                   <li>
                     <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                      <div class="item-media"><i class="icon icon-form-building"></i></div>
                       <div class="item-inner"> 
                         <div class="item-title label">
                           <span data-l11n>Floor</span>
@@ -130,10 +133,26 @@
                           <span data-l11n>Specialist group</span>
                           <span data-l11n="de">Fachgruppe</span>
                         </div>
-                        <div class="item-input">
-                          <select>
-                            <option>Strom</option>
-                            <option>Heizung</option>
+                        <div class="item-input" data-l11n>
+                          <select class="groupSelect">
+                            <option>Please choose</option>
+                            <option>Electric</option>
+                            <option>Heating/Ventilation</option>
+                            <option>Sanitary</option>
+                            <option>Refrigeration</option>
+                            <option>Windows/Doors</option>
+                            <option>Telecommunications</option>
+                          </select>
+                        </div>
+                        <div class="item-input" data-l11n="de">
+                          <select class="groupSelect">
+                            <option>Bitte wählen</option>
+                            <option>Elektro</option>
+                            <option>Heizung/Lüftung</option>
+                            <option>Sanitär</option>
+                            <option>Kältetechnik</option>
+                            <option>Fenster/Türen</option>
+                            <option>Nachrichtentechnik</option>
                           </select>
                         </div>
                       </div>
@@ -147,18 +166,20 @@
                           <span data-l11n>Description</span>
                           <span data-l11n="de">Beschreibung</span>
                         </div>
-                        <div class="item-input">
-                          <textarea></textarea>
+                        <div class="item-input" data-l11n>
+                          <textarea class="desc-text" placeholder="Please enter a brief description of the disturbance."></textarea>
+                        </div>
+                        <div class="item-input" data-l11n="de">
+                          <textarea class="desc-text" placeholder="Bitte geben Sie eine kurze Beschreibung der Störung ein."></textarea>
                         </div>
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
-              <a class="login" href="indexBu.html">
-                <button class="button center" data-l11n>Submit disturbance</button>
-                <button class="button center" data-l11n="de">Störung melden</button>
-              </a>
+              <button class="button center" onclick="DisturbanceController.checkDisturbanceData()" data-l11n>Submit disturbance</button>
+              <button class="button center" onclick="DisturbanceController.checkDisturbanceData()" data-l11n="de">Störung melden</button>
+              <!--a class="login button center" href="indexBu.html" onclick="return DisturbanceController.checkDisturbanceData();" data-l11n>Submit disturbance</a-->
             </div>
           </div>
         </div>
