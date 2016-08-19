@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
@@ -7,46 +7,64 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>Facility Management App</title>
   </head>
-  <body onload="LoginController.checkLoginStatus();">
+  <!-- Check for available account info and set the correct language in the settings panel-->
+  <body onload="LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage();">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
     <div class="panel-overlay"></div>
     <!-- Left panel with reveal effect-->
     <div class="panel panel-left panel-reveal">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <!-- We have home navbar without left link-->
+          <div class="center">
+            <p data-l11n>Settings</p>
+            <p data-l11n="de">Einstellungen</p>
+          </div>
+        </div>
+      </div>
       <div class="content-block">
-        <p data-l11n>Settings</p>
-        <p data-l11n="de">Einstellungen</p>
-        <div class="item-content">
-        <div class="item-inner"> 
-          <div class="item-title label">
-            <span data-l11n>User</span>
-            <span data-l11n="de">Benutzer</span>
-          </div>
-          <div class="item-user">
-            <p class="menu-item-user-name" data-l11n>Please log in</p>
-            <p class="menu-item-user-name" data-l11n="de">Bitte anmelden</p>
-          </div>
-          <div class="item-logout">
-            <button class="menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n>Logout</button>
-            <button class="menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n="de">Abmelden</button>
-          </div>
+        <div class="list-block">
+          <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-inner"> 
+                  <div class="item-title label">
+                    <span class="settings-text" data-l11n>User</span>
+                    <span class="settings-text" data-l11n="de">Benutzer</span>
+                  </div>
+                  <div class="item-user">
+                    <p class="settings-text menu-item-user-name" data-l11n>Please log in</p>
+                    <p class="settings-text menu-item-user-name" data-l11n="de">Bitte anmelden</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-logout">
+                <button class="button center menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n>Logout</button>
+                <button class="button center menu-item-user-logout" onclick="LoginController.logout();" disabled="true" data-l11n="de">Abmelden</button>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner"> 
+                  <div class="item-title label">
+                    <span class="settings-text" data-l11n>Language</span>
+                    <span class="settings-text" data-l11n="de">Sprache</span>
+                  </div>
+                    <div class="item-language">
+                      <select id="languageSelect" onchange="SettingsController.changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="de">Deutsch</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
-      </div>
-      <div class="item-content">
-        <div class="item-inner"> 
-          <div class="item-title label">
-            <span data-l11n>Language</span>
-            <span data-l11n="de">Sprache</span>
-          </div>
-          <div class="item-input">
-            <select id="languageSelect" onchange="SettingsController.changeLanguage()">
-            <option value="en">English</option>
-            <option value="de">Deutsch</option>
-            </select>
-          </div>
-        </div>
-      </div>
       </div>
     </div>
     <!-- Right panel with cover effect-->

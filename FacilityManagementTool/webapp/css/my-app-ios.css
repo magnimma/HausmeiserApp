@@ -1,5 +1,14 @@
+#languageSelect { 
+	font-size: 14px; 
+	color: #6d6d72;
+}
+
 .content-info-text{
 	text-align: center;
+}
+
+.settings-text{
+	font-size: 14px;
 }
 
 .center{

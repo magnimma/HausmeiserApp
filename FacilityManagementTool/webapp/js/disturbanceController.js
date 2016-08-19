@@ -113,6 +113,7 @@ DisturbanceController = (function() {
       var rowCells = allRows[singleRow];
       if(rowCells != "" && rowCells.split('*')[1] == building && rowCells.split('*')[2] == floor && rowCells.split('*')[3] == room){
         roomCode = rowCells.split('*')[4];
+        sessionStorage.setItem('roomCode', rowCells.split('*')[4]);
         console.log('Raumcode: ' + roomCode);
       }
     }
@@ -130,7 +131,7 @@ DisturbanceController = (function() {
         err = false;   
     if(document.documentElement.lang == 'de'){
       errMsg = 'Folgende Felder fehlen: \n';
-      if(roomCode == undefined){
+      if(sessionStorage.getItem('roomCode') == undefined){
         errMsg += '- Raum\n';
         err = true;
       }
@@ -145,8 +146,10 @@ DisturbanceController = (function() {
       //Save the disturbance data(specialGroup, description)
       specialGroup = myGroupSelect2.options[myGroupSelect2.selectedIndex].value;
       description = myTextArea2.value;
+      sessionStorage.setItem('specialGroup', myGroupSelect2.options[myGroupSelect2.selectedIndex].value);
+      sessionStorage.setItem('description', myTextArea2.value);
     }else{
-      if(roomCode == undefined){
+      if(sessionStorage.getItem('roomCode') == undefined){
         errMsg += '- Room\n';
         err = true;
       }
@@ -161,6 +164,8 @@ DisturbanceController = (function() {
       //Save the disturbance data(specialGroup, description)
       specialGroup = myGroupSelect1.options[myGroupSelect1.selectedIndex].value;
       description = myTextArea1.value;
+      sessionStorage.setItem('specialGroup', myGroupSelect1.options[myGroupSelect1.selectedIndex].value);
+      sessionStorage.setItem('description', myTextArea1.value);
     }
     if(err == false){
 //      mainView.router.loadPage(sendURL);
@@ -174,7 +179,11 @@ DisturbanceController = (function() {
   function _submitDisturbance(){
     var disturbance = '',
         userData = LoginController.getUserData();
+    
+    //Method 1: global variables
+
     //First, append the user data
+    /*
     for(var i = 0; i < userData.length; i++){
       disturbance += userData[i] + ', ';
     }
@@ -182,6 +191,17 @@ DisturbanceController = (function() {
     disturbance += roomCode + ', ';
     disturbance += specialGroup + ', ';
     disturbance += description;
+    */
+
+    //Method 2: session storage
+    disturbance += sessionStorage.getItem('userName') + ' ';
+    disturbance += sessionStorage.getItem('userMail') + ' ';
+    disturbance += sessionStorage.getItem('userPhone') + ' ';
+
+    disturbance += sessionStorage.getItem('roomCode') + ' ';
+    disturbance += sessionStorage.getItem('specialGroup') + ' ';
+    disturbance += sessionStorage.getItem('description');
+
     alert(disturbance);
   }
 
@@ -202,7 +222,7 @@ DisturbanceController = (function() {
   function _appendRoomData(roomList){
     //First, clear the old options from the select item and enable the select input field
     var mySelect = document.getElementById("roomSelect");
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
     mySelect.disabled = false;
 
     //Afterwards append the current data
@@ -220,7 +240,7 @@ DisturbanceController = (function() {
   }
 
   //Reset options of a given select input field
-  function _resetSelectOptions(mySelect){
+  function resetSelectOptions(mySelect){
     while (mySelect.firstChild) {
         mySelect.removeChild(mySelect.firstChild);
     }
@@ -270,9 +290,9 @@ DisturbanceController = (function() {
   function _appendFloorData(floorList){
     //First clear the old options from the select item fields(floorSelect, roomSelect)
     var mySelect = document.getElementById("roomSelect");
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
     var mySelect = document.getElementById("floorSelect");
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
 
     //Afterwards append the current data
     for(var i = 0; i < floorList.length; i++){
@@ -288,7 +308,7 @@ DisturbanceController = (function() {
     }
     //Disable the room select input field, as the user has to specify a floor first
     mySelect = document.getElementById('roomSelect');
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
     mySelect.disabled = true;
   }
 
@@ -298,14 +318,14 @@ DisturbanceController = (function() {
     //(buildingSelect, floorSelect, roomSelect)
     //Depending on the header's lang attribute in english or german
     var mySelect = document.getElementById('floorSelect');
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
     //Disable the floor and the room select input fields, as the user has to specify a building and a floor first
     mySelect.disabled = true;
     mySelect = document.getElementById('roomSelect');
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
     mySelect.disabled = true;
     mySelect = document.getElementById('buildingSelect');
-    _resetSelectOptions(mySelect);
+    resetSelectOptions(mySelect);
 
     //Afterwards append the current data
     for(var i = 0; i < buildingList.length; i++){
@@ -334,7 +354,8 @@ DisturbanceController = (function() {
     onBuildingChanged: onBuildingChanged,
     onFloorChanged: onFloorChanged,
     onRoomChanged: onRoomChanged,
-    checkDisturbanceData: checkDisturbanceData
+    checkDisturbanceData: checkDisturbanceData,
+    resetSelectOptions: resetSelectOptions
   };
   
 })();
