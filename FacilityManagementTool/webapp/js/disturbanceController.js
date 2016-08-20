@@ -1,9 +1,10 @@
 
 DisturbanceController = (function() {
 
-  var newUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv";
-  var localCSV = "csv/raumliste.csv";
-  var sendURL = 'form.html',
+  var newUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv",      
+      pictureURL = 'picture.html',
+      localCSV = "csv/raumliste.csv",
+      sendURL = 'form.html',
       csvDataRows,
       roomCode,
       specialGroup,
@@ -194,15 +195,22 @@ DisturbanceController = (function() {
     */
 
     //Method 2: session storage
-    disturbance += sessionStorage.getItem('userName') + ' ';
-    disturbance += sessionStorage.getItem('userMail') + ' ';
-    disturbance += sessionStorage.getItem('userPhone') + ' ';
+    disturbance += sessionStorage.getItem('userName') + ', ';
+    disturbance += sessionStorage.getItem('userMail') + ', ';
+    disturbance += sessionStorage.getItem('userPhone') + ', ';
 
-    disturbance += sessionStorage.getItem('roomCode') + ' ';
-    disturbance += sessionStorage.getItem('specialGroup') + ' ';
+    disturbance += sessionStorage.getItem('roomCode') + ', ';
+    disturbance += sessionStorage.getItem('specialGroup') + ', ';
     disturbance += sessionStorage.getItem('description');
 
     alert(disturbance);
+    
+    //If the user wants to send an aditional picture of the disturbance
+    //move on to picture.html
+    var myBuildingSelect = document.getElementById("picCheckbox");
+    if(myBuildingSelect.checked == true){
+      mainView.router.loadPage(pictureURL);
+    }
   }
 
   //Extract the necessary room data from the csv file

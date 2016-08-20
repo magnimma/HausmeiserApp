@@ -53,6 +53,11 @@ function _initPageCallbacks(){
     LoginController.setNDSAccount();
   });
 
+  FMApp.onPageInit('picture', function (page) {
+    //Set the user's NDS-Account when the index.html is loaded and reday to animate
+    DataController.init();
+  });
+
   FMApp.onPageInit('index', function (page) {
     //Set the user's NDS-Account when the index.html is loaded and reday to animate
     console.log("Index init");
