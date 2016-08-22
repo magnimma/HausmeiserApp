@@ -7,6 +7,10 @@
 	text-align: center;
 }
 
+.ionav{
+	vertical-align:middle;
+}
+
 .settings-text{
 	font-size: 14px;
 }
