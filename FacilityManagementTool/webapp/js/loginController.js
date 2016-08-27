@@ -1,4 +1,4 @@
-LoginController = (function() {
+var LoginController = (function() {
 
   var indexURL = "index.html",
       loginUrl = "login.html",
@@ -29,7 +29,8 @@ LoginController = (function() {
 
   //Move on to login.html when the user is already logged in and the 
   var checkLoginStatus = function(){
-    if(localStorage.getItem('NDS-Account') != undefined){
+    if(localStorage.getItem('NDS-Account') !== null){
+      console.log(localStorage.getItem('NDS-Account'));
       if(document.documentElement.lang == 'de'){
         if(_checkingStringFormat(localStorage.getItem('NDS-Account'))){
           mainView.router.loadPage(loginUrl);
@@ -50,7 +51,7 @@ LoginController = (function() {
   //and show the user name in the left settings panel 
   //otherwise show an error alert
   var checkUserInfo = function(){
-    if(document.getElementsByClassName('name-input')[0].value != '' &&
+    if(document.getElementsByClassName('name-input')[0].value !== '' &&
        _validateEmail(document.getElementsByClassName('mail-input')[0].value) &&
        _checkLangUserPhone()){
       _saveUserData();
@@ -74,7 +75,7 @@ LoginController = (function() {
 
   //Check the user's name after input
   function checkUserName(){
-    if(document.getElementsByClassName('name-input')[0].value != ''){
+    if(document.getElementsByClassName('name-input')[0].value !== ''){
       $('.name-input').css("color", "green");
     }else{
       $(".name-input").css("color", "red");
@@ -92,7 +93,7 @@ LoginController = (function() {
 
   //Check the user's name after input
   function checkUserPhone(){
-    if(document.getElementsByClassName('phone-input')[0].value != '' || document.getElementsByClassName('phone-input')[1].value != ''){
+    if(document.getElementsByClassName('phone-input')[0].value !== '' || document.getElementsByClassName('phone-input')[1].value !== ''){
       $('.phone-input').css("color", "green");
     }else{
       $(".phone-input").css("color", "red");
@@ -146,13 +147,13 @@ LoginController = (function() {
   //Check whether the user entered a phone number in the right language phone input field
   function _checkLangUserPhone(){
     if(document.documentElement.lang == 'de'){
-      if(document.getElementsByClassName('phone-input')[1].value != ''){
+      if(document.getElementsByClassName('phone-input')[1].value !== ''){
         return true;
       }else{
         return false;
       }
     }else{
-      if(document.getElementsByClassName('phone-input')[0].value != ''){
+      if(document.getElementsByClassName('phone-input')[0].value !== ''){
         return true;
       }else{
         return false;

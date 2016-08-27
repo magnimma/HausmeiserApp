@@ -1,0 +1,293 @@
+{
+  "Datensatz": [
+    {
+      "Bauwerk": "Altes Finanzamt, ALFI",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BIP,CH,EZ,KIGA,RZ",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Bibliothek, ZBGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BIP,CH,EZ,KIGA,KBST,RZ,ZB"
+    },
+    {
+      "Bauwerk": "Biologie, BIOG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Chemie, CHEG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BIP,CH,EZ,KIGA,RZ",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BIP,CH,EZ,KIGA,KBST,RZ,ZB"
+    },
+    {
+      "Bauwerk": "Entsorgungszentrum, ENZE",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BIP,CH,EZ,KIGA,RZ",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BIP,CH,EZ,KIGA,KBST,RZ,ZB"
+    },
+    {
+      "Bauwerk": "Fahrzeughalle, FZHG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BIP,CH,EZ,KIGA,RZ",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BIP,CH,EZ,KIGA,KBST,RZ,ZB"
+    },
+    {
+      "Bauwerk": "Haus der Begegnung, HDBG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  MA,PY,TGW(gelb),VW",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Mathematik, MATH",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  MA,PY,TGW(gelb),VW",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Mensa, MENS",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Neues Hörsaalgebäude (Vielberthgebäude), NHGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "AN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Philosophie und Theologie, PHTG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Physik, PHYG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  MA,PY,TGW(gelb),VW",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Rechenzentrum, RZTR",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BIP,CH,EZ,KIGA,RZ",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BIP,CH,EZ,KIGA,KBST,RZ,ZB"
+    },
+    {
+      "Bauwerk": "Rechts- und Wirtschaftsw. Hörsaalgebäude, RWHG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Rechts- und Wirtschaftsw. Lehrstuhlgebäude, RWLG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Rechts- und Wirtschaftsw. Seminargebäude, RWSG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Sammelgebäude, Bibliothekstrakt, SGBG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Sammelgebäude, Hörsaaltrakt, SGHG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Sammelgebäude, Lehrstuhltrakt, SGLG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  HDB,MA,ME,PY,SG"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Große Halle, SPZ2",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Hörsaal, SPZ5",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Kleine Hallen, SPZ1",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Schwimmhalle, SPZ3",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Tribüne, SPZ0",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Sportzentrum, Unterricht u. Verwaltung, SPZ4",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Studentenhaus u. Pizzeria, SHGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Technische Zentrale, TEZE",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Verwaltungsgebäude u. Ladengeschäfte, VWGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  MA,PY,TGW(gelb),VW",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Vorklinikum, VKLG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Westliche Naturwissenschaften, WNGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Süd  BI,BP,CH,KG,MA,PY,RZ,SP,TZ,VK",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  BI,SP,TZ,VK",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  BI,SP,TZ,VK"
+    },
+    {
+      "Bauwerk": "Wirtschaftsinformatik Bürogebäude, RWIG",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    },
+    {
+      "Bauwerk": "Zentrales Hörsaalgebäude, ZHGB",
+      "Fachgruppe Nachrichtentechnik": "Nachrichtentechnik",
+      "Fachgruppe Starkstrom": "E Nord  ME,PT,RW,SG,SH,TGO,TGW,VW,ZB,ZH",
+      "Fachgruppe Fenster/Türen": "Fenster/Türen",
+      "Fachgruppe Heizung/Lüftung": "HZG/RLT  KB,ME,PT,RW,SG,SH,TGO,TGW(rot,blau),ZB,ZH",
+      "Fachgruppe Kältetechnik": "Kälte",
+      "Fachgruppe Sanitär": "SAN  PT,RW,SH,TGO,TGW,SG-WI,VW,ZH"
+    }
+  ]
+}
+

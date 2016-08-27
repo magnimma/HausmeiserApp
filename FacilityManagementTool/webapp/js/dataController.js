@@ -1,8 +1,12 @@
 
-DataController = (function() {
+var DataController = (function() {
 
   var fmEmail = 'jayjay93@gmx.de',
-      myInput;
+      myInput,
+      mySendPicBtn1,
+      mySendPicBtn2,
+      myTakePicBtn1,
+      myTakePicBtn2;
 
   //Initiate the dataController, the UIelements and the eventhandler
   function init() {
@@ -22,13 +26,12 @@ DataController = (function() {
     window.location.href = 'mailto:' + fmEmail;
   }
 
-  //Open the native mail app with prefilled address
+  //Trigger a click event on the 'Take picture' input element
   function _takePic() {
-    console.log('click trigger');
-    console.log(myInput)
     _fireClick(myInput);
   }
 
+  //Trigger a click event on the 'Take picture' input element
   function _fireClick(node){
     if (document.createEvent) {
         var evt = document.createEvent('MouseEvents');

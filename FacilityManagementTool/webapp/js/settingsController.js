@@ -1,5 +1,5 @@
 
-SettingsController = (function() {
+var SettingsController = (function() {
 
   var myLangSelect = document.getElementById('languageSelect');
 
