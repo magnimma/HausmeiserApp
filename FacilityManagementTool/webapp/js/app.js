@@ -12,10 +12,10 @@ var $$ = Dom7;
 
 if (isAndroid) {
     // Change class
-    // BU: '$$('.view(s).navbar-through')' 
-    $$('.pages.navbar-through').removeClass('navbar-through').addClass('navbar-fixed');
+    // BU: "$$(".view(s).navbar-through")" 
+    $$(".pages.navbar-through").removeClass("navbar-through").addClass("navbar-fixed");
     // And move Navbar into Page
-    $$('.view .navbar').prependTo('.view .page');
+    $$(".view .navbar").prependTo(".view .page");
 }
 
 // Init App
@@ -34,8 +34,8 @@ var FMApp = new Framework7({
 });
  
 // Init View
-var mainView = FMApp.addView('.view-main', {
-    // Material doesn't support it but don't worry about it
+var mainView = FMApp.addView(".view-main", {
+    // Material doesn"t support it but don"t worry about it
     // F7 will ignore it for Material theme
     dynamicNavbar: true
 });
@@ -43,23 +43,23 @@ var mainView = FMApp.addView('.view-main', {
 _initPageCallbacks();
 
 function _initPageCallbacks(){
-  FMApp.onPageBeforeInit('disturbance', function (page) {
+  FMApp.onPageBeforeInit("disturbance", function (page) {
     //Fetch the building, floor and room data once the disturbance page is initialized
     DisturbanceController.fetchBuildingData();
   });
 
-  FMApp.onPageBeforeAnimation('index', function (page) {
-    //Set the user's NDS-Account when the index.html is loaded and reday to animate
+  FMApp.onPageBeforeAnimation("index", function (page) {
+    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
     LoginController.setNDSAccount();
   });
 
-  FMApp.onPageInit('picture', function (page) {
-    //Set the user's NDS-Account when the index.html is loaded and reday to animate
+  FMApp.onPageInit("picture", function (page) {
+    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
     DataController.init();
   });
 
-  FMApp.onPageInit('index', function (page) {
-    //Set the user's NDS-Account when the index.html is loaded and reday to animate
+  FMApp.onPageInit("index", function (page) {
+    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
     console.log("Index init");
   }).trigger();
 
