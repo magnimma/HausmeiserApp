@@ -1,3 +1,6 @@
+//The app.js determines whether the used device is an iOS or an android device
+//and adjusts the appearance of the app accordingly
+//Furthermore it initializes Framework7 specific page callbacks 
 var isAndroid = Framework7.prototype.device.android === true;
 var isIos = Framework7.prototype.device.ios === true;
 isAndroid = true;
@@ -11,10 +14,9 @@ Template7.global = {
 var $$ = Dom7;
 
 if (isAndroid) {
-    // Change class
-    // BU: "$$(".view(s).navbar-through")" 
+    // Change class of the navbar
     $$(".pages.navbar-through").removeClass("navbar-through").addClass("navbar-fixed");
-    // And move Navbar into Page
+    // And move navbar into page
     $$(".view .navbar").prependTo(".view .page");
 }
 
@@ -35,8 +37,6 @@ var FMApp = new Framework7({
  
 // Init View
 var mainView = FMApp.addView(".view-main", {
-    // Material doesn"t support it but don"t worry about it
-    // F7 will ignore it for Material theme
     dynamicNavbar: true
 });
 
@@ -44,8 +44,8 @@ _initPageCallbacks();
 
 function _initPageCallbacks(){
   FMApp.onPageBeforeInit("disturbance", function (page) {
-    //Fetch the building, floor and room data once the disturbance page is initialized
-    DisturbanceController.fetchBuildingData();
+    //Fetch the building, floor and room data before the disturbance page is initialized
+    DisturbanceController.init();
   });
 
   FMApp.onPageBeforeAnimation("index", function (page) {
@@ -54,13 +54,18 @@ function _initPageCallbacks(){
   });
 
   FMApp.onPageInit("picture", function (page) {
-    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
+    //Initiate the datacontroller when the picture.html is loaded and reday to animate
     DataController.init();
   });
 
+  FMApp.onPageInit("login", function (page) {
+    //Initiate the login and the settingsController after the login.html was initialized
+    LoginController.init();
+    SettingsController.init();
+  });
+
   FMApp.onPageInit("index", function (page) {
-    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
-    console.log("Index init");
+    //Trigger a pageInit event for the index.html afterards it was initialized
   }).trigger();
 
 }

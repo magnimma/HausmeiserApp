@@ -1,29 +1,27 @@
-
+//The dataController is responsible for the mail attachements the user can send to further describe a disturbance
+//It assists the user to take pictures of the disturbance and to send an email including these pictures
 var DataController = (function() {
 
-  var fmEmail = "jayjay93@gmx.de",
-      myInput,
-      mySendPicBtn1,
-      mySendPicBtn2,
-      myTakePicBtn1,
-      myTakePicBtn2;
+  //Variable containing the disturbance mail address
+  var tzEmail = "tz@ur.de",
 
-  //Initiate the dataController, the UIelements and the eventhandler
+      //Variable containing an file input UI element 
+      myInput;
+
+  //Initiate the dataController and set the UI element listeners
   function init() {
-    myInput = document.getElementsByClassName("myFileInput")[0];
-    mySendPicBtn1 = document.getElementsByClassName("send-picture")[0];
-    mySendPicBtn2 = document.getElementsByClassName("send-picture")[1];
-    mySendPicBtn1.addEventListener("click", _sendMail, false);
-    mySendPicBtn2.addEventListener("click", _sendMail, false);
-    myTakePicBtn1 = document.getElementsByClassName("take-picture")[0];
-    myTakePicBtn2 = document.getElementsByClassName("take-picture")[1];
-    myTakePicBtn1.addEventListener("click", _takePic, false);
-    myTakePicBtn2.addEventListener("click", _takePic, false);
+    myInput = $(".myFileInput")[0];
+    //Initiate click listener for the send attachement buttons and the take new picture buttons
+    $(".send-picture")[0].addEventListener("click", _sendMail, false);
+    $(".send-picture")[1].addEventListener("click", _sendMail, false);
+    $(".take-picture")[0].addEventListener("click", _takePic, false);
+    $(".take-picture")[1].addEventListener("click", _takePic, false);
   }
 
-  //Open the native mail app with prefilled address
+  //Open the native mail app with prefilled address and subject
   function _sendMail() {
-    window.location.href = "mailto:" + fmEmail;
+    console.log(sessionStorage.getItem("webId"));
+    window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + localStorage.getItem("webId");
   }
 
   //Trigger a click event on the "Take picture" input element

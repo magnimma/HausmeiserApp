@@ -1,4 +1,7 @@
-
+//The disturbanceController determines and checks the necessary disturbance data and finally sends the disturbance
+//The user can enter local information according the disturbance, assign a sepcialist group and enter a brief description
+//Optionally the user can choose to send an email with an attachement to provide further information according the disturbance, which leads the user to an extra screen
+//To assist the user to enter the necessary disturbance information, the disturbanceController fetches suitable local and specialist group information from a csv and a json file
 var DisturbanceController = (function() {
 
       //Links to data and html files
@@ -8,20 +11,14 @@ var DisturbanceController = (function() {
       specGrpJSON = "csv/fachgruppen.json",
       sendURL = "form.html",
 
-      //Variable for the value of the specialGroup form field, chosen by the user
-      specialGroup = "",
-
-      //Variable for the value of the description input text field, chosen by the user
-      description = "",
-
       //Variable for the building data, containing the available buildings and the according name
       buildingGrpMap = {},
       
-      //Variables containing the building, floor, room and roomCode data
+      //Variables containing the building, floor and room data
       building = [],
       floor = [],
       room = [],
-      roomCode = [],
+//RAUS      roomCode = [],
 
       //Variable containing the currently active select form field
       activeSelectField,
@@ -35,6 +32,9 @@ var DisturbanceController = (function() {
       //Variable containing the currently active text field
       activeTextField,
 
+      //Variable containing the currently active button
+      activeButton,
+
       //Variables containing the currently active building, floor and room
       //If chosen by the user
       activeBuilding = "",
@@ -46,8 +46,6 @@ var DisturbanceController = (function() {
       //Variable containing a single row of the csv file containing the building, floor and room data
       rowCells,
 
-      //Variable containing the disturbance text
-      disturbance = "",
 
       //Variable containing the current date
       //Format: dd.mm.yyyy hh:mm
@@ -59,7 +57,7 @@ var DisturbanceController = (function() {
       respSpecialGroup,
       
       //Variable containing the number of disturbances sent online
-      placeholderWebId = 123,
+      placeholderWebId = 1,
 
       //Contains the different special groups data for the different building in json format
       jsonData,
@@ -71,11 +69,28 @@ var DisturbanceController = (function() {
       //filling in the necessary distubance data
       err = false;
 
+  //Initiate the disturbanceController when the disturbance.html is iniatiated
+  function init(){
+    _setupUIListener();
+    _fetchBuildingData();
+    console.log("distubance");
+  }
+
+  //Setup the UI element listener
+  function _setupUIListener(){
+    //Add change listener to the building, floor and room select input fields
+    $("#buildingSelect")[0].addEventListener("change", _buildingChanged, false);
+    $("#floorSelect")[0].addEventListener("change", _floorChanged, false);
+    $("#roomSelect")[0].addEventListener("change", _roomChanged, false);
+    //Add click listener to the check disturbance buttons
+    $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
+    $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
+  }
 
   //Fetch the building, room and floor data file
   //Currently from a csv file
   //TODO fetch the file from the uniR server
-  function fetchBuildingData(){
+  function _fetchBuildingData(){
     $.ajax({
       url: localCSV,
       dataType: "text",
@@ -84,7 +99,11 @@ var DisturbanceController = (function() {
   }
 
   //Save the csv file data
+  //Format: Altes Finanzamt, ALFI*Altes Finanzamt, ALFI*_0  EG*001 Lesesaal slow.*BY.R.L.2700.2700.0.01*0000000000004O1E..
   //Extract the building data
+  //Format: ["Altes Finanzamt, ALFI", "Bibliothek, Tiefgarage Ost, TGAO", ..]
+  //Save the general and the exact building data together in a map
+  //Format: {Altes Finanzamt, ALFI: "Altes Finanzamt, ALFI", Bibliothek, Tiefgarage Ost, TGAO: "Bibliothek, Tiefgarage Ost, TGAO", ..}
   function _handleCSVData(data) {
     csvDataRows = data.split(/\r?\n|\r/);
     for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
@@ -97,38 +116,39 @@ var DisturbanceController = (function() {
     _appendBuildingData(_uniqArray(building));
   }
 
-  //react to user building selections
-  function onBuildingChanged(){
-    activeSelectField = document.getElementById("floorSelect");
-    activeSelectField.disabled = false;
-    activeSelectField = document.getElementById("buildingSelect");
-    roomCode = undefined;
+  //React to user building selections
+  //Extract the according special groups and the floor data
+  function _buildingChanged(){
+    $("#floorSelect")[0].disabled = false;
+    activeSelectField = $("#buildingSelect")[0];
+    sessionStorage.removeItem("roomCode");
 
     _extractSpecialGroups(activeSelectField.options[activeSelectField.selectedIndex].value);
     _extractFloorData(activeSelectField.options[activeSelectField.selectedIndex].value);
   }
 
-  //react to user floor selections
-  function onFloorChanged(){
-    activeSelectField = document.getElementById("buildingSelect");
+  //React to user floor selections
+  //Save the building and floor data and extract the according room data 
+  function _floorChanged(){
+    activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
-    activeSelectField = document.getElementById("floorSelect");
+    activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
-    roomCode = undefined;
+    sessionStorage.removeItem("roomCode");
 
     _extractRoomData(activeBuilding, activeFloor);
   }
 
-  //react to user room selections
+  //React to user room selections
   //Fetch the building, floor and room data and extract the roomCode
-  function onRoomChanged(){
-    activeSelectField = document.getElementById("buildingSelect");
+  function _roomChanged(){
+    activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
 
-    activeSelectField = document.getElementById("floorSelect");
+    activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
 
-    activeSelectField = document.getElementById("roomSelect");
+    activeSelectField = $("#roomSelect")[0];
     activeRoom = activeSelectField.options[activeSelectField.selectedIndex].value;
 
     _extractRoomCode(activeBuilding, activeFloor, activeRoom);
@@ -161,34 +181,32 @@ var DisturbanceController = (function() {
     }
   }
 
-  //Handle the json file
+  //Handle the json file and extract the data
   function _handleJSONData(){
     $.getJSON(specGrpJSON, function(data) {         
       jsonData = data;
     });
   }
 
-  //Extract the necessary room data from the csv file
+  //Extract the necessary roomcode data from the csv file
   function _extractRoomCode(building, floor, room){
     for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
       rowCells = csvDataRows[singleRow];
       if(rowCells !== "" && rowCells.split("*")[1] == building && rowCells.split("*")[2] == floor && rowCells.split("*")[3] == room){
-        roomCode = rowCells.split("*")[4];
         sessionStorage.setItem("roomCode", rowCells.split("*")[4]);
-        console.log("Raumcode: " + roomCode);
       }
     }
   }
 
   //Check whether the user provided all the necessary disturbance information
-  //If yes move on
+  //If yes: save the provided information, extract the special group and submit the disturbance 
   //Else show error alert
-  function checkDisturbanceData(){
+  function _checkDisturbanceData(){
     err = false;   
     if(document.documentElement.lang == "de"){
       errMsg = "Folgende Felder fehlen: \n";
-      activeSelectField = document.getElementsByClassName("groupSelect")[1];
-      activeTextField = document.getElementsByClassName("desc-text")[1];
+      activeSelectField = $(".groupSelect")[1];
+      activeTextField = $(".desc-text")[1];
       sessionStorage.getItem("roomCode")
       if(sessionStorage.getItem("roomCode") === null){
         errMsg += "- Raum\n";
@@ -203,14 +221,12 @@ var DisturbanceController = (function() {
         err = true;
       }
       //Save the disturbance data(specialGroup, description)
-      specialGroup = activeSelectField.options[activeSelectField.selectedIndex].value;
-      description = activeTextField.value;
       sessionStorage.setItem("specialGroup", activeSelectField.options[activeSelectField.selectedIndex].value);
       sessionStorage.setItem("description", activeTextField.value);
     }else{
       errMsg = "Following fields are missing: \n";
-      activeSelectField = document.getElementsByClassName("groupSelect")[0];
-      activeTextField = document.getElementsByClassName("desc-text")[0];
+      activeSelectField = $(".groupSelect")[0];
+      activeTextField = $(".desc-text")[0];
       if(sessionStorage.getItem("roomCode") === null){
         errMsg += "- Room\n";
         err = true;
@@ -224,8 +240,6 @@ var DisturbanceController = (function() {
         err = true;
       }
       //Save the disturbance data(specialGroup, description)
-      specialGroup = activeSelectField.options[activeSelectField.selectedIndex].value;
-      description = activeTextField.value;
       sessionStorage.setItem("specialGroup", activeSelectField.options[activeSelectField.selectedIndex].value);
       sessionStorage.setItem("description", activeTextField.value);
     }
@@ -254,20 +268,24 @@ var DisturbanceController = (function() {
         return "Nachrichtentechnik";
     default:
         return "Nachrichtentechnik";
-}
+    }
+  }
+
+  //Fetch the web id for the currently created disturbance report
+  function _fetchWebId(){
+    placeholderWebId = "1234";
+    sessionStorage.setItem("webId", placeholderWebId);
   }
 
   //Submit the disturbance with all the necessary data
   function _submitDisturbance(){
     disturbance = "";
 
-    disturbance = "Meldungsvorlage: Web_id;Name;Telefon;ErfasstAm;GemeldetAm;Wunschtermin;Auftragsart;Nachricht;Raum_ID;Ausfuehrender;Fachgruppe;Auftragsnummer;Auftragstatus\n Beispielmeldung: 50;Bärbel Jacobi;4962;08.05.2009 12:11;08.05.2009 12:11;08.05.2009 12:11;Instandsetzung;starke Zugluft im Maschinenraum<cr><lf>;BY.R.C.2200.2200.0.03;Fachgruppe;HZG/RLT  BIP,CH,EZ,KIGA,RZ;;"
+    _fetchWebId();
 
-    //Method 2: session storage
     disturbance += placeholderWebId + ";";
     disturbance += sessionStorage.getItem("userName") + ";";
     disturbance += sessionStorage.getItem("userPhone") + ";";
-//    disturbance += sessionStorage.getItem("userMail") + ", ";
 
     currDate = _getCurrDate();
 
@@ -323,11 +341,11 @@ var DisturbanceController = (function() {
     _appendRoomData(_uniqArray(room));
   }
 
-   //Append the current room data from the csv file to the html site
+   //Append the current room data from the csv file to the html site(roomSelect)
   function _appendRoomData(roomList){
     //First, clear the old options from the select item and enable the select input field
-    activeSelectField = document.getElementById("roomSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#roomSelect")[0];
+    _resetSelectOptions(activeSelectField);
     activeSelectField.disabled = false;
 
     //Afterwards append the current data
@@ -345,7 +363,7 @@ var DisturbanceController = (function() {
   }
 
   //Reset options of a given select input field
-  function resetSelectOptions(mySelect){
+  function _resetSelectOptions(mySelect){
     while (mySelect.firstChild) {
         mySelect.removeChild(mySelect.firstChild);
     }
@@ -390,13 +408,13 @@ var DisturbanceController = (function() {
     _appendFloorData(_uniqArray(floor));
   }
 
-  //Append the current floor data from the csv file to the html site
+  //Append the current floor data from the csv file to the html site(floorSelect)
   function _appendFloorData(floorList){
     //First clear the old options from the select item fields(floorSelect, roomSelect)
-    activeSelectField = document.getElementById("roomSelect");
-    resetSelectOptions(activeSelectField);
-    activeSelectField = document.getElementById("floorSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#roomSelect")[0];
+    _resetSelectOptions(activeSelectField);
+    activeSelectField = $("#floorSelect")[0];
+    _resetSelectOptions(activeSelectField);
 
     //Afterwards append the current data
     for(var i = 0; i < floorList.length; i++){
@@ -411,8 +429,8 @@ var DisturbanceController = (function() {
       activeSelectField.appendChild(newOption);
     }
     //Disable the room select input field, as the user has to specify a floor first
-    activeSelectField = document.getElementById("roomSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#roomSelect")[0];
+    _resetSelectOptions(activeSelectField);
     activeSelectField.disabled = true;
   }
 
@@ -421,15 +439,15 @@ var DisturbanceController = (function() {
     //First, create a placeholder option for the select input field
     //(buildingSelect, floorSelect, roomSelect)
     //Depending on the header"s lang attribute in english or german
-    activeSelectField = document.getElementById("floorSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#floorSelect")[0];
+    _resetSelectOptions(activeSelectField);
     //Disable the floor and the room select input fields, as the user has to specify a building and a floor first
     activeSelectField.disabled = true;
-    activeSelectField = document.getElementById("roomSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#roomSelect")[0];
+    _resetSelectOptions(activeSelectField);
     activeSelectField.disabled = true;
-    activeSelectField = document.getElementById("buildingSelect");
-    resetSelectOptions(activeSelectField);
+    activeSelectField = $("#buildingSelect")[0];
+    _resetSelectOptions(activeSelectField);
 
     //Afterwards append the current data
     for(var i = 0; i < buildingList.length; i++){
@@ -454,12 +472,7 @@ var DisturbanceController = (function() {
   }
 
   return {
-    fetchBuildingData: fetchBuildingData,
-    onBuildingChanged: onBuildingChanged,
-    onFloorChanged: onFloorChanged,
-    onRoomChanged: onRoomChanged,
-    checkDisturbanceData: checkDisturbanceData,
-    resetSelectOptions: resetSelectOptions
+    init: init,
   };
   
 })();
