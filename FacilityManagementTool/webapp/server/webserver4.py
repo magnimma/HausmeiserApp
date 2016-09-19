@@ -11,6 +11,7 @@ import json
 import requests
 from ndsValidation import *
 from distReport import *
+from csvDataReceiver import *
 
 PORT_NUMBER = 8080
 
@@ -67,12 +68,16 @@ class myHandler(BaseHTTPRequestHandler):
 		print postvars['param']
 
 		#Create an instance of the distReporter class and post the disturbance
-		reporter = distReporter()
-		reporter.reportDisturbance()
+		#reporter = distReporter()
+		#reporter.reportDisturbance()
 
 		#Create an instance of the ndsValidater class and validate the nds account
 		validater = ndsValidater()
 		print validater.validateNDSAccount(postvars['param'])
+
+		#Create an instance of the csvDataReceiver class and fetch the building, floor and room data
+		receiver = csvDataReceiver()
+		print receiver.receiveData()
 
 		#Return the succes response and the needed headers to the client
 		self.send_response(200)

@@ -133,17 +133,20 @@ var LoginController = (function() {
 
   //Move on to login.html when the user is already logged in
   function checkLoginStatus(){
-    if(localStorage.getItem("NDS-Account") !== null){
-      console.log(localStorage.getItem("NDS-Account"));
+    console.log(localStorage.getItem("ndsAccount"));
+    console.log(localStorage.getItem("userMail"));
+    console.log(localStorage.getItem("userPhone"));
+    console.log(localStorage.getItem("userName"));
+    if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
       if(document.documentElement.lang == "de"){
-        if(_checkStringFormat(localStorage.getItem("NDS-Account"))){
+        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
           UtilityController.measureStep("NDS Login");
           mainView.router.loadPage(loginUrl);
         }else{
           alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
         }
       }else{
-        if(_checkStringFormat(localStorage.getItem("NDS-Account"))){
+        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
           UtilityController.measureStep("NDS Login");
           mainView.router.loadPage(loginUrl);
         }else{
@@ -174,9 +177,9 @@ var LoginController = (function() {
   //Set the user NDS-Account when he returns back to index.html
   function setNDSAccount(){
     if (document.documentElement.lang == "de"){
-      $(".login-input")[1].value = localStorage.getItem("NDS-Account");
+      $(".login-input")[1].value = localStorage.getItem("ndsAccount");
     }else{
-      $(".login-input")[0].value = localStorage.getItem("NDS-Account");
+      $(".login-input")[0].value = localStorage.getItem("ndsAccount");
     }
   }
 
@@ -210,7 +213,7 @@ var LoginController = (function() {
 
   //Logout the user, update the settings UI elements and reaload index.html
   function _logout(){
-    localStorage.removeItem("NDS-Account");
+    localStorage.removeItem("ndsAccount");
     localStorage.removeItem("userName");
     localStorage.removeItem("userMail");
     localStorage.removeItem("userPhone");
@@ -220,23 +223,26 @@ var LoginController = (function() {
 
   //Enable the logout button and show the user NDS-Account in the settings
   function _enableSettingsUI(){
-    $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("NDS-Account");
-    $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("NDS-Account");
+    $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("ndsAccount");
+    $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("ndsAccount");
     $(".menu-item-user-logout")[0].disabled = false;
     $(".menu-item-user-logout")[1].disabled = false;
   }
 
   //Disable the logout button and show the user NDS-Account in the settings
   function _disableSettingsUI(){
-    $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("NDS-Account");
-    $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("NDS-Account");
+    $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("ndsAccount");
+    $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("ndsAccount");
     $(".menu-item-user-logout")[0].disabled = true;
     $(".menu-item-user-logout")[1].disabled = true;
   }
 
   //Save the user data(NDS account, name, mail, phone) if the data was valid
   function _saveUserData(){
-    localStorage.setItem("NDS-Account", ndsUserInput);
+    console.log("Saved: " + ndsUserInput);
+    if(ndsUserInput != undefined){
+      localStorage.setItem("ndsAccount", ndsUserInput);
+    }
     userName = $(".name-input")[0].value;
     localStorage.setItem("userName", userName);
     userMail = $(".mail-input")[0].value;
