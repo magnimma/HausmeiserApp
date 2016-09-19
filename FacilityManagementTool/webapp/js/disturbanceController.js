@@ -5,11 +5,13 @@
 var DisturbanceController = (function() {
 
       //Links to data and html files
-  var newUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv",      
+  var buildingCsvUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv",      
       pictureURL = "picture.html",
       localCSV = "csv/raumliste.csv",
+      localHostCSV = "http://192.168.178.43/FMApp/csv/raumliste.csv",
       specGrpJSON = "csv/fachgruppen.json",
       sendURL = "form.html",
+      offlineURL = "offline.html",
 
       //Variable for the building data, containing the available buildings and the according name
       buildingGrpMap = {},
@@ -46,6 +48,8 @@ var DisturbanceController = (function() {
       //Variable containing a single row of the csv file containing the building, floor and room data
       rowCells,
 
+      //Regular expressions used to validate user content(disturbance description)
+      descRegex = /^[A-Za-z0-9_,;.+-]{1,80}$/,
 
       //Variable containing the current date
       //Format: dd.mm.yyyy hh:mm
@@ -64,7 +68,7 @@ var DisturbanceController = (function() {
 
       //Variable containing an error message which is shown when the user
       //hasnt completely filled in all necessary fields of a disturbance
-      errMsg = "Following fields are missing: \n";
+      errMsg = "Following fields are missing: \n",
       //Variable containing boolean value, whether the user made a mistake
       //filling in the necessary distubance data
       err = false;
@@ -204,7 +208,7 @@ var DisturbanceController = (function() {
   function _checkDisturbanceData(){
     err = false;   
     if(document.documentElement.lang == "de"){
-      errMsg = "Folgende Felder fehlen: \n";
+      errMsg = "Folgende Felder fehlen oder sind mit ungültigem Inhalt gefühlt: \n";
       activeSelectField = $(".groupSelect")[1];
       activeTextField = $(".desc-text")[1];
       sessionStorage.getItem("roomCode")
@@ -216,7 +220,7 @@ var DisturbanceController = (function() {
         errMsg += "- Fachgruppe\n";
         err = true;
       }
-      if(activeTextField.value === ""){
+      if(_validateDescription(activeTextField.value)){
         errMsg += "- Beschreibung\n";
         err = true;
       }
@@ -224,7 +228,7 @@ var DisturbanceController = (function() {
       sessionStorage.setItem("specialGroup", activeSelectField.options[activeSelectField.selectedIndex].value);
       sessionStorage.setItem("description", activeTextField.value);
     }else{
-      errMsg = "Following fields are missing: \n";
+      errMsg = "Following fields are missing or filled with invalid content: \n";
       activeSelectField = $(".groupSelect")[0];
       activeTextField = $(".desc-text")[0];
       if(sessionStorage.getItem("roomCode") === null){
@@ -235,7 +239,7 @@ var DisturbanceController = (function() {
         errMsg += "- Specialist group\n";
         err = true;
       }
-      if(activeTextField.value === ""){
+      if(_validateDescription(activeTextField.value)){
         errMsg += "- Description\n";
         err = true;
       }
@@ -244,6 +248,7 @@ var DisturbanceController = (function() {
       sessionStorage.setItem("description", activeTextField.value);
     }
     if(err === false){
+      UtilityController.measureStep("Disturbance reported");
       _extractSpecialGroup();
       _submitDisturbance();
     }else{
@@ -284,8 +289,8 @@ var DisturbanceController = (function() {
     _fetchWebId();
 
     disturbance += placeholderWebId + ";";
-    disturbance += sessionStorage.getItem("userName") + ";";
-    disturbance += sessionStorage.getItem("userPhone") + ";";
+    disturbance += localStorage.getItem("userName") + ";";
+    disturbance += localStorage.getItem("userPhone") + ";";
 
     currDate = _getCurrDate();
 
@@ -297,14 +302,32 @@ var DisturbanceController = (function() {
     disturbance += sessionStorage.getItem("roomCode") + ";";
     disturbance += "Fachgruppe;" + sessionStorage.getItem("respSpecialGroup") + ";;";
 
-    alert(disturbance);
-    
-    //If the user wants to send an aditional picture of the disturbance
-    //move on to picture.html
-    activeCheckBox = document.getElementById("picCheckbox");
-    if(activeCheckBox.checked === true){
-      mainView.router.loadPage(pictureURL);
+    //Check whether the user has internet connection
+    //If yes: submit the disturbance report
+    //If no: Show the fallback offline page
+    if(UtilityController.checkOnlineStatus()){
+      alert(disturbance);
+
+      //If the user wants to send an aditional picture of the disturbance
+      //move on to picture.html
+      activeCheckBox = document.getElementById("picCheckbox");
+      if(activeCheckBox.checked === true){
+        mainView.router.loadPage(pictureURL);
+      }
+    }else{
+      mainView.router.loadPage(offlineURL);
     }
+  }
+
+  //Validate the disturbance description
+  //Allowed figures: a-Z
+  function _validateDescription(description){
+    if(descRegex.test(description)){
+      console.log("validation false");
+      return false;
+    }
+    console.log("validation true");
+    return true;
   }
 
   //Get the current date and time and return it as string

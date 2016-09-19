@@ -2,11 +2,26 @@
 //It changes the app's language and sets the default language at the start
 var SettingsController = (function() {
 
-  var myLangSelect = document.getElementById("languageSelect");
+  var myLangSelect = document.getElementById("languageSelect"),
+      helpURL = "help.html";
 
-  //Initiate the settinsgController
+  //Initiate the settingsController
   function init(){
     console.log("settings");
+    _setupUIListeners();
+  }
+
+    //Load the help.html and show the help
+  function _startHelp(){
+    mainView.router.loadPage(helpURL);
+  }
+
+  //Setup the UI element listener
+  function _setupUIListeners(){
+    //Add click listener to the help buttons
+    $(".menu-item-help")[0].addEventListener("click", _startHelp, false);
+    $(".menu-item-help")[1].addEventListener("click", _startHelp, false);
+    //Add change listener to the language select field
     myLangSelect.addEventListener("change", changeLanguage, false);
   }
 

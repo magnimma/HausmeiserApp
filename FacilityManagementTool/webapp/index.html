@@ -8,7 +8,7 @@
     <title>Facility Management App</title>
   </head>
   <!-- Check for available account info and set the correct language in the settings panel-->
-  <body onload="LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage();">
+  <body onload="UtilityController.init(); LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage()">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -63,6 +63,12 @@
                 </div>
               </div>
             </li>
+            <li>
+              <div class="item-logout">
+                <button class="button center menu-item-help" data-l11n>Help</button>
+                <button class="button center menu-item-help" data-l11n="de">Hilfe</button>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
@@ -97,8 +103,8 @@
             <!-- Scrollable page content-->
             <div class="page-content">
               <div class="content-block">
-                <p class="content-info-text" data-l11n>Please log in with a valid NDS-Account.</p>
-                <p class="content-info-text" data-l11n="de">Bitte melden Sie sich mit einer gültigen NDS-Kennung an.</p>
+                <p class="content-info-text" data-l11n>Please log in with a valid NDS-Account to report a disturbance using the specific app form.</p>
+                <p class="content-info-text" data-l11n="de">Bitte melden Sie sich mit einer gültigen NDS-Kennung an, um eine Störung mithilfe eines app eigenen Formulars zu melden.</p>
               </div>
               <div class="content-block-login">
                 <div class="list-block">
@@ -125,6 +131,16 @@
                 <button class="button center" data-l11n="de" onclick="LoginController.checkUserNDS()">Anmelden</button>
                 <!--/a-->
               </div>
+              <div class="content-block">
+                <p class="content-info-text" data-l11n>Or call the technical central immediately.</p>
+                <p class="content-info-text" data-l11n="de">Oder rufen Sie die technische Zentrale direkt an.</p>
+              </div>
+              <div class="content-block">
+                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n>Report disturbance via call</a>
+                </a>
+                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n="de">Störung per Anruf melden</a>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -139,9 +155,11 @@
     <script type="text/javascript" src="js/Main.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/settingsController.js"></script>
+    <script type="text/javascript" src="js/logController.js"></script>
     <script type="text/javascript" src="js/dataController.js"></script>
     <script type="text/javascript" src="js/loginController.js"></script>
     <script type="text/javascript" src="js/disturbanceController.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/libs/jquery.min.js"><\/script>')</script>
   </body>
 </html>

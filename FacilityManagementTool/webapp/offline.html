@@ -1,0 +1,45 @@
+
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="center sliding">
+        <p data-l11n>Offline</p>
+        <p data-l11n="de">Offline</p>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+ 
+<div class="page" data-page="offline">
+  <!-- Fixed navbar for Material theme -->
+  {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center">
+            <p data-l11n>Offline</p>
+            <p data-l11n="de">Offline</p>
+          </div>
+        </div>
+    </div>
+    {{/if}}
+    <div class="page-content">
+      <div class="content-block">
+        <div class="content-block-inner" data-l11n>
+          <b>Offlinemode</b>
+          <p>You are offline. Please reconnect to the internet and reload the page or click the button below to report your disturbance via phone to the technical central.</p>
+        </div>
+        <div class="content-block-inner" data-l11n="de">
+          <b>Offlinemodus</b>
+          <p>Sie haben keine Internetverbindung. Bitte stellen Sie eine Internetverbindung her und laden Sie die Website neu oder drücken Sie den unten liegenden Knopf, um der technischen Zentrale ihre Störungsmeldung telefonisch zu übermitteln.</p>
+        </div>
+        <div class="content-block-inner">
+          <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n>Report disturbance via call</a>
+          <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n="de">Störung per Anruf melden</a>
+                </div>
+      </div>
+    </div>
+  </div>
+</div>

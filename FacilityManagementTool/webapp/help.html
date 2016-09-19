@@ -1,0 +1,80 @@
+
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left sliding">
+        <a href="#" class="back link">
+          <i class="icon icon-back"></i>
+          <span data-l11n>Back</span>
+          <span data-l11n="de">Zurück</span>
+        </a>
+      </div>
+      <div class="center sliding">
+        <p data-l11n>Help</p>
+        <p data-l11n="de">Hilfe</p>
+      </div>
+      <div class="right">
+        <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+ 
+<div class="page" data-page="help">
+    <!-- Fixed navbar for Material theme -->
+    {{#if @global.android}}
+      <div class="navbar">
+          <div class="navbar-inner">
+              <div class="left">
+                  <a href="#" class="back icon-only">
+                      <i class="icon icon-back"></i>
+                  </a>
+              </div>
+              <div class="center">
+                <p data-l11n>Help</p>
+                <p data-l11n="de">Hilfe</p>
+              </div>
+              <div class="right">
+                <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+              </div>
+          </div>
+      </div>
+      {{/if}}
+    
+    <div class="page-content">
+      <div class="content-block">
+        <div class="content-block-inner" data-l11n>
+          <b>Login</b>
+          <p></p>
+          <b>Login information</b>
+          <p></p>
+          <b>Estimation</b>
+          <p></p>
+          <b>Urgent disturbance</b>
+          <p></p>
+          <b>Fault report</b>
+          <p></p>
+          <b>Disturbance attachement</b>
+          <p></p>
+        </div>
+        <div class="content-block-inner" data-l11n="de">
+          <b>Anmelden</b>
+          <p>Hier können Sie sich mit ihrem gültigen NDS-Acount anmelden. Dies ist notwendig um eine Störung melden zu können.</p>
+          <b>Anmeldedaten</b>
+          <p>Hier können Sie ihre persönlichen Daten wie Name, Telefonnummer und Emailadresse eingeben und korrigieren. Diese Daten sind notwendig, um bei eventuell auftretenden Problemen bei der Behebung von Störungen mit ihnen Kontakt aufnehmen zu können.</p>
+          <b>Einschätzung</b>
+          <p>Hier können Sie entscheiden, ob Sie eine dringende Störung (Rohrbruch, Heizungsdefekt) telefonisch oder eine normale Störung über die App melden möchten.</p>
+          <b>Dringende Störung</b>
+          <p>Hier können Sie der technischen Zentrale eine dringende Störung (Rohrbruch, Heizungsdefekt) telefonisch melden.</p>
+          <b>Störungsmeldung</b>
+          <p>Hier können Sie eine Störung per Störungsformular melden. Geben Sie hierfür die benötigten Informationen zum Raum, zur betroffenen Fachgruppe und zur Störung an sich ein und melden Sie die Störung anschließend mithilfe des "Störung melden" Buttons. Falls Sie der Meldung multimediale Inhalte (Bild-, Pdf-, Excel-Dateien) beifügen möchten, aktivieren Sie den entsprechenden Schalter (Sie werden anschließend auf eine entsprechende Seite weitergeleitet) .</p>
+          <b>Störungsanhang</b>
+          <p>Hier können Sie der Meldung multimediale Inhalte (Bild-, Pdf-, Excel-Dateien) beifügen. Nehmen Sie per "Neues Bild machen"-Button neue Bilder auf, welche Sie anschließend per "Anhang senden"-Button an die technische Zentrale schicken können. Hierbei wird die Standard-Email-Anwendung ihres Gerätes mit vordefiniertem Empfänger und Betreff geöffnet. Nun können Sie ihre Anhänge auswählen und versenden.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
