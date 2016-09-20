@@ -96,8 +96,8 @@ var LoginController = (function() {
   function _pyCheckNDS(userAcc){
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/",
-      data: { param: userAcc}
+      url: "http://localhost:8080/nds",
+      data: { "userNDS": userAcc}
     }).done(function(serverResponse) {
       //Parse the received JSONString and get a JSONObject
       result = JSON.parse(serverResponse);

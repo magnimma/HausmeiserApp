@@ -51,17 +51,12 @@ var DisturbanceController = (function() {
       //Regular expressions used to validate user content(disturbance description)
       descRegex = /^[A-Za-z0-9_,;.+-]{1,80}$/,
 
-      //Variable containing the current date
-      //Format: dd.mm.yyyy hh:mm
-      currDate,
-
       //Variabel containing the set of responsible special groups for a specific building
       responsibleSpecialGroups,
       //Variable containing the responsible special group for a specific building
       respSpecialGroup,
       
       //Variable containing the number of disturbances sent online
-      placeholderWebId = 1,
 
       //Contains the different special groups data for the different building in json format
       jsonData,
@@ -71,7 +66,20 @@ var DisturbanceController = (function() {
       errMsg = "Following fields are missing: \n",
       //Variable containing boolean value, whether the user made a mistake
       //filling in the necessary distubance data
-      err = false;
+      err = false,
+
+      //Variables containing all the information needed to submit a valid disturbance report
+      userNDS = "abc12345",
+      placeholderWebId = 1,
+      userName = "Max Mustermann",
+      userPhone = "1234",
+      //Variable containing the current date
+      //Format: dd.mm.yyyy hh:mm
+      currDate = "01.01.1991 01:01",
+      description = "Disturbance description here",
+      roomCode = "BY.C.12345",
+      specGrp = "Specialist group here";
+
 
   //Initiate the disturbanceController when the disturbance.html is iniatiated
   function init(){
@@ -100,6 +108,18 @@ var DisturbanceController = (function() {
       dataType: "text",
     }).done(_handleCSVData);
     _handleJSONData();
+
+    //TODO: Falls die Raumliste vom User geladen werden soll
+    /*
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/receive",
+      //data: { param: userAcc}
+    }).done(_handleCSVData {
+      _handleJSONData
+      }
+    });
+    */
   }
 
   //Save the csv file data
@@ -283,11 +303,24 @@ var DisturbanceController = (function() {
   }
 
   //Submit the disturbance with all the necessary data
+  //TODO: disturbance String und alert rausschmeißen
   function _submitDisturbance(){
     disturbance = "";
 
     _fetchWebId();
 
+    //Gather all the data needed for the disturbance report
+    userNDS = localStorage.getItem("ndsAccount");
+    userName = localStorage.getItem("userName");
+    userPhone = localStorage.getItem("userPhone");
+    //Variable containing the current date
+    //Format: dd.mm.yyyy hh:mm
+    currDate = _getCurrDate();
+    description = sessionStorage.getItem("description");
+    roomCode = sessionStorage.getItem("roomCode");
+    specGrp = sessionStorage.getItem("respSpecialGroup");
+
+    /*TODO:löschen
     disturbance += placeholderWebId + ";";
     disturbance += localStorage.getItem("userName") + ";";
     disturbance += localStorage.getItem("userPhone") + ";";
@@ -301,12 +334,20 @@ var DisturbanceController = (function() {
     disturbance += sessionStorage.getItem("description") + ";";
     disturbance += sessionStorage.getItem("roomCode") + ";";
     disturbance += "Fachgruppe;" + sessionStorage.getItem("respSpecialGroup") + ";;";
+    */
 
     //Check whether the user has internet connection
     //If yes: submit the disturbance report
     //If no: Show the fallback offline page
     if(UtilityController.checkOnlineStatus()){
-      alert(disturbance);
+      //TODO:löschen alert(disturbance);
+        $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/submit",
+        data: { "userNDS": userNDS, "disturbanceId":placeholderWebId ,"userName": userName, "userPhone": userPhone, "date": currDate, "description": description, "roomCode": roomCode, "specialGroup": specGrp}
+      }).done(function(serverResponse) {
+        alert(serverResponse);
+      });
 
       //If the user wants to send an aditional picture of the disturbance
       //move on to picture.html
@@ -320,7 +361,7 @@ var DisturbanceController = (function() {
   }
 
   //Validate the disturbance description
-  //Allowed figures: a-Z
+  //Allowed figures: a-Z,;.+-
   function _validateDescription(description){
     if(descRegex.test(description)){
       console.log("validation false");

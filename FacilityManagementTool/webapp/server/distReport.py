@@ -5,14 +5,14 @@ from mechanize import Browser
 class distReporter():
 
 	def reportDisturbance(self):
-		br = Browser()
+		'''br = Browser()
 
 		# Ignore robots.txt
 		br.set_handle_robots( False )
 		# Google demands a user-agent that isn't a robot
 		br.addheaders = [('User-agent', 'Firefox')]
 
-		# Retrieve the Google home page, saving the response
+		# Retrieve the Google hom e page, saving the response
 		#br.open( "http://google.com" )
 		br.open( "http://google.com" )
 
@@ -33,4 +33,6 @@ class distReporter():
 
 		# Print the site
 		content = resp.get_data()
-		print content
+		print content'''
+		print "DIST SUCCESS"
+		return "Disturbance submitted"
