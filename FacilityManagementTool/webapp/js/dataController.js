@@ -21,13 +21,13 @@ var DataController = (function() {
   //Open the native mail app with prefilled address and subject
   function _sendMail() {
     console.log(sessionStorage.getItem("webId"));
-    LogController.measureStep("Mail sent");
-    window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + localStorage.getItem("webId");
+    UtilityController.measureStep("Mail sent");
+    window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + sessionStorage.getItem("webId");
   }
 
   //Trigger a click event on the "Take picture" input element
   function _takePic() {
-    LogController.measureStep("Picture taken");
+    UtilityController.measureStep("Picture taken");
     _fireClick(myInput);
   }
 

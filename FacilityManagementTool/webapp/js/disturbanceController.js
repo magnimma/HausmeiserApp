@@ -270,7 +270,7 @@ var DisturbanceController = (function() {
     if(err === false){
       UtilityController.measureStep("Disturbance reported");
       _extractSpecialGroup();
-      _submitDisturbance();
+      _fetchWebId();
     }else{
       alert(errMsg);
     }
@@ -300,14 +300,23 @@ var DisturbanceController = (function() {
   function _fetchWebId(){
     placeholderWebId = "1234";
     sessionStorage.setItem("webId", placeholderWebId);
+    //Send a POST request to the webserver to get the current disturbance id
+    $.ajax({
+        type: "POST",
+        url: "http://192.168.178.43:8080/id",
+        data: { "request": "distId"},
+      }).done(function(serverResponse) {
+        console.log("ID: " + serverResponse);
+        placeholderWebId = serverResponse;
+        sessionStorage.setItem("webId", placeholderWebId);
+        _submitDisturbance();
+      });
   }
 
   //Submit the disturbance with all the necessary data
   //TODO: disturbance String und alert rausschmeißen
   function _submitDisturbance(){
     disturbance = "";
-
-    _fetchWebId();
 
     //Gather all the data needed for the disturbance report
     userNDS = localStorage.getItem("ndsAccount");
@@ -340,10 +349,11 @@ var DisturbanceController = (function() {
     //If yes: submit the disturbance report
     //If no: Show the fallback offline page
     if(UtilityController.checkOnlineStatus()){
+      console.log(placeholderWebId);
       //TODO:löschen alert(disturbance);
         $.ajax({
         type: "POST",
-        url: "http://localhost:8080/submit",
+        url: "http://192.168.178.43:8080/submit",
         data: { "userNDS": userNDS, "disturbanceId":placeholderWebId ,"userName": userName, "userPhone": userPhone, "date": currDate, "description": description, "roomCode": roomCode, "specialGroup": specGrp}
       }).done(function(serverResponse) {
         alert(serverResponse);
@@ -364,10 +374,10 @@ var DisturbanceController = (function() {
   //Allowed figures: a-Z,;.+-
   function _validateDescription(description){
     if(descRegex.test(description)){
-      console.log("validation false");
+      console.log("validation correct");
       return false;
     }
-    console.log("validation true");
+    console.log("validation wrong");
     return true;
   }
 

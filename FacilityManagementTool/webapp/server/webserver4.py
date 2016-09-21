@@ -13,6 +13,7 @@ from ndsValidation import *
 from distReport import *
 
 PORT_NUMBER = 8080
+disturbanceId = 0
 
 #This class will handle any incoming requests from
 #the browser 
@@ -21,10 +22,11 @@ class myHandler(BaseHTTPRequestHandler):
 	#Handler for the POST requests
 	def do_POST(self):
 
+		global disturbanceId
+
 		#Fetch and parse the given parameter
 		postvars = self.parse_POST()
 		print postvars
-		print postvars['userNDS']
 		print self.path
 
 		#Check whether the POST request needs to validate a NDS account
@@ -32,7 +34,7 @@ class myHandler(BaseHTTPRequestHandler):
 
 			#Create an instance of the ndsValidater class and validate the nds account
 			validater = ndsValidater()
-			print validater.validateNDSAccount(postvars['param'])
+			print validater.validateNDSAccount(postvars['userNDS'])
 
 			#Return the success response and the needed headers to the client
 			self.send_response(200)
@@ -42,7 +44,7 @@ class myHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 
 			#Return the validation result to the client
-			self.wfile.write(validater.validateNDSAccount(postvars['param']))
+			self.wfile.write(validater.validateNDSAccount(postvars['userNDS']))
 			return
 
 		##Check whether the POST request needs to fetch the building data
@@ -52,6 +54,11 @@ class myHandler(BaseHTTPRequestHandler):
 			reporter = distReporter()
 			#reporter.reportDisturbance()
 			print "Submit disturbance"
+			#with open("disturbanceId.txt") as file:
+			f = open("disturbanceId.txt", "w")
+			f.write(repr(disturbanceId))
+			f.close()
+
 
 			#Return the success response and the needed headers to the client
 			self.send_response(200)
@@ -62,6 +69,26 @@ class myHandler(BaseHTTPRequestHandler):
 
 			#Return an anwser to the client
 			self.wfile.write(reporter.reportDisturbance())
+			return
+
+		##Check whether the POST request needs the current disturbance id
+		if self.path == "/id":
+
+			print "disturbanceId"
+			print disturbanceId
+
+			disturbanceId = disturbanceId + 1
+			print disturbanceId
+
+			#Return the success response and the needed headers to the client
+			self.send_response(200)
+			self.send_header("Access-Control-Allow-Origin", "*")
+			self.send_header("Access-Control-Expose-Headers", "Access-Control-Allow-Origin")
+			self.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+			self.end_headers()
+
+			#Return an anwser to the client
+			self.wfile.write(disturbanceId)
 			return
 
 	def parse_POST(self):
@@ -76,6 +103,16 @@ class myHandler(BaseHTTPRequestHandler):
 		else:
 			postvars = {}
 		return postvars
+
+#Check whether the disturbanceId is up to date with the backup disturbanceId from the backup file
+def checkDisturbanceId():
+	global disturbanceId
+	with open("disturbanceId.txt") as file:
+		for line in file:
+			data = line.split()
+			disturbanceId = int(data[0])
+
+checkDisturbanceId()
 
 try:
 	#Create a web server and define the handler to manage the
