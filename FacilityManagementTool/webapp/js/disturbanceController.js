@@ -80,6 +80,14 @@ var DisturbanceController = (function() {
       roomCode = "BY.C.12345",
       specGrp = "Specialist group here";
 
+        //secret
+      //Arrays for automatic word detection for specialists 
+      var specialist_group_electric = ["kabel","lampe","licht","cable","lamp","light"];
+      var specialist_group_heating = ["heiß","heizung","heating","heat"];
+      var specialist_group_sanitary = ["toilette","sanitär","waschbecken","toilet","sanitary","sink"];
+      var specialist_group_refrigeration = ["kalt","kälte","cold"];
+      var specialist_group_windows_and_doors = ["tür","fenster","rahmen","door","window","frame"];
+      var specialist_group_telecommunications = ["internet","telefon","telephon","telephone"];    
 
   //Initiate the disturbanceController when the disturbance.html is iniatiated
   function init(){
@@ -90,6 +98,13 @@ var DisturbanceController = (function() {
 
   //Setup the UI element listener
   function _setupUIListener(){
+    //  secret
+   //hier event listener wenn beschreibung geändert wird
+   //Listener for the description box
+   // $(".desc-text").addEventListener("change", _descChanged, false);      
+      
+      
+      
     //Add change listener to the building, floor and room select input fields
     $("#buildingSelect")[0].addEventListener("change", _buildingChanged, false);
     $("#floorSelect")[0].addEventListener("change", _floorChanged, false);
@@ -99,6 +114,15 @@ var DisturbanceController = (function() {
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
   }
 
+  function _descChanged(){
+      //secret
+      //hier checken ob ein teil des arrays vom beschreibungstext in einem der arrays ist
+      //var text = $(".desc-text").text()
+      
+      //wenn text eins der begriffe in text dann
+      //setze group-select auf die fachgruppe
+  }    
+    
   //Fetch the building, room and floor data file
   //Currently from a csv file
   //TODO fetch the file from the uniR server
