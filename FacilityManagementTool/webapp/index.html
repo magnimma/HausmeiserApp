@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="img/favicon.ico">
     <title>Facility Management App</title>
   </head>
   <!-- Check for available account info and set the correct language in the settings panel-->
-  <body onload="UtilityController.init(); LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage()">
+  <body onload="UtilityController.init(); LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage(); SettingsController.init()">
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar-overlay"></div>
     <!-- Panels overlay-->
@@ -55,7 +56,7 @@
                     <span class="settings-text" data-l11n="de">Sprache</span>
                   </div>
                     <div class="item-language">
-                      <select id="languageSelect" onchange="SettingsController.changeLanguage()">
+                      <select id="languageSelect">
                         <option value="en">English</option>
                         <option value="de">Deutsch</option>
                       </select>
@@ -136,11 +137,17 @@
                 <p class="content-info-text" data-l11n="de">Oder rufen Sie die technische Zentrale direkt an.</p>
               </div>
               <div class="content-block">
-                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n>Report disturbance via call</a>
-                </a>
-                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n="de">Störung per Anruf melden</a>
-                </a>
+                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n>Report disturbance via call.  Tel.: 09419433333</a>
+                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-l11n="de">Störung per Anruf melden.  Tel.: 09419433333</a>
               </div>
+              <div class="content-block">
+                <p class="content-info-text" data-l11n><b>Die Daten werden zum Zwecke der Behebung technischer Störfälle
+                gemäß Art 16 BayDSG erhoben und nicht weitergegeben.
+                Es gelten die Vorschriften des Bayerischen Datenschutzgesetzes.</b></p>
+                <p class="content-info-text" data-l11n="de"><b>Die Daten werden zum Zwecke der Behebung technischer Störfälle
+                gemäß Art 16 BayDSG erhoben und nicht weitergegeben.
+                Es gelten die Vorschriften des Bayerischen Datenschutzgesetzes.</b></p>
+              </div> 
             </div>
           </div>
         </div>

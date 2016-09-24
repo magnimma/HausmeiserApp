@@ -47,18 +47,17 @@ class myHandler(BaseHTTPRequestHandler):
 			self.wfile.write(validater.validateNDSAccount(postvars['userNDS']))
 			return
 
-		##Check whether the POST request needs to fetch the building data
+		##Check whether the POST request needs to submit a disturbance report
 		if self.path == "/submit":
 
-			#Create an instance of the distReporter class and post the disturbance
+			#Create an instance of the distReporter class to post the disturbance
 			reporter = distReporter()
-			#reporter.reportDisturbance()
 			print "Submit disturbance"
-			#with open("disturbanceId.txt") as file:
+
+			#Write the new disturbanceId to the disturbanceId file on the server
 			f = open("disturbanceId.txt", "w")
 			f.write(repr(disturbanceId))
 			f.close()
-
 
 			#Return the success response and the needed headers to the client
 			self.send_response(200)
@@ -67,8 +66,8 @@ class myHandler(BaseHTTPRequestHandler):
 			self.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
 			self.end_headers()
 
-			#Return an anwser to the client
-			self.wfile.write(reporter.reportDisturbance())
+			#Submit the disturbance report with all the necessary information and return an anwser to the client
+			self.wfile.write(reporter.reportDisturbance(postvars['userNDS'], postvars['userPhone'], postvars['building'], postvars['floor'], postvars['room'], postvars['specialGroup'], postvars['description']))
 			return
 
 		##Check whether the POST request needs the current disturbance id

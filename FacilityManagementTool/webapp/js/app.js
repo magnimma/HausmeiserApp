@@ -61,7 +61,6 @@ function _initPageCallbacks(){
   FMApp.onPageInit("login", function (page) {
     //Initiate the login and the settingsController after the login.html was initialized
     LoginController.init();
-    SettingsController.init();
   });
 
   FMApp.onPageInit("index", function (page) {

@@ -3,7 +3,8 @@
 var SettingsController = (function() {
 
   var myLangSelect = document.getElementById("languageSelect"),
-      helpURL = "help.html";
+      helpURL = "help",
+      indexURL = "index";
 
   //Initiate the settingsController
   function init(){
@@ -11,7 +12,7 @@ var SettingsController = (function() {
     _setupUIListeners();
   }
 
-    //Load the help.html and show the help
+  //Load the help.html and show the help
   function _startHelp(){
     mainView.router.loadPage(helpURL);
   }
@@ -32,7 +33,7 @@ var SettingsController = (function() {
     sessionStorage.removeItem("roomCode");
     console.log("listener");
     localStorage.setItem("lang", document.documentElement.lang);
-    mainView.router.refreshPage();
+    mainView.router.load(reload = true);
   }
 
   //Set the app"s default laguage in the settings panel

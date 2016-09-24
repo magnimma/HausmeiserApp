@@ -6,12 +6,14 @@ var DisturbanceController = (function() {
 
       //Links to data and html files
   var buildingCsvUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv",      
-      pictureURL = "picture.html",
+      pictureURL = "picture",
+      serverURL = "http://192.168.178.43:8080/",
+      appreciationURL = "appreciation",
       localCSV = "csv/raumliste.csv",
       localHostCSV = "http://192.168.178.43/FMApp/csv/raumliste.csv",
       specGrpJSON = "csv/fachgruppen.json",
       sendURL = "form.html",
-      offlineURL = "offline.html",
+      offlineURL = "offline",
 
       //Variable for the building data, containing the available buildings and the according name
       buildingGrpMap = {},
@@ -20,7 +22,7 @@ var DisturbanceController = (function() {
       building = [],
       floor = [],
       room = [],
-//RAUS      roomCode = [],
+//TODO:löschen      roomCode = [],
 
       //Variable containing the currently active select form field
       activeSelectField,
@@ -80,6 +82,14 @@ var DisturbanceController = (function() {
       roomCode = "BY.C.12345",
       specGrp = "Specialist group here";
 
+        //secret
+      //Arrays for automatic word detection for specialists 
+      var specialist_group_electric = ["kabel","lampe","licht","cable","lamp","light"];
+      var specialist_group_heating = ["heiß","heizung","heating","heat"];
+      var specialist_group_sanitary = ["toilette","sanitär","waschbecken","toilet","sanitary","sink"];
+      var specialist_group_refrigeration = ["kalt","kälte","cold"];
+      var specialist_group_windows_and_doors = ["tür","fenster","rahmen","door","window","frame"];
+      var specialist_group_telecommunications = ["internet","telefon","telephon","telephone"];    
 
   //Initiate the disturbanceController when the disturbance.html is iniatiated
   function init(){
@@ -90,6 +100,13 @@ var DisturbanceController = (function() {
 
   //Setup the UI element listener
   function _setupUIListener(){
+    //  secret
+   //hier event listener wenn beschreibung geändert wird
+   //Listener for the description box
+   // $(".desc-text").addEventListener("change", _descChanged, false);      
+      
+      
+      
     //Add change listener to the building, floor and room select input fields
     $("#buildingSelect")[0].addEventListener("change", _buildingChanged, false);
     $("#floorSelect")[0].addEventListener("change", _floorChanged, false);
@@ -99,6 +116,15 @@ var DisturbanceController = (function() {
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
   }
 
+  function _descChanged(){
+      //secret
+      //hier checken ob ein teil des arrays vom beschreibungstext in einem der arrays ist
+      //var text = $(".desc-text").text()
+      
+      //wenn text eins der begriffe in text dann
+      //setze group-select auf die fachgruppe
+  }    
+    
   //Fetch the building, room and floor data file
   //Currently from a csv file
   //TODO fetch the file from the uniR server
@@ -147,7 +173,7 @@ var DisturbanceController = (function() {
     activeSelectField = $("#buildingSelect")[0];
     sessionStorage.removeItem("roomCode");
 
-    _extractSpecialGroups(activeSelectField.options[activeSelectField.selectedIndex].value);
+    //TODO:löschen _extractSpecialGroups(activeSelectField.options[activeSelectField.selectedIndex].value);
     _extractFloorData(activeSelectField.options[activeSelectField.selectedIndex].value);
   }
 
@@ -178,6 +204,7 @@ var DisturbanceController = (function() {
     _extractRoomCode(activeBuilding, activeFloor, activeRoom);
   }
 
+/*TODO:löschen
   //Extract the set of responsible special groups for the active building from the csv file 
   function _extractSpecialGroups(building){
     for(var i = 0; i < jsonData.Datensatz.length; i++){
@@ -186,7 +213,9 @@ var DisturbanceController = (function() {
       }
     }
   }
+  */
 
+/*TODO:löschen
   //Extract the responsible special group for the active building and the disturbance
   function _extractSpecialGroup(){
     if(document.documentElement.lang == "de"){
@@ -204,6 +233,7 @@ var DisturbanceController = (function() {
       sessionStorage.setItem("respSpecialGroup", respSpecialGroup);
     }
   }
+  */
 
   //Handle the json file and extract the data
   function _handleJSONData(){
@@ -269,7 +299,7 @@ var DisturbanceController = (function() {
     }
     if(err === false){
       UtilityController.measureStep("Disturbance reported");
-      _extractSpecialGroup();
+      //TODO:löschen _extractSpecialGroup();
       _fetchWebId();
     }else{
       alert(errMsg);
@@ -303,7 +333,7 @@ var DisturbanceController = (function() {
     //Send a POST request to the webserver to get the current disturbance id
     $.ajax({
         type: "POST",
-        url: "http://192.168.178.43:8080/id",
+        url: serverURL + "id",
         data: { "request": "distId"},
       }).done(function(serverResponse) {
         console.log("ID: " + serverResponse);
@@ -316,6 +346,7 @@ var DisturbanceController = (function() {
   //Submit the disturbance with all the necessary data
   //TODO: disturbance String und alert rausschmeißen
   function _submitDisturbance(){
+    activeCheckBox = document.getElementById("picCheckbox");
     disturbance = "";
 
     //Gather all the data needed for the disturbance report
@@ -325,9 +356,15 @@ var DisturbanceController = (function() {
     //Variable containing the current date
     //Format: dd.mm.yyyy hh:mm
     currDate = _getCurrDate();
-    description = sessionStorage.getItem("description");
+    //Mark the disturbance descritpion with a preceeding '<A> - ', if the user added an attachement to the report
+    if(activeCheckBox.checked === true){
+      description = "<A> - " + sessionStorage.getItem("description");
+    }else{
+      description = sessionStorage.getItem("description");
+    }
+    //TODO:löschen description = sessionStorage.getItem("description");
     roomCode = sessionStorage.getItem("roomCode");
-    specGrp = sessionStorage.getItem("respSpecialGroup");
+    specGrp = sessionStorage.getItem("specialGroup");
 
     /*TODO:löschen
     disturbance += placeholderWebId + ";";
@@ -350,20 +387,27 @@ var DisturbanceController = (function() {
     //If no: Show the fallback offline page
     if(UtilityController.checkOnlineStatus()){
       console.log(placeholderWebId);
+      console.log(description);
       //TODO:löschen alert(disturbance);
         $.ajax({
         type: "POST",
-        url: "http://192.168.178.43:8080/submit",
-        data: { "userNDS": userNDS, "disturbanceId":placeholderWebId ,"userName": userName, "userPhone": userPhone, "date": currDate, "description": description, "roomCode": roomCode, "specialGroup": specGrp}
+        url: serverURL + "submit",
+        data: { "userNDS": userNDS, "disturbanceId":placeholderWebId, 
+                "userName": userName, "userPhone": userPhone,
+                "date": currDate, "description": description,
+                "roomCode": roomCode, "building": activeBuilding,
+                "floor": activeFloor, "room": activeRoom,
+                "specialGroup": specGrp}
       }).done(function(serverResponse) {
         alert(serverResponse);
       });
 
       //If the user wants to send an aditional picture of the disturbance
       //move on to picture.html
-      activeCheckBox = document.getElementById("picCheckbox");
       if(activeCheckBox.checked === true){
         mainView.router.loadPage(pictureURL);
+      }else{
+        mainView.router.loadPage(appreciationURL);
       }
     }else{
       mainView.router.loadPage(offlineURL);

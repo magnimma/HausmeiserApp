@@ -4,6 +4,7 @@ var DataController = (function() {
 
   //Variable containing the disturbance mail address
   var tzEmail = "tz@ur.de",
+      appreciationURL = "appreciation",
 
       //Variable containing an file input UI element 
       myInput;
@@ -22,7 +23,8 @@ var DataController = (function() {
   function _sendMail() {
     console.log(sessionStorage.getItem("webId"));
     UtilityController.measureStep("Mail sent");
-    window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + sessionStorage.getItem("webId");
+    //TODO:löschen window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + sessionStorage.getItem("webId");
+    mainView.router.loadPage(appreciationURL);
   }
 
   //Trigger a click event on the "Take picture" input element

@@ -9,15 +9,16 @@ var LoginController = (function() {
   var indexURL = "index.html",
       loginUrl = "login.html",
       estimateURL = "estimation.html",
+      serverURL = "http://192.168.178.43:8080/",
       
       //Variables containing the user name, phone and mail
       userName = "",
       userPhone = "",
-      userMail = "",
+      //TODO:löschen userMail = "",
 
       //Regular expressions used to validate user content
       phoneRegex = /^[0-9]{1,20}$/,
-      mailRegex = /\S+@\S+\.\S+/,
+      //TODO:löschen mailRegex = /\S+@\S+\.\S+/,
       ndsRegex = new RegExp("^[a-z]{3}[0-9]{5}$"),
 
       //Variables containing input form fields
@@ -45,7 +46,7 @@ var LoginController = (function() {
     $(".menu-item-user-logout")[1].addEventListener("click", _logout, false);
     //Add change listener to the user input fields
     $(".name-input")[0].addEventListener("change", _checkUserName, false);
-    $(".mail-input")[0].addEventListener("change", _checkUserMail, false);
+    //TODO:löschen $(".mail-input")[0].addEventListener("change", _checkUserMail, false);
     $(".phone-input")[0].addEventListener("change", _checkUserPhone, false);
     $(".phone-input")[1].addEventListener("change", _checkUserPhone, false);
     //Add click listener to the login buttons
@@ -53,7 +54,7 @@ var LoginController = (function() {
     $(".login-button")[1].addEventListener("click", _checkUserInfo, false);
   }
 
-  //Check whether user data(name, mail, phone) is already saved locally and show it
+  //Check whether user data(name, phone) is already saved locally and show it
   //If no user data is saved show available data of the ldap webserver request according to the NDS account that the user entered to login
   function _setUserData(){
     if(localStorage.getItem("userName")){
@@ -61,11 +62,13 @@ var LoginController = (function() {
     }else if(result["name"] != undefined){
       $(".name-input")[0].value = result["name"];
     }
+    /*TODO:löschen
     if(localStorage.getItem("userMail")){
       $(".mail-input")[0].value = localStorage.getItem("userMail");
     }else if(result["email"] != undefined){
       $(".mail-input")[0].value = result["email"];
     }
+    */
     if(localStorage.getItem("userPhone")){
       $(".phone-input")[0].value = localStorage.getItem("userPhone");
       $(".phone-input")[1].value = localStorage.getItem("userPhone");    
@@ -96,7 +99,7 @@ var LoginController = (function() {
   function _pyCheckNDS(userAcc){
     $.ajax({
       type: "POST",
-      url: "http://192.168.178.43:8080/nds",
+      url: serverURL + "nds",
       data: { "userNDS": userAcc}
     }).done(function(serverResponse) {
       //Parse the received JSONString and get a JSONObject
@@ -134,7 +137,7 @@ var LoginController = (function() {
   //Move on to login.html when the user is already logged in
   function checkLoginStatus(){
     console.log(localStorage.getItem("ndsAccount"));
-    console.log(localStorage.getItem("userMail"));
+    //TODO:löschen console.log(localStorage.getItem("userMail"));
     console.log(localStorage.getItem("userPhone"));
     console.log(localStorage.getItem("userName"));
     if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
@@ -156,12 +159,12 @@ var LoginController = (function() {
     }
   }
 
-  //Move on to estimation.html when the user entered a name, phone number and email address
+  //Move on to estimation.html when the user entered a name and a phone number
   //and show the user name in the left settings panel 
   //otherwise show an error alert
   function _checkUserInfo(){
     if($(".name-input")[0].value !== "" &&
-       _validateEmail($(".mail-input")[0].value) &&
+       //TODO:löschen _validateEmail($(".mail-input")[0].value) &&
        _checkLangUserPhone()){
       _saveUserData();
       _enableSettingsUI();
@@ -192,6 +195,7 @@ var LoginController = (function() {
     }
   }
 
+  /*TODO:löschen
   //Check the user email after input and show proper feedback(green/red font color)
   function _checkUserMail(){
     if(_validateEmail($(".mail-input")[0].value)){
@@ -200,6 +204,7 @@ var LoginController = (function() {
       $(".mail-input").css("color", "red");
     }
   }
+  TODO:löschen*/
 
   //Check the user phone number after input and show proper feedback(green/red font color)
   function _checkUserPhone(){
@@ -215,7 +220,7 @@ var LoginController = (function() {
   function _logout(){
     localStorage.removeItem("ndsAccount");
     localStorage.removeItem("userName");
-    localStorage.removeItem("userMail");
+    //TODO:löschen localStorage.removeItem("userMail");
     localStorage.removeItem("userPhone");
     _disableSettingsUI();
     document.location.href = indexURL;
@@ -237,7 +242,7 @@ var LoginController = (function() {
     $(".menu-item-user-logout")[1].disabled = true;
   }
 
-  //Save the user data(NDS account, name, mail, phone) if the data was valid
+  //Save the user data(NDS account, name, phone) if the data was valid
   function _saveUserData(){
     console.log("Saved: " + ndsUserInput);
     if(ndsUserInput != undefined){
@@ -245,8 +250,8 @@ var LoginController = (function() {
     }
     userName = $(".name-input")[0].value;
     localStorage.setItem("userName", userName);
-    userMail = $(".mail-input")[0].value;
-    localStorage.setItem("userMail", userMail);
+    //TODO:löschen userMail = $(".mail-input")[0].value;
+    //TODO:löschen localStorage.setItem("userMail", userMail);
     if(document.documentElement.lang == "de"){
       userPhone = $(".phone-input")[1].value;
       localStorage.setItem("userPhone", userPhone);
@@ -265,10 +270,12 @@ var LoginController = (function() {
     }
   }
 
+  /*TODO:löschen
   //Check whether the user entered a valid mail address using regex
   function _validateEmail(email){
     return mailRegex.test(email);
   } 
+  */
 
   //Check whether the user entered a valid phone number using regex
   function _validatePhone(phone){

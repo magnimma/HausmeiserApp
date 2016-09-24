@@ -1,0 +1,41 @@
+
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="center sliding">
+        <p data-l11n>Thank You</p>
+        <p data-l11n="de">Vielen Dank</p>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+ 
+<div class="page" data-page="appreciation">
+  <!-- Fixed navbar for Material theme -->
+  {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center">
+            <p data-l11n>Thank You</p>
+            <p data-l11n="de">Vielen Dank</p>
+          </div>
+        </div>
+    </div>
+    {{/if}}
+    <div class="page-content">
+      <div class="content-block">
+        <div class="content-block-inner" data-l11n>
+          <b>Disturbance successfully reported</b>
+          <p>Thank You for submitting this disturbance report. We try to fix the disturbance as fast as we can.</p>
+        </div>
+        <div class="content-block-inner" data-l11n="de">
+          <b>Störung erfolgreich gemeldet</b>
+          <p>Vielen Dank, dass Sie sich die Zeit genommen haben diese Störungsmeldung abzugeben. Wir versuchen diese Störung schnellstmöglich zu beheben.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

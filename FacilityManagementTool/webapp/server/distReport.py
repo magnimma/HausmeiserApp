@@ -1,38 +1,66 @@
 #!/usr/bin/python
 import re
-from mechanize import Browser
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-class distReporter():
+webFormularUrl = "http://www-app.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/index.php"
+data = {}
 
-	def reportDisturbance(self):
-		'''br = Browser()
+class distReporter(object):
 
-		# Ignore robots.txt
-		br.set_handle_robots( False )
-		# Google demands a user-agent that isn't a robot
-		br.addheaders = [('User-agent', 'Firefox')]
+	def fill_form_nds(self, data):
+		distReporter().find_by_xpath('//input[@name = "nds"]').send_keys(data['nds'])
 
-		# Retrieve the Google hom e page, saving the response
-		#br.open( "http://google.com" )
-		br.open( "http://google.com" )
+		return self # makes it so you can call .submit() after calling this function
 
-		# Select the search box and search for 'foo'
-		br.select_form( 'f' )
-		br.form[ 'q' ] = 'spox'
+	def fill_form_user(self, data):
+		distReporter().find_by_xpath('//input[@name = "tf"]').send_keys(data['tf'])
 
-		# Get the search results
-		br.submit()
+		return self # makes it so you can call .submit() after calling this function
 
-		# Find the link to foofighters.com; why did we run a search?
-		resp = None
-		for link in br.links():
-			siteMatch = re.compile( 'www.spox.com' ).search( link.url )
-			if siteMatch:
-				resp = br.follow_link( link )
-				break
+	def fill_form_disturbance(self, data):
+		distReporter().find_by_xpath('//select[@name = "Gebaeude"]').send_keys(data['gebaeude'])
+		distReporter().find_by_xpath('//select[@name = "Etage"]').send_keys(data['etage'])
+		distReporter().find_by_xpath('//select[@name = "Raum"]').send_keys(data['raum'])
+		distReporter().find_by_xpath('//select[@name = "fachgruppe"]').send_keys(data['fachgruppe'])
+		distReporter().find_by_xpath('//textarea[@name = "Nachricht"]').send_keys(data['nachricht'])
 
-		# Print the site
-		content = resp.get_data()
-		print content'''
-		print "DIST SUCCESS"
+		return self # makes it so you can call .submit() after calling this function
+
+	def submit(self, fieldNumber):
+		driver.find_element_by_xpath('(//input[@name = "gesendet"])[' + str(fieldNumber) + ']').click()
+
+	def submitDisturbance(self):
+		driver.find_element_by_xpath('(//input[@name = "Send"])').click()
+
+
+	def find_by_xpath(self, locator):
+		element = WebDriverWait(driver, 10).until(
+			EC.presence_of_element_located((By.XPATH, locator))
+		)
+		return element
+
+	def reportDisturbance(self, userNDS, userPhone, building, floor, room, specialGroup, description):
+		data['nds'] = userNDS
+		data['tf'] = userPhone
+		data['gebaeude'] = building
+		data['etage'] = floor
+		data['raum'] = room
+		data['fachgruppe'] = specialGroup
+		data['nachricht'] = description
+		print data
+		global driver
+		#driver = webdriver.Firefox() ##Fill form fields with browser using Firefox browser
+		driver = webdriver.PhantomJS() #Fill form fields without browser using PhantomJS
+		driver.get(webFormularUrl)
+		driver.save_screenshot('debug_screen1.png')
+		distReporter().fill_form_nds(data).submit(1)
+		driver.save_screenshot('debug_screen2.png')
+		distReporter().fill_form_user(data).submit(2)
+		driver.save_screenshot('debug_screen3.png')
+		distReporter().fill_form_disturbance(data)#.submitDisturbance() Auskommentieren zum Abschicken der Meldung
+		driver.save_screenshot('debug_screen4.png')
+
 		return "Disturbance submitted"
