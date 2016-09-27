@@ -10,6 +10,7 @@ var LoginController = (function() {
       loginUrl = "login.html",
       estimateURL = "estimation.html",
       serverURL = "http://192.168.178.43:8080/",
+      srvPhpURL = 'http://192.168.178.43/FMApp/server/php/',
       
       //Variables containing the user name, phone and mail
       userName = "",
@@ -59,8 +60,8 @@ var LoginController = (function() {
   function _setUserData(){
     if(localStorage.getItem("userName")){
       $(".name-input")[0].value = localStorage.getItem("userName");
-    }else if(result["name"] != undefined){
-      $(".name-input")[0].value = result["name"];
+    }else if(result[1] != undefined){
+      $(".name-input")[0].value = result[1];
     }
     /*TODO:löschen
     if(localStorage.getItem("userMail")){
@@ -72,9 +73,9 @@ var LoginController = (function() {
     if(localStorage.getItem("userPhone")){
       $(".phone-input")[0].value = localStorage.getItem("userPhone");
       $(".phone-input")[1].value = localStorage.getItem("userPhone");    
-    }else if(result["tel"] != undefined){
-      $(".phone-input")[0].value = result["tel"];
-      $(".phone-input")[1].value = result["tel"];
+    }else if(result[3] != undefined){
+      $(".phone-input")[0].value = result[3];
+      $(".phone-input")[1].value = result[3];
     }
   }
   
@@ -85,11 +86,15 @@ var LoginController = (function() {
       ndsUserInput = $(".login-input")[1].value;
       if(_checkStringFormat(ndsUserInput)){
         _pyCheckNDS(ndsUserInput)
+      }else{
+        alert("Kein valider NDS-Account. (z.B.: abc12345)");
       }
     }else{
       ndsUserInput = $(".login-input")[0].value;
       if(_checkStringFormat(ndsUserInput)){
         _pyCheckNDS(ndsUserInput)
+      }else{
+        alert("Not a valid nds account. (e.g.: abc12345)");
       }
     }
   }
@@ -97,6 +102,7 @@ var LoginController = (function() {
   //Check whether the user entered an exiting NDS account
   //Send it to the responsible python webserver which checks the NDS account
   function _pyCheckNDS(userAcc){
+    /*TODO:LÖSCHEN
     $.ajax({
       type: "POST",
       url: serverURL + "nds",
@@ -110,6 +116,21 @@ var LoginController = (function() {
         _NDSInputSuccess();
       }else{
         _showNDSErrorMessage();
+      }
+    });*/
+    $.ajax({
+      url: srvPhpURL + "ndsCheck.php",
+      type: "POST",
+      dataType: 'json',
+      data: ({ "userNDS": userAcc}),
+      success: function(data) {
+        result = data;
+        //CHeck whether the success value of the json object is true or false
+        if(result[2] === "true"){
+          _NDSInputSuccess();
+        }else{
+          _showNDSErrorMessage();
+        }
       }
     });
   }
@@ -208,12 +229,20 @@ var LoginController = (function() {
 
   //Check the user phone number after input and show proper feedback(green/red font color)
   function _checkUserPhone(){
-    console.log("phone");
-    if(_validatePhone($(".phone-input")[0].value) || _validatePhone($(".phone-input")[1].value)){
-      $(".phone-input").css("color", "green");
+    if (document.documentElement.lang == "de"){
+      if(_validatePhone($(".phone-input")[1].value)){
+        $(".phone-input:eq( 1 )").css("color", "green");
+      }else{
+        $(".phone-input:eq( 1 )").css("color", "red");
+      }
     }else{
-      $(".phone-input").css("color", "red");
+      if(_validatePhone($(".phone-input")[0].value)){
+        $(".phone-input:eq( 0 )").css("color", "green");
+      }else{
+        $(".phone-input:eq( 0 )").css("color", "red");
+      }
     }
+      
   }
 
   //Logout the user, update the settings UI elements and reaload index.html

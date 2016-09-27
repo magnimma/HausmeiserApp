@@ -1,0 +1,29 @@
+- NDS-Account:
+    + NDS-Account von der Webapp übermittelt bekommen
+    - NDS-Account per ldap Anfrage überprüfen
+    + Erfolg/Fehler-Meldung und ggf. zusätzliche Daten des Accounts zurückgeben
+    
+- Störungs-ID:
+    + Aktuelle Störungs-ID vom UR Server ermitteln (count.txt)
+    + Wert der Störungs-ID zurückgeben
+    
+- Raumliste:
+    + Aktuelle Raumliste.csv vom UR Server laden und lokal speichern
+    - Regelmäßig aktualisieren 
+    
+- Störungsmeldung:
+    - Eine Störungsmeldung von der Webapp verarbeiten
+    - Die übermittelten Werte an das bestehende Webformular weiterleiten
+    - Zu übermittelnde Parameter:
+        - NDS-Account
+        - Telefonnummer
+        - Störungsbeschreibung
+        - Gebäude
+        - Etage
+        - Raum
+        - Fachgruppe
+        
+- Störungsanhänge:
+    + Bilddateien von der Webapp verarbeiten und am Server speichern
+    + Dateien nach der aktuellen Störungs-ID vom Server der UR bennenen
+    - Bei Nachfrage gespeicherte Dateien ausgeben

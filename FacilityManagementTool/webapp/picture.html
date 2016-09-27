@@ -72,14 +72,19 @@
                 <p class="content-info-text" data-l11n="de">Nun können Sie die Störungsmeldung um multimediale Inhalte (Bilder, Skizzen,..) erweitern.</p>
               </div>
               <div class="content-block">
-                <input type="button" value="Add attachement" name="Take new picture" class="take-picture button center" onclick=" console.log('click');" data-l11n>
+                <!--TODO:LÖSCHEN input type="button" value="Add attachement" name="Take new picture" class="take-picture button center" onclick=" console.log('click');" data-l11n>
                 <input type="button" value="Anhang hinzufügen" name="Neues Bild machen" class="take-picture button center" onclick=" console.log('click');" data-l11n="de">
-                <input class="myFileInput" value="Input" type="file" accept="image/*" onclick=" console.log('click2');" name="myFileInput" style="display: none;">
+                <input class="myFileInput" value="Input" type="file" accept="image/*" onclick=" console.log('click2');" name="myFileInput" style="display: none;"-->
+
+                <form action="http://192.168.178.43/FMApp/server/php/upload.php" method="post" enctype="multipart/form-data">
+                  <input type="file" name="fileToUpload" id="fileToUpload">
+                  <input type="submit" value="Upload Image" name="submit">
+                </form>
               </div>
-              <div class="content-block">
+              <!--TODO:LÖSCHEN div class="content-block">
                 <button class="send-picture button center button-big button-fill" data-l11n>Send attachement</button>
                 <button class="send-picture button center button-big button-fill" data-l11n="de">Anhang senden</button>
-              </div>
+              </div-->
             </div>
           </div>
         </div>

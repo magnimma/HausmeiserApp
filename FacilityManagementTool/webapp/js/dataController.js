@@ -13,10 +13,10 @@ var DataController = (function() {
   function init() {
     myInput = $(".myFileInput")[0];
     //Initiate click listener for the send attachement buttons and the take new picture buttons
-    $(".send-picture")[0].addEventListener("click", _sendMail, false);
-    $(".send-picture")[1].addEventListener("click", _sendMail, false);
-    $(".take-picture")[0].addEventListener("click", _takePic, false);
-    $(".take-picture")[1].addEventListener("click", _takePic, false);
+    //$(".send-picture")[0].addEventListener("click", _sendMail, false);
+    //$(".send-picture")[1].addEventListener("click", _sendMail, false);
+    //$(".take-picture")[0].addEventListener("click", _takePic, false);
+    //$(".take-picture")[1].addEventListener("click", _takePic, false);
   }
 
   //Open the native mail app with prefilled address and subject

@@ -14,6 +14,7 @@ var DisturbanceController = (function() {
       specGrpJSON = "csv/fachgruppen.json",
       sendURL = "form.html",
       offlineURL = "offline",
+      srvPhpURL = 'http://192.168.178.43/FMApp/server/php/',
 
       //Variable for the building data, containing the available buildings and the according name
       buildingGrpMap = {},
@@ -328,6 +329,7 @@ var DisturbanceController = (function() {
 
   //Fetch the web id for the currently created disturbance report
   function _fetchWebId(){
+    /*TODO:löschen
     placeholderWebId = "1234";
     sessionStorage.setItem("webId", placeholderWebId);
     //Send a POST request to the webserver to get the current disturbance id
@@ -341,6 +343,17 @@ var DisturbanceController = (function() {
         sessionStorage.setItem("webId", placeholderWebId);
         _submitDisturbance();
       });
+    */
+
+    $.ajax({
+      url: srvPhpURL + "distIdCount.php",
+      success: function(data) {
+        placeholderWebId = $.parseJSON(data);
+        console.log(placeholderWebId);
+        sessionStorage.setItem("webId", placeholderWebId);
+        _submitDisturbance();
+      }
+    });  
   }
 
   //Submit the disturbance with all the necessary data
@@ -388,7 +401,7 @@ var DisturbanceController = (function() {
     if(UtilityController.checkOnlineStatus()){
       console.log(placeholderWebId);
       console.log(description);
-      //TODO:löschen alert(disturbance);
+      /*TODO:löschen
         $.ajax({
         type: "POST",
         url: serverURL + "submit",
@@ -400,6 +413,21 @@ var DisturbanceController = (function() {
                 "specialGroup": specGrp}
       }).done(function(serverResponse) {
         alert(serverResponse);
+      });
+      */
+      $.ajax({
+        url: srvPhpURL + "submitDist.php",
+        type: "POST",
+        dataType: 'json',
+        data: ({"userNDS": userNDS, "userName": userName, 
+                "userPhone": userPhone, "description": description,
+                "building": activeBuilding, "floor": activeFloor, 
+                "room": activeRoom, "specialGroup": specGrp}),
+        success: function(data) {
+          result = data;
+          //CHeck whether the success value of the json object is true or false
+          console.log(result[0], result[1], result[2]);
+        }
       });
 
       //If the user wants to send an aditional picture of the disturbance
