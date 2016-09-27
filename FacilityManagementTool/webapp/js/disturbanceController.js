@@ -52,7 +52,7 @@ var DisturbanceController = (function() {
       rowCells,
 
       //Regular expressions used to validate user content(disturbance description)
-      descRegex = /^[A-Za-z0-9_,;.+-]{1,80}$/,
+      descRegex = /^[A-Za-z0-9_,;. +-]{1,76}$/,
 
       //Variabel containing the set of responsible special groups for a specific building
       responsibleSpecialGroups,
@@ -172,7 +172,7 @@ var DisturbanceController = (function() {
   function _buildingChanged(){
     $("#floorSelect")[0].disabled = false;
     activeSelectField = $("#buildingSelect")[0];
-    sessionStorage.removeItem("roomCode");
+    //TODO:LÖSCHEN sessionStorage.removeItem("roomCode");
 
     //TODO:löschen _extractSpecialGroups(activeSelectField.options[activeSelectField.selectedIndex].value);
     _extractFloorData(activeSelectField.options[activeSelectField.selectedIndex].value);
@@ -185,7 +185,7 @@ var DisturbanceController = (function() {
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
     activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
-    sessionStorage.removeItem("roomCode");
+    //TODO:LÖSCHEN sessionStorage.removeItem("roomCode");
 
     _extractRoomData(activeBuilding, activeFloor);
   }
@@ -243,6 +243,7 @@ var DisturbanceController = (function() {
     });
   }
 
+  /*TODO:LÖSCHEN 
   //Extract the necessary roomcode data from the csv file
   function _extractRoomCode(building, floor, room){
     for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
@@ -252,18 +253,19 @@ var DisturbanceController = (function() {
       }
     }
   }
+  */
 
   //Check whether the user provided all the necessary disturbance information
   //If yes: save the provided information, extract the special group and submit the disturbance 
   //Else show error alert
   function _checkDisturbanceData(){
     err = false;   
+    console.log();
     if(document.documentElement.lang == "de"){
       errMsg = "Folgende Felder fehlen oder sind mit ungültigem Inhalt gefühlt: \n";
       activeSelectField = $(".groupSelect")[1];
       activeTextField = $(".desc-text")[1];
-      sessionStorage.getItem("roomCode")
-      if(sessionStorage.getItem("roomCode") === null){
+      if($("#roomSelect")[0].selectedIndex === 0){
         errMsg += "- Raum\n";
         err = true;
       }
@@ -282,7 +284,7 @@ var DisturbanceController = (function() {
       errMsg = "Following fields are missing or filled with invalid content: \n";
       activeSelectField = $(".groupSelect")[0];
       activeTextField = $(".desc-text")[0];
-      if(sessionStorage.getItem("roomCode") === null){
+      if($("#roomSelect")[0].selectedIndex === 0){
         errMsg += "- Room\n";
         err = true;
       }
@@ -376,7 +378,7 @@ var DisturbanceController = (function() {
       description = sessionStorage.getItem("description");
     }
     //TODO:löschen description = sessionStorage.getItem("description");
-    roomCode = sessionStorage.getItem("roomCode");
+    //TODO:LÖSCHEN roomCode = sessionStorage.getItem("roomCode");
     specGrp = sessionStorage.getItem("specialGroup");
 
     /*TODO:löschen
