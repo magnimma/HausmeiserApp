@@ -3,8 +3,8 @@
 var SettingsController = (function() {
 
   var myLangSelect = document.getElementById("languageSelect"),
-      helpURL = "help",
-      indexURL = "index";
+      helpURL = "help.html",
+      indexURL = "index.html";
 
   //Initiate the settingsController
   function init(){

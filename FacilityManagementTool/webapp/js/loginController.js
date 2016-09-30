@@ -11,6 +11,8 @@ var LoginController = (function() {
       estimateURL = "estimation.html",
       serverURL = "http://192.168.178.43:8080/",
       srvPhpURL = 'http://192.168.178.43/FMApp/server/php/',
+      urSrvURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
+      offlineURL = "offline.html",
       
       //Variables containing the user name, phone and mail
       userName = "",
@@ -18,7 +20,7 @@ var LoginController = (function() {
       //TODO:löschen userMail = "",
 
       //Regular expressions used to validate user content
-      phoneRegex = /^[0-9]{1,20}$/,
+      phoneRegex = /^[0-9 +]{1,20}$/,
       //TODO:löschen mailRegex = /\S+@\S+\.\S+/,
       ndsRegex = new RegExp("^[a-z]{3}[0-9]{5}$"),
 
@@ -61,7 +63,7 @@ var LoginController = (function() {
     if(localStorage.getItem("userName")){
       $(".name-input")[0].value = localStorage.getItem("userName");
     }else if(result[1] != undefined){
-      $(".name-input")[0].value = result[1];
+      $(".name-input")[0].value = result[4];
     }
     /*TODO:löschen
     if(localStorage.getItem("userMail")){
@@ -73,7 +75,7 @@ var LoginController = (function() {
     if(localStorage.getItem("userPhone")){
       $(".phone-input")[0].value = localStorage.getItem("userPhone");
       $(".phone-input")[1].value = localStorage.getItem("userPhone");    
-    }else if(result[3] != undefined){
+    }else if(result[3] != null){
       $(".phone-input")[0].value = result[3];
       $(".phone-input")[1].value = result[3];
     }
@@ -118,21 +120,27 @@ var LoginController = (function() {
         _showNDSErrorMessage();
       }
     });*/
-    $.ajax({
-      url: srvPhpURL + "ndsCheck.php",
+
+	if(UtilityController.checkOnlineStatus()){
+   	  $.ajax({
+      url: urSrvURL + "ldap.php",
       type: "POST",
       dataType: 'json',
-      data: ({ "userNDS": userAcc}),
+      data: ({ "nds": userAcc}),
       success: function(data) {
         result = data;
+        console.log(result);
         //CHeck whether the success value of the json object is true or false
-        if(result[2] === "true"){
+        if(result[0] === "true"){
           _NDSInputSuccess();
         }else{
           _showNDSErrorMessage();
         }
       }
-    });
+    }); 
+    }else{
+      mainView.router.loadPage(offlineURL);
+    }
   }
 
   //Show an error message when the entered NDS account doesnt exist

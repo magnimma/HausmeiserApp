@@ -6,15 +6,14 @@ var DisturbanceController = (function() {
 
       //Links to data and html files
   var buildingCsvUrl = "https://appsso.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/raumliste.csv",      
-      pictureURL = "picture",
+      pictureURL = "picture.html",
       serverURL = "http://192.168.178.43:8080/",
-      appreciationURL = "appreciation",
+      appreciationURL = "appreciation.html",
       localCSV = "csv/raumliste.csv",
       localHostCSV = "http://192.168.178.43/FMApp/csv/raumliste.csv",
       specGrpJSON = "csv/fachgruppen.json",
-      sendURL = "form.html",
-      offlineURL = "offline",
-      srvPhpURL = 'http://192.168.178.43/FMApp/server/php/',
+      offlineURL = "offline.html",
+      srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
 
       //Variable for the building data, containing the available buildings and the according name
       buildingGrpMap = {},
@@ -134,7 +133,7 @@ var DisturbanceController = (function() {
       url: localCSV,
       dataType: "text",
     }).done(_handleCSVData);
-    _handleJSONData();
+    //TODO:LÖSCHEN _handleJSONData();
 
     //TODO: Falls die Raumliste vom User geladen werden soll
     /*
@@ -202,7 +201,7 @@ var DisturbanceController = (function() {
     activeSelectField = $("#roomSelect")[0];
     activeRoom = activeSelectField.options[activeSelectField.selectedIndex].value;
 
-    _extractRoomCode(activeBuilding, activeFloor, activeRoom);
+    //TODO:LÖSCHEN_extractRoomCode(activeBuilding, activeFloor, activeRoom);
   }
 
 /*TODO:löschen
@@ -236,12 +235,14 @@ var DisturbanceController = (function() {
   }
   */
 
+/*TODO:LÖSCHEN
   //Handle the json file and extract the data
   function _handleJSONData(){
     $.getJSON(specGrpJSON, function(data) {         
       jsonData = data;
     });
   }
+  */
 
   /*TODO:LÖSCHEN 
   //Extract the necessary roomcode data from the csv file
@@ -347,15 +348,19 @@ var DisturbanceController = (function() {
       });
     */
 
-    $.ajax({
-      url: srvPhpURL + "distIdCount.php",
-      success: function(data) {
-        placeholderWebId = $.parseJSON(data);
-        console.log(placeholderWebId);
-        sessionStorage.setItem("webId", placeholderWebId);
-        _submitDisturbance();
-      }
-    });  
+    if(UtilityController.checkOnlineStatus()){
+      $.ajax({
+        url: srvPhpURL + "distIdCount.php",
+        success: function(data) {
+          placeholderWebId = $.parseJSON(data);
+          console.log(placeholderWebId);
+          sessionStorage.setItem("webId", placeholderWebId);
+          _submitDisturbance();
+        }
+      });
+    }else{
+      mainView.router.loadPage(offlineURL);
+    }
   }
 
   //Submit the disturbance with all the necessary data
