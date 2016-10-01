@@ -40,7 +40,6 @@ var DisturbanceController = (function() {
       activeButton,
 
       //Variables containing the currently active building, floor and room
-      //If chosen by the user
       activeBuilding = "",
       activeFloor = "",
       activeRoom = "",
@@ -146,6 +145,37 @@ var DisturbanceController = (function() {
       }
     });
     */
+  }
+
+  //Check whether the user provided a roomcode by starting
+  //the app per QR code
+  function _checkForQRCode(){
+    if(sessionStorage.getItem("qrCode").length > 1){
+      _parseRoomCode();
+    }
+  }
+
+  //Extract the building, floor and room information from a roomcode
+  function _parseRoomCode(){
+    for(i = 0; i < csvDataRows.length; i++){
+      if(sessionStorage.getItem("qrCode") == csvDataRows[i].split("*")[4]){
+        activeBuilding = csvDataRows[i].split("*")[1];
+        activeFloor = csvDataRows[i].split("*")[2];
+        activeRoom = csvDataRows[i].split("*")[3];
+        console.log("Rauminfo: " + activeBuilding + activeFloor + activeRoom);
+        _updateSelectFields();
+        break;
+      }
+    }
+  }
+
+  //Update the building, floor and room select fields when the given roomcode was successfully parsed
+  function _updateSelectFields(){
+    $("#buildingSelect")[0].value = activeBuilding;
+    _buildingChanged();
+    $("#floorSelect")[0].value = activeFloor;
+    _floorChanged();
+    $("#roomSelect")[0].value = activeRoom;
   }
 
   //Save the csv file data
@@ -433,7 +463,7 @@ var DisturbanceController = (function() {
         success: function(data) {
           result = data;
           //CHeck whether the success value of the json object is true or false
-          console.log(result[0], result[1], result[2]);
+          console.log("STÖRUNGSMELDUNG:" + result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]);
         }
       });
 
@@ -614,6 +644,7 @@ var DisturbanceController = (function() {
         }
       activeSelectField.appendChild(newOption);
     }
+    _checkForQRCode();
   }
 
   //Delete the redundant items of an array

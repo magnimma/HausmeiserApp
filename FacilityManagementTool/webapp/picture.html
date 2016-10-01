@@ -1,103 +1,47 @@
-<!DOCTYPE html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>Facility Management App</title>
-  </head>
-  <body>
-    <!-- Status bar overlay for fullscreen mode-->
-    <div class="statusbar-overlay"></div>
-    <!-- Panels overlay-->
-    <div class="panel-overlay"></div>
-    <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-      <div class="content-block">
-        <p>Left panel content goes here</p>
-      </div>
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center sliding">
+      <p data-l11n>Disturbance attachement</p>
+      <p data-l11n="de">Störungsanhang</p>
     </div>
-    <!-- Right panel with cover effect-->
-    <div class="panel panel-right panel-cover">
-      <div class="content-block">
-        <p>Right panel content goes here</p>
-      </div>
+    <div class="right">
+      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
     </div>
-    <!-- Views-->
-    <div class="views">
-      <!-- Your main view, should have "view-main" class-->
-      <div class="view view-main">
-        <!-- Dynamic navbar for iOS theme -->
-        {{#if @global.ios}}
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="center sliding">
+  </div>
+</div>
+{{/if}}
+<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+  <!-- Page, data-page contains page name-->
+  <div data-page="picture" class="page">
+    <!-- Fixed navbar for Material theme -->
+    {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">
               <p data-l11n>Disturbance attachement</p>
               <p data-l11n="de">Störungsanhang</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
             </div>
-          </div>
         </div>
-        {{/if}}
-        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-        <div class="pages navbar-through toolbar-through">
-          <!-- Page, data-page contains page name-->
-          <div data-page="picture" class="page">
-            <!-- Fixed navbar for Material theme -->
-            {{#if @global.android}}
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="left">
-                        <a href="#" class="back icon-only">
-                            <i class="icon icon-back"></i>
-                        </a>
-                    </div>
-                    <div class="center">
-                      <p data-l11n>Disturbance attachement</p>
-                      <p data-l11n="de">Störungsanhang</p>
-                    </div>
-                    <div class="right">
-                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                    </div>
-                </div>
-            </div>
-            {{/if}}
-            <!-- Scrollable page content-->
-            <div class="page-content">
-              <div class="content-block">
-                <p class="content-info-text" data-l11n>You may now attach multimedia content (pictures, sketches,..) to the disturbance report.</p>
-                <p class="content-info-text" data-l11n="de">Nun können Sie die Störungsmeldung um multimediale Inhalte (Bilder, Skizzen,..) erweitern.</p>
-              </div>
-              <div class="content-block">
-                <!--TODO:LÖSCHEN input type="button" value="Add attachement" name="Take new picture" class="take-picture button center" onclick=" console.log('click');" data-l11n>
-                <input type="button" value="Anhang hinzufügen" name="Neues Bild machen" class="take-picture button center" onclick=" console.log('click');" data-l11n="de">
-                <input class="myFileInput" value="Input" type="file" accept="image/*" onclick=" console.log('click2');" name="myFileInput" style="display: none;"-->
-
-                <form action="http://192.168.178.43/FMApp/server/php/upload.php" method="post" enctype="multipart/form-data">
-                  <input type="file" name="fileToUpload" id="fileToUpload">
-                  <input type="submit" value="Upload Image" name="submit">
-                </form>
-              </div>
-              <!--TODO:LÖSCHEN div class="content-block">
-                <button class="send-picture button center button-big button-fill" data-l11n>Send attachement</button>
-                <button class="send-picture button center button-big button-fill" data-l11n="de">Anhang senden</button>
-              </div-->
-            </div>
-          </div>
-        </div>
+    </div>
+    {{/if}}
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <p class="content-info-text" data-l11n>You may now attach multimedia content (pictures, sketches,..) to the disturbance report.</p>
+        <p class="content-info-text" data-l11n="de">Nun können Sie die Störungsmeldung um multimediale Inhalte (Bilder, Skizzen,..) erweitern.</p>
+      </div>
+      <div class="content-block">
+        <form action="http://192.168.178.43/FMApp/server/php/upload.php" method="post" enctype="multipart/form-data">
+          <input type="file" name="fileToUpload" id="fileToUpload">
+          <input type="submit" value="Upload Image" name="submit">
+        </form>
       </div>
     </div>
-    <!-- Path to Framework7 Library JS-->
-    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
-    <!--
-    We need the following script to include styles depending on device's OS
-    It is important to keep it as inline script or in separate JS file with this code only!
-    -->
-    <script type="text/javascript" src="js/Main.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </body>
-</html>
+  </div>
+</div>

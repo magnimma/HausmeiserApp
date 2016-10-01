@@ -1,138 +1,94 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>Facility Management App</title>
-    <!-- Path to Framework7 Library CSS-->
-  </head>
-  <body>
-    <!-- Status bar overlay for fullscreen mode-->
-    <div class="statusbar-overlay"></div>
-    <!-- Panels overlay-->
-    <div class="panel-overlay"></div>
-    <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-      <div class="content-block">
-        <p>Left panel content goes here</p>
-      </div>
-    </div>
-    <!-- Right panel with cover effect-->
-    <div class="panel panel-right panel-cover">
-      <div class="content-block">
-        <p>Right panel content goes here</p>
-      </div>
-    </div>
-    <!-- Views-->
-    <div class="views">
-      <!-- Your main view, should have "view-main" class-->
-      <div class="view view-main">
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
 <!-- Dynamic navbar for iOS theme -->
-        {{#if @global.ios}}
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="center sliding">
+{{#if @global.ios}}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center sliding">
+      <p data-l11n>Login information</p>
+      <p data-l11n="de">Anmeldedaten</p>
+    </div>
+    <div class="right">
+      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+    </div>
+  </div>
+</div>
+{{/if}}
+<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+  <!-- Page, data-page contains page name-->
+  <div data-page="login" class="page">
+    {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">
               <p data-l11n>Login information</p>
               <p data-l11n="de">Anmeldedaten</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
             </div>
-          </div>
         </div>
-        {{/if}}
-        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-        <div class="pages navbar-through toolbar-through">
-          <!-- Page, data-page contains page name-->
-          <div data-page="login" class="page">
-            {{#if @global.android}}
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="center">
-                      <p data-l11n>Login information</p>
-                      <p data-l11n="de">Anmeldedaten</p>
-                    </div>
-                    <div class="right">
-                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                    </div>
-                </div>
-            </div>
-            {{/if}}
-            <!-- Scrollable page content-->
-            <div class="page-content">
-              <div class="content-block">
-                <p class="content-info-text" data-l11n>You entered a valid NDS account. Please check the information below and correct if necessary.</p>
-                <p class="content-info-text" data-l11n="de">Sie haben eine korrekte NDS-Kennung eingegeben. Bitte überprüfen Sie die unten aufgeführten Daten und korrigieren Sie falls notwendig.</p>
-              </div>
-              <div class="list-block">
-                <ul>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-name"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Name</span>
-                          <span data-l11n="de">Name</span>
-                        </div>
-                        <div class="item-input">
-                          <input class="name-input" type="text" placeholder="Name"/>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <!--TODO:löschen li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-email"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>E-mail</span>
-                          <span data-l11n="de">E-mail</span>
-                        </div>
-                        <div class="item-input">
-                          <input class="mail-input" type="email" placeholder="E-mail"/>
-                        </div>
-                      </div>
-                    </div>
-                  </li-->
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-tel"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Phone</span>
-                          <span data-l11n="de">Telefon</span>
-                        </div>
-                        <div class="item-input">
-                          <span data-l11n>
-                            <input class="phone-input" type="tel" placeholder="Phone"/>
-                          </span>
-                          <span data-l11n="de">
-                            <input class="phone-input" type="tel" placeholder="Telefon"/>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <button class="button center login-button" data-l11n>Login</button>
-              <button class="button center login-button" data-l11n="de">Anmelden</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-    <!-- Path to Framework7 Library JS-->
-    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
-    <!--
-    We need the following script to include styles depending on device's OS
-    It is important to keep it as inline script or in separate JS file with this code only!
-    -->
-    <script type="text/javascript" src="js/Main.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/loginController.js"></script>
-    <script type="text/javascript" src="js/disturbanceController.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </body>
-</html>
+    {{/if}}
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <p class="content-info-text" data-l11n>You entered a valid NDS account. Please check the information below and correct if necessary.</p>
+        <p class="content-info-text" data-l11n="de">Sie haben eine korrekte NDS-Kennung eingegeben. Bitte überprüfen Sie die unten aufgeführten Daten und korrigieren Sie falls notwendig.</p>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-name"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Name</span>
+                  <span data-l11n="de">Name</span>
+                </div>
+                <div class="item-input">
+                  <input class="name-input" type="text" placeholder="Name"/>
+                </div>
+              </div>
+            </div>
+          </li>
+          <!--TODO:löschen li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-email"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>E-mail</span>
+                  <span data-l11n="de">E-mail</span>
+                </div>
+                <div class="item-input">
+                  <input class="mail-input" type="email" placeholder="E-mail"/>
+                </div>
+              </div>
+            </div>
+          </li-->
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-tel"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Phone</span>
+                  <span data-l11n="de">Telefon</span>
+                </div>
+                <div class="item-input">
+                  <span data-l11n>
+                    <input class="phone-input" type="tel" placeholder="Phone"/>
+                  </span>
+                  <span data-l11n="de">
+                    <input class="phone-input" type="tel" placeholder="Telefon"/>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button class="button center login-button" data-l11n>Login</button>
+      <button class="button center login-button" data-l11n="de">Anmelden</button>
+    </div>
+  </div>
+</div>

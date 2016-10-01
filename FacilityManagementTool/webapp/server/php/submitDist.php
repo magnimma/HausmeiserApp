@@ -17,6 +17,6 @@ $specialGroup = $_POST['specialGroup'];
 //Submit the disturbance report
 
 //PLACEHOLDER return example values
-echo json_encode(array($userNDS, $description, $specialGroup));
+echo json_encode(array($userNDS, $userName, $userPhone, $description, $building, $floor, $room, $specialGroup));
 
 ?>

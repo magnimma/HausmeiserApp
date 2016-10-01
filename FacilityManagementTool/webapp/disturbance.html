@@ -1,222 +1,169 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>Facility Management App</title>
-  </head>
-  <body>
-    <!-- Status bar overlay for fullscreen mode-->
-    <div class="statusbar-overlay"></div>
-    <!-- Panels overlay-->
-    <div class="panel-overlay"></div>
-    <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-      <div class="content-block">
-        <p>Left panel content goes here</p>
-      </div>
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left sliding">
+      <a href="#" class="back link">
+        <i class="icon icon-back"></i>
+        <span data-l11n>Estimation</span>
+        <span data-l11n="de">Einschätzung</span>
+      </a>
     </div>
-    <!-- Right panel with cover effect-->
-    <div class="panel panel-right panel-cover">
-      <div class="content-block">
-        <p>Right panel content goes here</p>
-      </div>
+    <div class="center sliding">
+      <p data-l11n>Fault report</p>
+      <p data-l11n="de">Störungsmeldung</p>
     </div>
-    <!-- Views-->
-    <div class="views">
-      <!-- Your main view, should have "view-main" class-->
-      <div class="view view-main">
-        <!-- Dynamic navbar for iOS theme -->
-        {{#if @global.ios}}
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="left sliding">
-              <a href="#" class="back link">
-                <i class="icon icon-back"></i>
-                <span data-l11n>Estimation</span>
-                <span data-l11n="de">Einschätzung</span>
-              </a>
+    <div class="right">
+      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+    </div>
+  </div>
+</div>
+{{/if}}
+<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+  <!-- Page, data-page contains page name-->
+  <div data-page="disturbance" class="page">
+    <!-- Fixed navbar for Material theme -->
+    {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="#" class="back icon-only">
+                    <i class="icon icon-back"></i>
+                </a>
             </div>
-            <div class="center sliding">
+            <div class="center">
               <p data-l11n>Fault report</p>
               <p data-l11n="de">Störungsmeldung</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
             </div>
-          </div>
         </div>
-        {{/if}}
-        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-        <div class="pages navbar-through toolbar-through">
-          <!-- Page, data-page contains page name-->
-          <div data-page="disturbance" class="page">
-            <!-- Fixed navbar for Material theme -->
-            {{#if @global.android}}
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="left">
-                        <a href="#" class="back icon-only">
-                            <i class="icon icon-back"></i>
-                        </a>
-                    </div>
-                    <div class="center">
-                      <p data-l11n>Fault report</p>
-                      <p data-l11n="de">Störungsmeldung</p>
-                    </div>
-                    <div class="right">
-                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                    </div>
-                </div>
-            </div>
-            {{/if}}
-            <!-- Scrollable page content-->
-            <div class="page-content">
-              <div class="content-block">
-                <p class="content-info-text" data-l11n>Please enter all necessary information.</p>
-                <p class="content-info-text" data-l11n="de">Bitte geben Sie nun alle erforderlichen Daten zur Störung ein.</p>
-              </div>
-              <div class="list-block">
-                <ul>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-home"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Building</span>
-                          <span data-l11n="de">Gebäude</span>
-                        </div>
-                        <div class="item-input">
-                          <select id="buildingSelect">
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-building"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Floor</span>
-                          <span data-l11n="de">Etage</span>
-                        </div>
-                        <div class="item-input">
-                          <select id="floorSelect">
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Room</span>
-                          <span data-l11n="de">Raum</span>
-                        </div>
-                        <div class="item-input">
-                          <select id="roomSelect">
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="align-top">
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-comment"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Description</span>
-                          <span data-l11n="de">Beschreibung</span>
-                        </div>
-                        <div class="item-input" data-l11n>
-                          <textarea class="desc-text" maxLength="74" placeholder="Please enter a brief description of the disturbance."></textarea>
-                        </div>
-                        <div class="item-input" data-l11n="de">
-                          <textarea class="desc-text" maxLength="74" placeholder="Bitte geben Sie eine kurze Beschreibung der Störung ein."></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-gender"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label">
-                          <span data-l11n>Specialist group</span>
-                          <span data-l11n="de">Fachgruppe</span>
-                        </div>
-                        <div class="item-input" data-l11n>
-                          <select class="groupSelect">
-                            <option>Please choose</option>
-                            <option>Electric</option>
-                            <option>Heating/Ventilation</option>
-                            <option>Sanitary</option>
-                            <option>Refrigeration</option>
-                            <option>Windows/Doors</option>
-                            <option>Telecommunications</option>
-                          </select>
-                        </div>
-                        <div class="item-input" data-l11n="de">
-                          <select class="groupSelect">
-                            <option>Bitte wählen</option>
-                            <option>Elektro</option>
-                            <option>Heizung/Lüftung</option>
-                            <option>Sanitär</option>
-                            <option>Kältetechnik</option>
-                            <option>Fenster/Türen</option>
-                            <option>Nachrichtentechnik</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="item-content">
-                      <div class="item-media"><i class="icon icon-form-toggle"></i></div>
-                      <div class="item-inner"> 
-                        <div class="item-title label" data-l11n=>Optionally: Do you want to add multimedia content (picures, sketches, ..) to the disturbance report?</div>
-                        <div class="item-title label" data-l11n="de">Optional: Möchten Sie der Störungsmeldung multimediale Inhalte (Bilder, Skizzen,..) beifügen?</div>
-                        <div class="item-input">
-                          <label class="label-switch">
-                            <input id="picCheckbox" type="checkbox"/>
-                            <div class="checkbox"></div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <!--Bild speichern ANsatz 1 li>
-                    <div class="content-block">
-                      <button onclick="" class="button center" data-l11n>Optionally: Send a picture of the disturbance</button>
-                      <button id="mailBt" class="button center" data-l11n="de">Optional: Senden Sie ein Bild der Störung</button>
-                      <input id="myFileInput" type="file" accept="image/*;capture=camera">
-                      <a id="downloadLnk" download="YourFileName.jpg">Download as image</a>
-                    </div>
-                  </li-->
-                </ul>
-              </div>
-              <button class="button center check-button" data-l11n>Submit disturbance</button>
-              <button class="button center check-button" data-l11n="de">Störung melden</button>
-              <!--a class="login button center" href="indexBu.html" onclick="return DisturbanceController.checkDisturbanceData();" data-l11n>Submit disturbance</a-->
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-    <!-- Path to Framework7 Library JS-->
-    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
-    <!--
-    We need the following script to include styles depending on device's OS
-    It is important to keep it as inline script or in separate JS file with this code only!
-    -->
-    <script type="text/javascript" src="js/Main.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/disturbanceController.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </body>
-</html>
+    {{/if}}
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <p class="content-info-text" data-l11n>Please enter all necessary information.</p>
+        <p class="content-info-text" data-l11n="de">Bitte geben Sie nun alle erforderlichen Daten zur Störung ein.</p>
+      </div>
+      <div class="list-block">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-home"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Building</span>
+                  <span data-l11n="de">Gebäude</span>
+                </div>
+                <div class="item-input">
+                  <select id="buildingSelect">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-building"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Floor</span>
+                  <span data-l11n="de">Etage</span>
+                </div>
+                <div class="item-input">
+                  <select id="floorSelect">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-gender"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Room</span>
+                  <span data-l11n="de">Raum</span>
+                </div>
+                <div class="item-input">
+                  <select id="roomSelect">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="align-top">
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-comment"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Description</span>
+                  <span data-l11n="de">Beschreibung</span>
+                </div>
+                <div class="item-input" data-l11n>
+                  <textarea class="desc-text" maxLength="74" placeholder="Please enter a brief description of the disturbance."></textarea>
+                </div>
+                <div class="item-input" data-l11n="de">
+                  <textarea class="desc-text" maxLength="74" placeholder="Bitte geben Sie eine kurze Beschreibung der Störung ein."></textarea>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-gender"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label">
+                  <span data-l11n>Specialist group</span>
+                  <span data-l11n="de">Fachgruppe</span>
+                </div>
+                <div class="item-input" data-l11n>
+                  <select class="groupSelect">
+                    <option>Please choose</option>
+                    <option>Electric</option>
+                    <option>Heating/Ventilation</option>
+                    <option>Sanitary</option>
+                    <option>Refrigeration</option>
+                    <option>Windows/Doors</option>
+                    <option>Telecommunications</option>
+                  </select>
+                </div>
+                <div class="item-input" data-l11n="de">
+                  <select class="groupSelect">
+                    <option>Bitte wählen</option>
+                    <option>Elektro</option>
+                    <option>Heizung/Lüftung</option>
+                    <option>Sanitär</option>
+                    <option>Kältetechnik</option>
+                    <option>Fenster/Türen</option>
+                    <option>Nachrichtentechnik</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+              <div class="item-inner"> 
+                <div class="item-title label" data-l11n=>Optionally: Do you want to add multimedia content (picures, sketches, ..) to the disturbance report?</div>
+                <div class="item-title label" data-l11n="de">Optional: Möchten Sie der Störungsmeldung multimediale Inhalte (Bilder, Skizzen,..) beifügen?</div>
+                <div class="item-input">
+                  <label class="label-switch">
+                    <input id="picCheckbox" type="checkbox"/>
+                    <div class="checkbox"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button class="button center check-button" data-l11n>Submit disturbance</button>
+      <button class="button center check-button" data-l11n="de">Störung melden</button>
+    </div>
+  </div>
+</div>

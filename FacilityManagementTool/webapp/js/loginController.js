@@ -32,6 +32,9 @@ var LoginController = (function() {
       //Variable containing the nds account that the user entered
       ndsUserInput,
 
+      //Variable containing the roomcode that the user provided by starting the app per QR code
+      roomCode,
+
       //Variable containing the result of the NDS account ldap request of the webserver
       result;
 
@@ -39,7 +42,17 @@ var LoginController = (function() {
   function init(){
     _setupUIListener();
     _setUserData();
+    _checkForRoomcode();
     console.log("login");
+  }
+
+  //Check whether the user provided a roomcode e.g. 
+  //by entering the app per QR code
+  function _checkForRoomcode(){
+    roomCode = location.search.split("&").toString();
+    if(roomCode.length > 0)roomCode = roomCode.substring(1);
+    sessionStorage.setItem("qrCode", roomCode);
+    console.log(sessionStorage.getItem("qrCode"));
   }
 
   //Setup the UI element listener

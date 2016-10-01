@@ -1,103 +1,69 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>Facility Management App</title>
-  </head>
-  <body>
-    <!-- Status bar overlay for fullscreen mode-->
-    <div class="statusbar-overlay"></div>
-    <!-- Panels overlay-->
-    <div class="panel-overlay"></div>
-    <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-      <div class="content-block">
-        <p>Left panel content goes here</p>
-      </div>
+<!-- Dynamic navbar for iOS theme -->
+{{#if @global.ios}}
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="center sliding">
+      <p data-l11n>Estimation</p>
+      <p data-l11n="de">Einschätzung</p>
     </div>
-    <!-- Right panel with cover effect-->
-    <div class="panel panel-right panel-cover">
-      <div class="content-block">
-        <p>Right panel content goes here</p>
-      </div>
+    <div class="right">
+      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
     </div>
-    <!-- Views-->
-    <div class="views">
-      <!-- Your main view, should have "view-main" class-->
-      <div class="view view-main">
-        <!-- Dynamic navbar for iOS theme -->
-        {{#if @global.ios}}
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="center sliding">
+  </div>
+</div>
+{{/if}}
+<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+  <!-- Page, data-page contains page name-->
+  <div data-page="estimation" class="page">
+    <!-- Fixed navbar for Material theme -->
+    {{#if @global.android}}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">
               <p data-l11n>Estimation</p>
               <p data-l11n="de">Einschätzung</p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
             </div>
+        </div>
+    </div>
+    {{/if}}
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <p class="content-info-text" data-l11n>What kind of disturbance do you want to report?</p>
+        <p class="content-info-text" data-l11n="de">Welche Art von Störung möchten Sie melden?</p>
+      </div>
+      <div class="content-block">
+        <div class="row">
+          <div class="col-50">
+            <a href="tel:09419433333" class="external button button-big button-fill color-red urgent-dist-button" onclick="UtilityController.measureStep('Urgent disturbance estimation')" data-l11n>Urgent disturbance</a>
+            <a href="tel:09419433333" class="external button button-big button-fill color-red urgent-dist-button" onclick="UtilityController.measureStep('Urgent disturbance estimation')" data-l11n="de">Dringende Störung</a>
+          </div>
+          <div class="col-50">
+            <a href="disturbance.html" class="button button-big button-fill color-green normal-dist-button" onclick="UtilityController.measureStep('Normal disturbance estimation')" data-l11n>Normal disturbance</a>
+            <a href="disturbance.html" class="button button-big button-fill color-green normal-dist-button" onclick="UtilityController.measureStep('Normal disturbance estimation')" data-l11n="de">Normale Störung</a>
           </div>
         </div>
-        {{/if}}
-        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
-        <div class="pages navbar-through toolbar-through">
-          <!-- Page, data-page contains page name-->
-          <div data-page="estimation" class="page">
-            <!-- Fixed navbar for Material theme -->
-            {{#if @global.android}}
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="center">
-                      <p data-l11n>Estimation</p>
-                      <p data-l11n="de">Einschätzung</p>
-                    </div>
-                    <div class="right">
-                      <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                    </div>
-                </div>
-            </div>
-            {{/if}}
-            <!-- Scrollable page content-->
-            <div class="page-content">
-              <div class="content-block">
-                <p class="content-info-text" data-l11n>What kind of disturbance do you want to report?</p>
-                <p class="content-info-text" data-l11n="de">Welche Art von Störung möchten Sie melden?</p>
-              </div>
-              <div class="content-block">
-                <div class="row">
-                  <div class="col-50">
-                    <a href="tel:09419433333" class="external button button-big button-fill color-red urgent-dist-button" onclick="UtilityController.measureStep('Urgent disturbance estimation')" data-l11n>Urgent disturbance</a>
-                    <a href="tel:09419433333" class="external button button-big button-fill color-red urgent-dist-button" onclick="UtilityController.measureStep('Urgent disturbance estimation')" data-l11n="de">Dringende Störung</a>
-                  </div>
-                  <div class="col-50">
-                    <a href="disturbance.html" class="button button-big button-fill color-green normal-dist-button" onclick="UtilityController.measureStep('Normal disturbance estimation')" data-l11n>Normal disturbance</a>
-                    <a href="disturbance.html" class="button button-big button-fill color-green normal-dist-button" onclick="UtilityController.measureStep('Normal disturbance estimation')" data-l11n="de">Normale Störung</a>
-                  </div>
-                </div>
-              </div>
-              <div class="content-block">
-                <div class="row">
-                  <div class="col-50">
-                    <p data-l11n>Report an urgent disturbance via phone call. Tel.: 09419433333</p>
-                    <p data-l11n="de">Dringende Störung per Anruf melden. Tel.: 09419433333</p>
-                    <p data-l11n>- Pipe break<br>- Heating defect<br>- Blackout<br>- ..</p>
-                    <p data-l11n="de">- Rohrbruch<br>- Heizungsdefekt<br>- Stromausfall<br>- ..</p>
-                  </div>
-                  <div class="col-50">
-                    <p data-l11n>Report a normal disturbance via web service.</p>
-                    <p data-l11n="de">Normale Störung über den Webservice melden.</p>
-                    <p data-l11n>- Sticking door/window<br>- Dripping faucet<br>- Wavering light<br>- ..</p>
-                    <p data-l11n="de">- Klemmende Tür/Fenster<br>- Tropfender Wasserhahn<br>- Flackerndes Licht<br>- ..</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      </div>
+      <div class="content-block">
+        <div class="row">
+          <div class="col-50">
+            <p data-l11n>Report an urgent disturbance via phone call. Tel.: 09419433333</p>
+            <p data-l11n="de">Dringende Störung per Anruf melden. Tel.: 09419433333</p>
+            <p data-l11n>- Pipe break<br>- Heating defect<br>- Blackout<br>- ..</p>
+            <p data-l11n="de">- Rohrbruch<br>- Heizungsdefekt<br>- Stromausfall<br>- ..</p>
+          </div>
+          <div class="col-50">
+            <p data-l11n>Report a normal disturbance via web service.</p>
+            <p data-l11n="de">Normale Störung über den Webservice melden.</p>
+            <p data-l11n>- Sticking door/window<br>- Dripping faucet<br>- Wavering light<br>- ..</p>
+            <p data-l11n="de">- Klemmende Tür/Fenster<br>- Tropfender Wasserhahn<br>- Flackerndes Licht<br>- ..</p>
           </div>
         </div>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+</div>
