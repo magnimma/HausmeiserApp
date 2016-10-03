@@ -472,6 +472,7 @@ var DisturbanceController = (function() {
       if(activeCheckBox.checked === true){
         mainView.router.loadPage(pictureURL);
       }else{
+        UtilityController.sendLog();
         mainView.router.loadPage(appreciationURL);
       }
     }else{

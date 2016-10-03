@@ -10,6 +10,7 @@ $fileContent = file_get_contents(countURL);
 //Fetch the current dist id from the UR server and save it to $fileContent
 $newfilename = $fileContent . '.' . end($temp);
 $target_file = $target_dir . $newfilename;
+echo $target_file;
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
@@ -42,6 +43,9 @@ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg
     echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
     $uploadOk = 0;
 }
+
+echo $_FILES["fileToUpload"]["tmp_name"];
+echo $target_file;
 
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {

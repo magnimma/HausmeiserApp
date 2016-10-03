@@ -15,7 +15,7 @@ js/Main.js
 js/app.js
 js/dataController.js
 js/disturbanceController.js
-js/logController.js
+js/utilityController.js
 js/loginController.js
 js/settingsController.js
 js/libs/jquery.min.js
