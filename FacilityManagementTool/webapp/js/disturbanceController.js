@@ -412,25 +412,7 @@ var DisturbanceController = (function() {
     }else{
       description = sessionStorage.getItem("description");
     }
-    //TODO:löschen description = sessionStorage.getItem("description");
-    //TODO:LÖSCHEN roomCode = sessionStorage.getItem("roomCode");
     specGrp = sessionStorage.getItem("specialGroup");
-
-    /*TODO:löschen
-    disturbance += placeholderWebId + ";";
-    disturbance += localStorage.getItem("userName") + ";";
-    disturbance += localStorage.getItem("userPhone") + ";";
-
-    currDate = _getCurrDate();
-
-    disturbance += currDate + ";";
-    disturbance += currDate + ";";
-    disturbance += currDate + ";";
-    disturbance += "Instandsetzung;";
-    disturbance += sessionStorage.getItem("description") + ";";
-    disturbance += sessionStorage.getItem("roomCode") + ";";
-    disturbance += "Fachgruppe;" + sessionStorage.getItem("respSpecialGroup") + ";;";
-    */
 
     //Check whether the user has internet connection
     //If yes: submit the disturbance report
@@ -438,20 +420,7 @@ var DisturbanceController = (function() {
     if(UtilityController.checkOnlineStatus()){
       console.log(placeholderWebId);
       console.log(description);
-      /*TODO:löschen
-        $.ajax({
-        type: "POST",
-        url: serverURL + "submit",
-        data: { "userNDS": userNDS, "disturbanceId":placeholderWebId, 
-                "userName": userName, "userPhone": userPhone,
-                "date": currDate, "description": description,
-                "roomCode": roomCode, "building": activeBuilding,
-                "floor": activeFloor, "room": activeRoom,
-                "specialGroup": specGrp}
-      }).done(function(serverResponse) {
-        alert(serverResponse);
-      });
-      */
+
       $.ajax({
         url: srvPhpURL + "submitDist.php",
         type: "POST",
@@ -466,13 +435,13 @@ var DisturbanceController = (function() {
           console.log("STÖRUNGSMELDUNG:" + result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]);
         }
       });
-
+      //Send the log data to the webserver
+      UtilityController.sendLog();
       //If the user wants to send an aditional picture of the disturbance
       //move on to picture.html
       if(activeCheckBox.checked === true){
         mainView.router.loadPage(pictureURL);
       }else{
-        UtilityController.sendLog();
         mainView.router.loadPage(appreciationURL);
       }
     }else{

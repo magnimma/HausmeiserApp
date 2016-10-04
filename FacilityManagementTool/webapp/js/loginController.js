@@ -22,7 +22,8 @@ var LoginController = (function() {
       //Regular expressions used to validate user content
       phoneRegex = /^[0-9 +]{1,20}$/,
       //TODO:löschen mailRegex = /\S+@\S+\.\S+/,
-      ndsRegex = new RegExp("^[a-z]{3}[0-9]{5}$"),
+      //ndsRegex = new RegExp("^[a-z]{3}[0-9]{5}$"),
+      ndsRegex = /^[a-z]{3}[0-9]{5}$/,
 
       //Variables containing input form fields
       button,

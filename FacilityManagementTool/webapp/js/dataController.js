@@ -3,7 +3,7 @@
 var DataController = (function() {
 
   //Variable containing the disturbance mail address
-  var tzEmail = "tz@ur.de",
+  var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
       appreciationURL = "appreciation",
 
       //Variable containing an file input UI element 
@@ -12,6 +12,10 @@ var DataController = (function() {
   //Initiate the dataController and set the UI element listeners
   function init() {
     myInput = $(".myFileInput")[0];
+    //Prevent the attachement upload form field from reloading the webapp after submit
+    $("#fileinfo").submit(function(e) {
+      e.preventDefault();
+    });
     //Initiate click listener for the send attachement buttons and the take new picture buttons
     //$(".send-picture")[0].addEventListener("click", _sendMail, false);
     //$(".send-picture")[1].addEventListener("click", _sendMail, false);
@@ -44,10 +48,28 @@ var DataController = (function() {
     } else if (typeof node.onclick == "function") {
         node.onclick(); 
     }
-}
+  }
+
+  //Try to upload the chosen disturbance attachement
+  function uploadAttachement(){
+    var fd = new FormData(document.getElementById("fileinfo"));
+    console.log(fd);
+    $.ajax({
+      url : srvPhpURL + 'upload.php',
+      type : 'POST',
+      data : fd,
+      processData: false,  // tell jQuery not to process the data
+      contentType: false,  // tell jQuery not to set contentType
+      success : function(data) {
+        console.log(data);
+        alert(data);
+     }
+    });
+  }
 
   return {
-    init: init
+    init: init,
+    uploadAttachement: uploadAttachement
   };
   
 })();
