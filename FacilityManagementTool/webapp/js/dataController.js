@@ -6,34 +6,53 @@ var DataController = (function() {
   var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
       appreciationURL = "appreciation",
 
-      //Variable containing an file input UI element 
-      myInput;
+      //Variable containing a file input UI element 
+      myInput,
+
+      //Variable containing a button UI element 
+      activeButton;      
 
   //Initiate the dataController and set the UI element listeners
   function init() {
-    myInput = $(".myFileInput")[0];
+    myInput = $(".attachement-input")[0];
     //Prevent the attachement upload form field from reloading the webapp after submit
     $("#fileinfo").submit(function(e) {
       e.preventDefault();
     });
     //Initiate click listener for the send attachement buttons and the take new picture buttons
-    //$(".send-picture")[0].addEventListener("click", _sendMail, false);
-    //$(".send-picture")[1].addEventListener("click", _sendMail, false);
-    //$(".take-picture")[0].addEventListener("click", _takePic, false);
-    //$(".take-picture")[1].addEventListener("click", _takePic, false);
+    $(".add-attachement")[0].addEventListener("click", _takePic, false);
+    $(".add-attachement")[1].addEventListener("click", _takePic, false);
+    $(".attachement-input")[0].addEventListener("change", _attachementChosen, false);
   }
 
-  //Open the native mail app with prefilled address and subject
-  function _sendMail() {
-    console.log(sessionStorage.getItem("webId"));
-    UtilityController.measureStep("Mail sent");
-    //TODO:löschen window.location.href = "mailto:" + tzEmail + "?subject=Anhang für Störungsmeldung Nr." + sessionStorage.getItem("webId");
-    mainView.router.loadPage(appreciationURL);
+  //Rename the add attachement button element when the user has chosen an disturbance attachement
+  //Enable the Submit disturbance button
+  function _attachementChosen(){
+    activeButton = $(".add-attachement")[0];
+    activeButton.value = myInput.files[0].name;
+    activeButton = $(".add-attachement")[1];
+    activeButton.value = myInput.files[0].name;
+    activeButton = $(".submit-attachement")[0];
+    activeButton.disabled = false;
+    activeButton = $(".submit-attachement")[1];
+    activeButton.disabled = false;
   }
+
+  //Rename the add attachement button element when the user has uploaded an disturbance attachement
+  //Disable the Submit disturbance button
+function _resetUIElements(){
+  activeButton = $(".add-attachement")[0];
+  activeButton.value = "Choose attachement";
+  activeButton = $(".add-attachement")[1];
+  activeButton.value = "Anhang auswählen";
+  activeButton = $(".submit-attachement")[0];
+  activeButton.disabled = true;
+  activeButton = $(".submit-attachement")[1];
+  activeButton.disabled = true;
+}
 
   //Trigger a click event on the "Take picture" input element
   function _takePic() {
-    UtilityController.measureStep("Picture taken");
     _fireClick(myInput);
   }
 
@@ -52,6 +71,7 @@ var DataController = (function() {
 
   //Try to upload the chosen disturbance attachement
   function uploadAttachement(){
+    _resetUIElements();
     var fd = new FormData(document.getElementById("fileinfo"));
     console.log(fd);
     $.ajax({

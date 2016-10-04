@@ -37,13 +37,12 @@
         <p class="content-info-text" data-l11n="de">Nun können Sie die Störungsmeldung um multimediale Inhalte (Bilder, Skizzen,..) erweitern.</p>
       </div>
       <div class="content-block">
-        <!--form action="http://oa.mi.ur.de/~gog59212/FMApp/server/php/upload.php" method="post" enctype="multipart/form-data">
-          <input type="file" name="fileToUpload" id="fileToUpload">
-          <input type="submit" value="Upload Image" name="submit">
-        </form-->
         <form method="post" id="fileinfo" name="fileinfo" onsubmit="return DataController.uploadAttachement();">
-	        <input type="file" name="fileToUpload" required />
-	        <input type="submit" value="Submit" />
+          <input type="button" value="Choose attachement" name="Take new picture" class="add-attachement button center button-fill" data-l11n>
+          <input type="button" value="Anhang auswählen" name="Neues Bild machen" class="add-attachement button center button-fill" data-l11n="de">
+	        <input class="attachement-input" type="file" name="fileToUpload" style="display: none;" required/>
+	        <input type="submit" value="Submit attachement" class="submit-attachement button center" disabled="true" data-l11n/>
+          <input type="submit" value="Anhang abschicken" class="submit-attachement button center" disabled="true" data-l11n="de"/>
 	    </form>
       </div>
     </div>
