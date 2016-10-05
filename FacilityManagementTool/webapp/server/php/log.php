@@ -7,7 +7,7 @@ $logData = json_decode($_POST['logData'], true);
 $timestamp = $_POST['timestamp'];
 
 //Save the data locally
-$fp = fopen('logs/' . $timestamp . '.csv', 'w');
+$fp = fopen('../../logs/' . $timestamp . '.csv', 'w');
 
 foreach ($logData as $fields) {
     fputcsv($fp, $fields);
@@ -15,7 +15,7 @@ foreach ($logData as $fields) {
 
 fclose($fp);
 
-//PLACEHOLDER return example values
+//TODO:LÖSCHEN return example values
 echo json_encode($logData);
 
 ?>

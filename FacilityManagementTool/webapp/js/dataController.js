@@ -28,14 +28,18 @@ var DataController = (function() {
   //Rename the add attachement button element when the user has chosen an disturbance attachement
   //Enable the Submit disturbance button
   function _attachementChosen(){
-    activeButton = $(".add-attachement")[0];
-    activeButton.value = myInput.files[0].name;
-    activeButton = $(".add-attachement")[1];
-    activeButton.value = myInput.files[0].name;
-    activeButton = $(".submit-attachement")[0];
-    activeButton.disabled = false;
-    activeButton = $(".submit-attachement")[1];
-    activeButton.disabled = false;
+    try{
+      activeButton = $(".add-attachement")[0];
+      activeButton.value = myInput.files[0].name;
+      activeButton = $(".add-attachement")[1];
+      activeButton.value = myInput.files[0].name;
+      activeButton = $(".submit-attachement")[0];
+      activeButton.disabled = false;
+      activeButton = $(".submit-attachement")[1];
+      activeButton.disabled = false;
+    }catch(err){
+      console.log("Error: " + err);
+    }
   }
 
   //Rename the add attachement button element when the user has uploaded an disturbance attachement

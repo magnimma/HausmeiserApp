@@ -1,3 +1,5 @@
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
 <!-- Dynamic navbar for iOS theme -->
 {{#if @global.ios}}
 <div class="navbar">
@@ -5,13 +7,11 @@
     <div class="left sliding">
       <a href="#" class="back link">
         <i class="icon icon-back"></i>
-        <span data-l11n>Estimation</span>
-        <span data-l11n="de">Einschätzung</span>
+        <span data-i18n="Estimation" data-i18n-de="Einschätzung"></span>
       </a>
     </div>
     <div class="center sliding">
-      <p data-l11n>Fault report</p>
-      <p data-l11n="de">Störungsmeldung</p>
+      <p data-i18n="Fault report" data-i18n-de="Störungsmeldung"></p>
     </div>
     <div class="right">
       <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -33,8 +33,7 @@
                 </a>
             </div>
             <div class="center">
-              <p data-l11n>Fault report</p>
-              <p data-l11n="de">Störungsmeldung</p>
+              <p data-i18n="Fault report" data-i18n-de="Störungsmeldung"></p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -45,8 +44,7 @@
     <!-- Scrollable page content-->
     <div class="page-content">
       <div class="content-block">
-        <p class="content-info-text" data-l11n>Please enter all necessary information.</p>
-        <p class="content-info-text" data-l11n="de">Bitte geben Sie nun alle erforderlichen Daten zur Störung ein.</p>
+        <p class="content-info-text" data-i18n="Please enter all necessary information." data-i18n-de="Bitte geben Sie nun alle erforderlichen Daten zur Störung ein."></p>
       </div>
       <div class="list-block">
         <ul>
@@ -55,8 +53,7 @@
               <div class="item-media"><i class="icon icon-form-home"></i></div>
               <div class="item-inner"> 
                 <div class="item-title label">
-                  <span data-l11n>Building</span>
-                  <span data-l11n="de">Gebäude</span>
+                  <span data-i18n="Building" data-i18n-de="Gebäude"></span>
                 </div>
                 <div class="item-input">
                   <select id="buildingSelect">
@@ -70,8 +67,7 @@
               <div class="item-media"><i class="icon icon-form-building"></i></div>
               <div class="item-inner"> 
                 <div class="item-title label">
-                  <span data-l11n>Floor</span>
-                  <span data-l11n="de">Etage</span>
+                  <span data-i18n="Floor" data-i18n-de="Etage"></span>
                 </div>
                 <div class="item-input">
                   <select id="floorSelect">
@@ -85,8 +81,7 @@
               <div class="item-media"><i class="icon icon-form-gender"></i></div>
               <div class="item-inner"> 
                 <div class="item-title label">
-                  <span data-l11n>Room</span>
-                  <span data-l11n="de">Raum</span>
+                  <span data-i18n="Room" data-i18n-de="Raum"></span>
                 </div>
                 <div class="item-input">
                   <select id="roomSelect">
@@ -100,8 +95,7 @@
               <div class="item-media"><i class="icon icon-form-comment"></i></div>
               <div class="item-inner"> 
                 <div class="item-title label">
-                  <span data-l11n>Description</span>
-                  <span data-l11n="de">Beschreibung</span>
+                  <span data-i18n="Description" data-i18n-de="Beschreibung"></span>
                 </div>
                 <div class="item-input" data-l11n>
                   <textarea class="desc-text" maxLength="74" placeholder="Please enter a brief description of the disturbance."></textarea>
@@ -117,8 +111,7 @@
               <div class="item-media"><i class="icon icon-form-gender"></i></div>
               <div class="item-inner"> 
                 <div class="item-title label">
-                  <span data-l11n>Specialist group</span>
-                  <span data-l11n="de">Fachgruppe</span>
+                  <span data-i18n="Specialist group" data-i18n-de="Fachgruppe"></span>
                 </div>
                 <div class="item-input" data-l11n>
                   <select class="groupSelect">
@@ -149,8 +142,8 @@
             <div class="item-content">
               <div class="item-media"><i class="icon icon-form-toggle"></i></div>
               <div class="item-inner"> 
-                <div class="item-title label" data-l11n=>Optionally: Do you want to add multimedia content (picures, sketches, ..) to the disturbance report?</div>
-                <div class="item-title label" data-l11n="de">Optional: Möchten Sie der Störungsmeldung multimediale Inhalte (Bilder, Skizzen,..) beifügen?</div>
+                <div class="item-title label" data-i18n="Picture upload" data-i18n-de="Bildupload">
+                </div>
                 <div class="item-input">
                   <label class="label-switch">
                     <input id="picCheckbox" type="checkbox"/>
