@@ -22,7 +22,6 @@ var DisturbanceController = (function() {
       building = [],
       floor = [],
       room = [],
-//TODO:löschen      roomCode = [],
 
       //Variable containing the currently active select form field
       activeSelectField,
@@ -94,7 +93,6 @@ var DisturbanceController = (function() {
   function init(){
     _setupUIListener();
     _fetchBuildingData();
-    console.log("distubance");
   }
 
   //Setup the UI element listener
@@ -110,6 +108,9 @@ var DisturbanceController = (function() {
     $("#buildingSelect")[0].addEventListener("change", _buildingChanged, false);
     $("#floorSelect")[0].addEventListener("change", _floorChanged, false);
     $("#roomSelect")[0].addEventListener("change", _roomChanged, false);
+    //Add change listener to the specialist group select input fields
+    $(".groupSelect")[0].addEventListener("change", _specialistGroupChanged, false);
+    $(".groupSelect")[1].addEventListener("change", _specialistGroupChanged, false);
     //Add click listener to the check disturbance buttons
     $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
@@ -126,31 +127,17 @@ var DisturbanceController = (function() {
     
   //Fetch the building, room and floor data file
   //Currently from a csv file
-  //TODO fetch the file from the uniR server
   function _fetchBuildingData(){
     $.ajax({
       url: localCSV,
       dataType: "text",
     }).done(_handleCSVData);
-    //TODO:LÖSCHEN _handleJSONData();
-
-    //TODO: Falls die Raumliste vom User geladen werden soll
-    /*
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:8080/receive",
-      //data: { param: userAcc}
-    }).done(_handleCSVData {
-      _handleJSONData
-      }
-    });
-    */
   }
 
   //Check whether the user provided a roomcode by starting
   //the app per QR code
   function _checkForQRCode(){
-    if(sessionStorage.getItem("qrCode").length > 1){
+    if(sessionStorage.getItem("qrCode")){
       _parseRoomCode();
     }
   }
@@ -176,6 +163,7 @@ var DisturbanceController = (function() {
     $("#floorSelect")[0].value = activeFloor;
     _floorChanged();
     $("#roomSelect")[0].value = activeRoom;
+    _roomChanged();
   }
 
   //Save the csv file data
@@ -196,25 +184,34 @@ var DisturbanceController = (function() {
     _appendBuildingData(_uniqArray(building));
   }
 
+  //React to user specialist group selections and log it
+  function _specialistGroupChanged(){
+    console.log("LOG: Specialist group chosen");
+    UtilityController.measureStep("Specialist group chosen", 5);
+  }
+
   //React to user building selections
   //Extract the according special groups and the floor data
   function _buildingChanged(){
+    console.log("LOG: Building chosen");
+    UtilityController.measureStep("Building chosen", 2);
+
     $("#floorSelect")[0].disabled = false;
     activeSelectField = $("#buildingSelect")[0];
-    //TODO:LÖSCHEN sessionStorage.removeItem("roomCode");
 
-    //TODO:löschen _extractSpecialGroups(activeSelectField.options[activeSelectField.selectedIndex].value);
     _extractFloorData(activeSelectField.options[activeSelectField.selectedIndex].value);
   }
 
   //React to user floor selections
   //Save the building and floor data and extract the according room data 
   function _floorChanged(){
+    console.log("LOG: Floor chosen");
+    UtilityController.measureStep("Floor chosen", 3);
+
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
     activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
-    //TODO:LÖSCHEN sessionStorage.removeItem("roomCode");
 
     _extractRoomData(activeBuilding, activeFloor);
   }
@@ -222,6 +219,9 @@ var DisturbanceController = (function() {
   //React to user room selections
   //Fetch the building, floor and room data and extract the roomCode
   function _roomChanged(){
+    console.log("LOG: Room chosen");
+    UtilityController.measureStep("Room chosen", 4);
+
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
 
@@ -230,61 +230,7 @@ var DisturbanceController = (function() {
 
     activeSelectField = $("#roomSelect")[0];
     activeRoom = activeSelectField.options[activeSelectField.selectedIndex].value;
-
-    //TODO:LÖSCHEN_extractRoomCode(activeBuilding, activeFloor, activeRoom);
   }
-
-/*TODO:löschen
-  //Extract the set of responsible special groups for the active building from the csv file 
-  function _extractSpecialGroups(building){
-    for(var i = 0; i < jsonData.Datensatz.length; i++){
-      if(buildingGrpMap[building] === jsonData.Datensatz[i].Bauwerk){
-        responsibleSpecialGroups = jsonData.Datensatz[i];
-      }
-    }
-  }
-  */
-
-/*TODO:löschen
-  //Extract the responsible special group for the active building and the disturbance
-  function _extractSpecialGroup(){
-    if(document.documentElement.lang == "de"){
-      if(sessionStorage.getItem("specialGroup") === "Elektro"){
-        respSpecialGroup = "Fachgruppe Starkstrom";
-      }else{
-        respSpecialGroup = "Fachgruppe " + sessionStorage.getItem("specialGroup");
-      }
-      respSpecialGroup = responsibleSpecialGroups[respSpecialGroup];
-      sessionStorage.setItem("respSpecialGroup", respSpecialGroup);
-    }else{
-      //The english special group needs to be translated to german first
-      respSpecialGroup = "Fachgruppe " + _translateSpecGroup(sessionStorage.getItem("specialGroup"));
-      respSpecialGroup = responsibleSpecialGroups[respSpecialGroup];
-      sessionStorage.setItem("respSpecialGroup", respSpecialGroup);
-    }
-  }
-  */
-
-/*TODO:LÖSCHEN
-  //Handle the json file and extract the data
-  function _handleJSONData(){
-    $.getJSON(specGrpJSON, function(data) {         
-      jsonData = data;
-    });
-  }
-  */
-
-  /*TODO:LÖSCHEN 
-  //Extract the necessary roomcode data from the csv file
-  function _extractRoomCode(building, floor, room){
-    for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
-      rowCells = csvDataRows[singleRow];
-      if(rowCells !== "" && rowCells.split("*")[1] == building && rowCells.split("*")[2] == floor && rowCells.split("*")[3] == room){
-        sessionStorage.setItem("roomCode", rowCells.split("*")[4]);
-      }
-    }
-  }
-  */
 
   //Check whether the user provided all the necessary disturbance information
   //If yes: save the provided information, extract the special group and submit the disturbance 

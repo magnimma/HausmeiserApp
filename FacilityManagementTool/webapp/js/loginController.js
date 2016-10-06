@@ -21,7 +21,7 @@ var LoginController = (function() {
 
       //Regular expressions used to validate user content
       phoneRegex = /^[0-9 +]{1,20}$/,
-      //TODO:löschen mailRegex = /\S+@\S+\.\S+/,
+      nameRegex = /^[a-z,A-Z +]{3,20}$/,
       //ndsRegex = new RegExp("^[a-z]{3}[0-9]{5}$"),
       ndsRegex = /^[a-z]{3}[0-9]{5}$/,
 
@@ -51,9 +51,10 @@ var LoginController = (function() {
   //by entering the app per QR code
   function _checkForRoomcode(){
     roomCode = location.search.split("&").toString();
-    if(roomCode.length > 0)roomCode = roomCode.substring(1);
-    sessionStorage.setItem("qrCode", roomCode);
-    console.log(sessionStorage.getItem("qrCode"));
+    if(roomCode.length > 0){
+      roomCode = roomCode.substring(1);
+      sessionStorage.setItem("qrCode", roomCode);
+    }
   }
 
   //Setup the UI element listener
@@ -144,32 +145,29 @@ var LoginController = (function() {
 
   //When the user NDS account was valid and exists redirect the user
   function _NDSInputSuccess(){
-    if(document.documentElement.lang == "de"){
-      UtilityController.measureStep("NDS Login");
-      mainView.router.loadPage(loginUrl);
-    }else{
-      UtilityController.measureStep("NDS Login");
-      mainView.router.loadPage(loginUrl);
-    }
+    console.log("LOG: Correct NDS Login");
+    UtilityController.measureStep("Correct NDS Login", 0);
+    mainView.router.loadPage(loginUrl);
   } 
 
   //Move on to login.html when the user is already logged in
   function checkLoginStatus(){
     console.log(localStorage.getItem("ndsAccount"));
-    //TODO:löschen console.log(localStorage.getItem("userMail"));
     console.log(localStorage.getItem("userPhone"));
     console.log(localStorage.getItem("userName"));
     if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
       if(document.documentElement.lang == "de"){
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          UtilityController.measureStep("NDS Login");
+          console.log("LOG: Correct NDS Login");
+          UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(loginUrl);
         }else{
           alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
         }
       }else{
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          UtilityController.measureStep("NDS Login");
+          console.log("LOG: Correct NDS Login");
+          UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(loginUrl);
         }else{
           alert("Not a correct NDS-account. Please try again.");
@@ -182,12 +180,11 @@ var LoginController = (function() {
   //and show the user name in the left settings panel 
   //otherwise show an error alert
   function _checkUserInfo(){
-    if($(".name-input")[0].value !== "" &&
-       //TODO:löschen _validateEmail($(".mail-input")[0].value) &&
-       _checkLangUserPhone()){
+    if(_validateName($(".name-input")[0].value) && _checkLangUserPhone()){
       _saveUserData();
       _enableSettingsUI();
-      UtilityController.measureStep("User-Info Login");
+      console.log("LOG: Valid User Info entered");
+      UtilityController.measureStep("Valid User Info entered", 1);
       mainView.router.loadPage(estimateURL);
     }else if (document.documentElement.lang == "de"){
       alert("Bitte füllen Sie alle Felder korrekt aus.");
@@ -207,7 +204,7 @@ var LoginController = (function() {
 
   //Check the user name after input and show proper feedback(green/red font color)
   function _checkUserName(){
-    if($(".name-input")[0].value !== ""){
+    if(_validateName($(".name-input")[0].value)){
       $(".name-input").css("color", "green");
     }else{
       $(".name-input").css("color", "red");
@@ -307,7 +304,12 @@ var LoginController = (function() {
   //Check whether the user entered a valid phone number using regex
   function _validatePhone(phone){
     return phoneRegex.test(phone);
-  } 
+  }
+
+  //Check whether the user entered a valid name using regex
+  function _validateName(name){
+    return nameRegex.test(name);
+  }  
 
   //check whether the entered user NDS-Account has the correct format 
   function _checkStringFormat(inputString) {

@@ -26,21 +26,21 @@ var UtilityController = (function() {
       //Variable showing whether the user has an internet connection or not
       status = navigator.onLine;
 
-  //Initiate the loggingController and start logging
+  //Initiate the UtilityController and start logging
   function init(){
     start = new Date().getTime();
   }
 
   //Measure the current step and log it
-  function measureStep(currentStep){
+  function measureStep(stepName, stepNumber){
     //console.log(start);
     end = new Date().getTime();
     //Push to the log data to an array
     currentAction.push(new Date(Math.floor(Date.now())));
-    currentAction.push(currentStep);
+    currentAction.push(stepName);
     currentAction.push((end - start)/1000);
     //Push the single action log to an array containing all the actions
-    userActions.push(currentAction);
+    userActions[stepNumber] = currentAction;
     //Reset the sinle action array
     currentAction = [];
     //Save a new start time
