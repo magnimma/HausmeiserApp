@@ -33,14 +33,17 @@
 	background-image:url(../img/ic_store_white_24px.svg)
 }
 
+/* (default) Hide ther german localization */
 [data-l11n=de] {
     display: none;
 }
 
+/* If lang attribute = de > hide the english localization */
 :lang(de) > [data-l11n] {
     display: none;
 }
 
+/* If lang attribute = de > show the german localization */
 :lang(de) > [data-l11n=de] {
     display: block;
 }

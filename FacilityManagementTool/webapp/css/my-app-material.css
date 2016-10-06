@@ -20,14 +20,26 @@
 	background-image:url(../img/ic_store_black_24px.svg)
 }
 
+/* (default) Hide ther german localization */
 [data-l11n=de] {
     display: none;
 }
 
+/* If lang attribute = de > hide the english localization */
 :lang(de) > [data-l11n] {
     display: none;
 }
 
+/* If lang attribute = de > show the german localization */
 :lang(de) > [data-l11n=de] {
     display: block;
+}
+
+/* English (default language) */
+[data-i18n]::before {
+   content: attr(data-i18n);
+}
+/* German */
+[data-i18n-de]:lang(de)::before {
+   content: attr(data-i18n-de);
 }

@@ -79,13 +79,6 @@ var LoginController = (function() {
     }else if(result[1] != undefined){
       $(".name-input")[0].value = result[4];
     }
-    /*TODO:löschen
-    if(localStorage.getItem("userMail")){
-      $(".mail-input")[0].value = localStorage.getItem("userMail");
-    }else if(result["email"] != undefined){
-      $(".mail-input")[0].value = result["email"];
-    }
-    */
     if(localStorage.getItem("userPhone")){
       $(".phone-input")[0].value = localStorage.getItem("userPhone");
       $(".phone-input")[1].value = localStorage.getItem("userPhone");    
@@ -115,43 +108,26 @@ var LoginController = (function() {
     }
   }
 
-  //Check whether the user entered an exiting NDS account
+  //Check whether the user entered an existing NDS account
   //Send it to the responsible python webserver which checks the NDS account
   function _pyCheckNDS(userAcc){
-    /*TODO:LÖSCHEN
-    $.ajax({
-      type: "POST",
-      url: serverURL + "nds",
-      data: { "userNDS": userAcc}
-    }).done(function(serverResponse) {
-      //Parse the received JSONString and get a JSONObject
-      result = JSON.parse(serverResponse);
-      console.log(result);
-      //CHeck whether the success value of the json object is true or false
-      if(result['success'] === "true"){
-        _NDSInputSuccess();
-      }else{
-        _showNDSErrorMessage();
-      }
-    });*/
-
-	if(UtilityController.checkOnlineStatus()){
-   	  $.ajax({
-      url: urSrvURL + "ldap.php",
-      type: "POST",
-      dataType: 'json',
-      data: ({ "nds": userAcc}),
-      success: function(data) {
-        result = data;
-        console.log(result);
-        //CHeck whether the success value of the json object is true or false
-        if(result[0] === "true"){
-          _NDSInputSuccess();
-        }else{
-          _showNDSErrorMessage();
+    if(UtilityController.checkOnlineStatus() == "true"){
+     	$.ajax({
+        url: urSrvURL + "ldap.php",
+        type: "POST",
+        dataType: 'json',
+        data: ({ "nds": userAcc}),
+        success: function(data) {
+          result = data;
+          console.log(result);
+          //CHeck whether the success value of the json object is true or false
+          if(result[0] === "true"){
+            _NDSInputSuccess();
+          }else{
+            _showNDSErrorMessage();
+          }
         }
-      }
-    }); 
+      }); 
     }else{
       mainView.router.loadPage(offlineURL);
     }

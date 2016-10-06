@@ -362,23 +362,7 @@ var DisturbanceController = (function() {
 
   //Fetch the web id for the currently created disturbance report
   function _fetchWebId(){
-    /*TODO:löschen
-    placeholderWebId = "1234";
-    sessionStorage.setItem("webId", placeholderWebId);
-    //Send a POST request to the webserver to get the current disturbance id
-    $.ajax({
-        type: "POST",
-        url: serverURL + "id",
-        data: { "request": "distId"},
-      }).done(function(serverResponse) {
-        console.log("ID: " + serverResponse);
-        placeholderWebId = serverResponse;
-        sessionStorage.setItem("webId", placeholderWebId);
-        _submitDisturbance();
-      });
-    */
-
-    if(UtilityController.checkOnlineStatus()){
+    if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
         url: srvPhpURL + "distIdCount.php",
         success: function(data) {
@@ -417,10 +401,7 @@ var DisturbanceController = (function() {
     //Check whether the user has internet connection
     //If yes: submit the disturbance report
     //If no: Show the fallback offline page
-    if(UtilityController.checkOnlineStatus()){
-      console.log(placeholderWebId);
-      console.log(description);
-
+    if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
         url: srvPhpURL + "submitDist.php",
         type: "POST",

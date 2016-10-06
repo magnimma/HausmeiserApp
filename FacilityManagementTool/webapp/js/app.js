@@ -3,8 +3,8 @@
 //Furthermore it initializes Framework7 specific page callbacks 
 var isAndroid = Framework7.prototype.device.android === true;
 var isIos = Framework7.prototype.device.ios === true;
-isAndroid = false;
-isIos = true;
+isAndroid = true;
+isIos = false;
 
 Template7.global = {
     android: isAndroid,

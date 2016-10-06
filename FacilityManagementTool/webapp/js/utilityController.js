@@ -64,8 +64,8 @@ var UtilityController = (function() {
   //Check whether the user has an internet connection or not
   function checkOnlineStatus(){
     status = navigator.onLine;
-      console.log("online: " + navigator.onLine);
-      return status;
+    console.log("online: " + status);
+    return status;
   }
 
   return {

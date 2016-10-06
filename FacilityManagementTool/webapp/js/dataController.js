@@ -2,9 +2,10 @@
 //It assists the user to take pictures of the disturbance and to send an email including these pictures
 var DataController = (function() {
 
-  //Variable containing the disturbance mail address
+  //Variable containing some needed URLs
   var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
       appreciationURL = "appreciation",
+      offlineURL = "offline",
 
       //Variable containing a file input UI element 
       myInput,
@@ -75,20 +76,24 @@ function _resetUIElements(){
 
   //Try to upload the chosen disturbance attachement
   function uploadAttachement(){
-    _resetUIElements();
-    var fd = new FormData(document.getElementById("fileinfo"));
-    console.log(fd);
-    $.ajax({
-      url : srvPhpURL + 'upload.php',
-      type : 'POST',
-      data : fd,
-      processData: false,  // tell jQuery not to process the data
-      contentType: false,  // tell jQuery not to set contentType
-      success : function(data) {
-        console.log(data);
-        alert(data);
-     }
-    });
+    if(UtilityController.checkOnlineStatus() == "true"){  
+      _resetUIElements();
+      var fd = new FormData(document.getElementById("fileinfo"));
+      console.log(fd);
+      $.ajax({
+        url : srvPhpURL + 'upload.php',
+        type : 'POST',
+        data : fd,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success : function(data) {
+          console.log(data);
+          alert(data);
+       }
+      });
+    }else{
+      mainView.loadPage(offlineURL);
+    }
   }
 
   return {
