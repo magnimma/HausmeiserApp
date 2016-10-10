@@ -1,10 +1,13 @@
 //The app.js determines whether the used device is an iOS or an android device
 //and adjusts the appearance of the app accordingly
 //Furthermore it initializes Framework7 specific page callbacks 
-var isAndroid = Framework7.prototype.device.android === true;
-var isIos = Framework7.prototype.device.ios === true;
-isAndroid = true;
-isIos = false;
+var isAndroid = Framework7.prototype.device.android/* === true*/;
+var isIos = /*Framework7.prototype.device.ios ===*/ true;
+//isAndroid = true;
+//isIos = false;
+
+console.log(isAndroid);
+console.log(isIos);
 
 Template7.global = {
     android: isAndroid,
@@ -26,6 +29,18 @@ var FMApp = new Framework7({
     material: isAndroid ? true : false,
     // Enable Template7 pages
     template7Pages: true,
+    // Enable fastClicks and disable the 300ms delay for links and form elements in browsers
+    fastClicks: false,
+    // The default modal dialog title
+    modalTitle: "Facility Management App",
+    // Enable ability to close modal by clicking outside of modal
+    modalCloseByOutside: true,
+    // Hide navbar on scroll down
+    hideNavbarOnPageScroll: true,
+    // Do not show navbar immediately on scroll up
+    showBarsOnPageScrollTop: false,
+    // Do not show navbar immediately when page end is reached
+    showBarsOnPageScrollEnd: false,
     // Hide and show indicator during ajax requests
     onAjaxStart: function (xhr) {
         FMApp.showIndicator();

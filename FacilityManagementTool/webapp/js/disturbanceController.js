@@ -50,6 +50,7 @@ var DisturbanceController = (function() {
 
       //Regular expressions used to validate user content(disturbance description)
       descRegex = /^[A-Za-z0-9_,;. +-]{1,76}$/,
+      tokenRegex = /\S+/g,
 
       //Variabel containing the set of responsible special groups for a specific building
       responsibleSpecialGroups,
@@ -78,16 +79,19 @@ var DisturbanceController = (function() {
       currDate = "01.01.1991 01:01",
       description = "Disturbance description here",
       roomCode = "BY.C.12345",
-      specGrp = "Specialist group here";
+      specGrp = "Specialist group here",
+
+      //Variable containing the match rating of each specialist group according to the description text
+      matchRatings = [0, 0, 0, 0, 0, 0];
 
         //secret
       //Arrays for automatic word detection for specialists 
-      var specialist_group_electric = ["kabel","lampe","licht","cable","lamp","light"];
-      var specialist_group_heating = ["heiß","heizung","heating","heat"];
-      var specialist_group_sanitary = ["toilette","sanitär","waschbecken","toilet","sanitary","sink"];
-      var specialist_group_refrigeration = ["kalt","kälte","cold"];
-      var specialist_group_windows_and_doors = ["tür","fenster","rahmen","door","window","frame"];
-      var specialist_group_telecommunications = ["internet","telefon","telephon","telephone"];    
+      var specialistKeywords = [["kabel","lampe","licht","cable","lamp","light"],
+                                ["heiß","heizung","heating","heat"],
+                                ["toilette","sanitär","waschbecken","toilet","sanitary","sink"],
+                                ["kalt","kälte","cold"],
+                                ["tür","fenster","rahmen","door","window","frame"],
+                                ["internet","telefon","telephon","telephone"]];   
 
   //Initiate the disturbanceController when the disturbance.html is iniatiated
   function init(){
@@ -97,13 +101,6 @@ var DisturbanceController = (function() {
 
   //Setup the UI element listener
   function _setupUIListener(){
-    //  secret
-   //hier event listener wenn beschreibung geändert wird
-   //Listener for the description box
-   // $(".desc-text").addEventListener("change", _descChanged, false);      
-      
-      
-      
     //Add change listener to the building, floor and room select input fields
     $("#buildingSelect")[0].addEventListener("change", _buildingChanged, false);
     $("#floorSelect")[0].addEventListener("change", _floorChanged, false);
@@ -114,16 +111,64 @@ var DisturbanceController = (function() {
     //Add click listener to the check disturbance buttons
     $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
+    //Add change listener to the description textarea
+    $(".desc-text")[0].addEventListener("change", _descChanged, false);
+    $(".desc-text")[1].addEventListener("change", _descChanged, false);
   }
 
   function _descChanged(){
-      //secret
-      //hier checken ob ein teil des arrays vom beschreibungstext in einem der arrays ist
-      //var text = $(".desc-text").text()
-      
-      //wenn text eins der begriffe in text dann
-      //setze group-select auf die fachgruppe
-  }    
+    //Check whether a specialist group keyword was found in dex description text
+    var keywordFound = false;  
+
+    //Save the correct description text (according to the app language) into an array of lowercase tokens
+    if(document.documentElement.lang == "de"){
+      description = $(".desc-text")[1].value.toLowerCase().match(tokenRegex);
+      activeSelectField = $(".groupSelect")[1];
+    }else{
+      description = $(".desc-text")[0].value.toLowerCase().match(tokenRegex);
+      activeSelectField = $(".groupSelect")[0];
+    }
+
+    //Iterate over the description text tokens
+    //Check every token whether it matches any specialist keyword
+    for(var i = 0, descLen = description.length; i < descLen; i ++){
+      //Iterate over the matchRatings/specialistGroup array
+      for(var j = 0, matchLen = matchRatings.length; j < matchLen; j++){
+        //Iterate over the keywords of each specialist group
+        for(var k = 0, keywordLen = specialistKeywords.length; k < keywordLen; k++){
+          //Check whether the current token equals the current keyword
+          //If they equal increase the according specialist group matchRating and set the keywordFound Variable true 
+          if(description[i] == specialistKeywords[j][k]){
+            keywordFound = true;
+            matchRatings[j]++;
+            console.log(matchRatings + description[i] + specialistKeywords[j][k]);
+          }
+        }
+      }
+    }
+
+    //If a keyword was found set the specialist group accordingly
+    //and reset the keywordFound Variable and the matchRatings array  
+    if(keywordFound != false){
+      activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
+      keywordFound = false;
+      matchRatings.fill(0);
+    }
+  }
+
+  // Returns the index of the highest value of an given array
+  function _getMaxIndex(array) {
+    var maxValue = array[0],
+        maxIndex = 0;
+
+    for (var i = 1, len = array.length; i < len; i++) {
+        if (array[i] > maxValue) {
+            maxIndex = i;
+            maxValue = array[i];
+        }
+    }
+    return maxIndex;
+  }
     
   //Fetch the building, room and floor data file
   //Currently from a csv file
@@ -174,8 +219,8 @@ var DisturbanceController = (function() {
   //Format: {Altes Finanzamt, ALFI: "Altes Finanzamt, ALFI", Bibliothek, Tiefgarage Ost, TGAO: "Bibliothek, Tiefgarage Ost, TGAO", ..}
   function _handleCSVData(data) {
     csvDataRows = data.split(/\r?\n|\r/);
-    for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
-      rowCells = csvDataRows[singleRow];
+    for (var i = 0, j = csvDataRows.length; i < j; i++) {
+      rowCells = csvDataRows[i];
       if(rowCells !== ""){
         building.push(rowCells.split("*")[1]);
         buildingGrpMap[rowCells.split("*")[1]] = rowCells.split("*")[0];
@@ -282,7 +327,7 @@ var DisturbanceController = (function() {
       //TODO:löschen _extractSpecialGroup();
       _fetchWebId();
     }else{
-      alert(errMsg);
+      FMApp.alert(errMsg, "Facility Management App");
     }
   }
 
@@ -412,8 +457,8 @@ var DisturbanceController = (function() {
   //Extract the necessary room data from the csv file
   function _extractRoomData(building, floor){
     room = [];
-    for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
-      rowCells = csvDataRows[singleRow];
+    for (var i = 0, j = csvDataRows.length; i < j; i++) {
+      rowCells = csvDataRows[i];
       if(rowCells !== "" && rowCells.split("*")[1] == building && rowCells.split("*")[2] == floor){
         room.push(rowCells.split("*")[3]);
       }
@@ -479,8 +524,8 @@ var DisturbanceController = (function() {
   //Extract the necessary floor data from the csv file
   function _extractFloorData(building){
     floor = [];
-    for (var singleRow = 0; singleRow < csvDataRows.length; singleRow++) {
-      rowCells = csvDataRows[singleRow];
+    for (var i = 0, j = csvDataRows.length; i < j; i++) {
+      rowCells = csvDataRows[i];
       if(rowCells !== "" && rowCells.split("*")[1] == building){
         floor.push(rowCells.split("*")[2]);
       }

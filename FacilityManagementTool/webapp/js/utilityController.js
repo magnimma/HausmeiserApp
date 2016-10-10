@@ -7,7 +7,6 @@ var UtilityController = (function() {
 
       
       //Variable containing the starting time of the logging process
-      startTime = 0,
       start = 0,
       end = 0,
 

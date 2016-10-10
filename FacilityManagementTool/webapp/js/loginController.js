@@ -97,14 +97,14 @@ var LoginController = (function() {
       if(_checkStringFormat(ndsUserInput)){
         _pyCheckNDS(ndsUserInput)
       }else{
-        alert("Kein valider NDS-Account. (z.B.: abc12345)");
+        FMApp.alert("Kein valider NDS-Account. (z.B.: abc12345)");
       }
     }else{
       ndsUserInput = $(".login-input")[0].value;
       if(_checkStringFormat(ndsUserInput)){
         _pyCheckNDS(ndsUserInput)
       }else{
-        alert("Not a valid nds account. (e.g.: abc12345)");
+        FMApp.alert("Not a valid nds account. (e.g.: abc12345)");
       }
     }
   }
@@ -137,9 +137,9 @@ var LoginController = (function() {
   //Show an error message when the entered NDS account doesnt exist
   function _showNDSErrorMessage(){
     if(document.documentElement.lang == "de"){
-      alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
+      FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
     }else{
-      alert("Not a correct NDS-account. Please try again.");
+      FMApp.alert("Not a correct NDS-account. Please try again.");
     }
   }
 
@@ -162,7 +162,7 @@ var LoginController = (function() {
           UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(loginUrl);
         }else{
-          alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
+          FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
         }
       }else{
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
@@ -170,7 +170,7 @@ var LoginController = (function() {
           UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(loginUrl);
         }else{
-          alert("Not a correct NDS-account. Please try again.");
+          FMApp.alert("Not a correct NDS-account. Please try again.");
         }
       }
     }
@@ -187,9 +187,9 @@ var LoginController = (function() {
       UtilityController.measureStep("Valid User Info entered", 1);
       mainView.router.loadPage(estimateURL);
     }else if (document.documentElement.lang == "de"){
-      alert("Bitte füllen Sie alle Felder korrekt aus.");
+      FMApp.alert("Bitte füllen Sie alle Felder korrekt aus.");
     }else{
-      alert("Please fill all fields correctly.");      
+      FMApp.alert("Please fill all fields correctly.");      
     }
   }
 
