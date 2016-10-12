@@ -1,0 +1,76 @@
+#languageSelect { 
+	font-size: 14px; 
+	color: #6d6d72;
+}
+
+.content-info-text{
+	text-align: center;
+}
+
+.ionav{
+	vertical-align:middle;
+}
+
+.settings-text{
+	font-size: 14px;
+}
+
+.center{
+	position: relative;
+	display: block;
+	margin: 5px auto;
+}
+
+.icon-form-camera{
+	width:24px;
+	height:24px;
+	background-image:url(../img/photo-camera.png)
+}
+
+.icon-form-room{
+	width:24px;
+	height:24px;
+	background-image:url(../img/opened-door-aperture.png)
+}
+
+.icon-form-floor{
+	width:24px;
+	height:24px;
+	background-image:url(../img/layers.png)
+}
+
+.icon-form-building{
+	width:24px;
+	height:24px;
+	background-image:url(../img/ic_store_black_24px.svg)
+}
+
+.icon-form-group{
+	width:24px;
+	height:24px;
+	background-image:url(../img/group.png)
+}
+
+/* (default) Hide ther german localization */
+[data-l11n=de] {
+    display: none;
+}
+
+/* If lang attribute = de > hide the english localization */
+:lang(de) > [data-l11n] {
+    display: none;
+}
+
+/* If lang attribute = de > show the german localization */
+:lang(de) > [data-l11n=de] {
+    display: block;
+}
+
+/* English (default language) */
+[data-i18n]::before {
+   content: attr(data-i18n);
+}
+/* German */
+[data-i18n-de]:lang(de)::before {
+   content: attr(data-i18n-de);
+}

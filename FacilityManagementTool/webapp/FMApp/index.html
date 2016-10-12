@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de" manifest="FMApp.appcache">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <title>Facility Management App</title>
+  </head>
+  <!-- Check for available account info and set the correct language in the settings panel-->
+  <body onload="UtilityController.init(); LoginController.setNDSAccount(); LoginController.checkLoginStatus(); SettingsController.setDefaultLanguage(); SettingsController.init()">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <!-- We have home navbar without left link-->
+          <div class="center">
+            <p data-i18n="Settings" data-i18n-de="Einstellungen"></p>
+          </div>
+        </div>
+      </div>
+      <div class="content-block">
+        <div class="list-block">
+          <ul>
+            <li>
+              <div class="item-content">
+                <div class="item-inner"> 
+                  <div class="item-title label">
+                    <span class="settings-text" data-i18n="User" data-i18n-de="Benutzer"></span>
+                  </div>
+                  <div class="item-user">
+                    <p class="settings-text menu-item-user-name" data-l11n>Please log in</p>
+                    <p class="settings-text menu-item-user-name" data-l11n="de">Bitte anmelden</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-logout">
+                <button class="button center menu-item-user-logout" disabled="true" data-l11n>Logout</button>
+                <button class="button center menu-item-user-logout" disabled="true" data-l11n="de">Abmelden</button>
+              </div>
+            </li>
+            <li>
+              <div class="item-content">
+                <div class="item-inner"> 
+                  <div class="item-title label">
+                    <span class="settings-text" data-i18n="Language" data-i18n-de="Sprache"></span>
+                  </div>
+                    <div class="item-language">
+                      <select id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="de">Deutsch</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-logout">
+                <a href="help.html" class="button center" data-l11n>Help</a>
+                <a href="help.html" class="button center" data-l11n="de">Hilfe</a>
+              </div>
+            </li>
+            <li>
+              <div class="item-logout">
+                <a href="#" class="button center menu-item-back close-panel" data-l11n>Back</a>
+                <a href="#" class="button center menu-item-back close-panel" data-l11n="de">Zurück</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+        <!-- Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <!-- We have home navbar without left link-->
+            <div class="center sliding">
+              <p data-i18n="Login" data-i18n-de="Anmelden"></p>
+            </div>
+            <div class="right">
+              <!-- Right link contains only icon - additional "icon-only" class--><a href="#" onclick="SettingsController.setDefaultLanguage();" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block">
+                <p class="content-info-text" data-i18n="Please log in with a valid NDS-Account to report a disturbance using the specific app form." data-i18n-de="Bitte melden Sie sich mit einer gültigen NDS-Kennung an, um eine Störung mithilfe eines app eigenen Formulars zu melden."></p>
+              </div>
+              <div class="content-block-login">
+                <div class="list-block">
+                  <ul>
+                    <li>
+                      <div class="item-content">
+                      <div class="item-media"><i class="icon icon-form-name"></i></div>
+                      <div class="item-inner"> 
+                        <div class="item-input">
+                          <span data-l11n>
+                            <input class="login-input" type="text" placeholder="NDS-Account"/>
+                          </span>
+                          <span data-l11n="de">
+                            <input class="login-input" type="text" placeholder="NDS-Kennung"/>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    </li>
+                  </ul>
+                </div> 
+                <!--a class="login" href="login.html"-->
+                <button class="button center" data-l11n onclick="LoginController.checkUserNDS()">Login</button>
+                <button class="button center" data-l11n="de" onclick="LoginController.checkUserNDS()">Anmelden</button>
+                <!--/a-->
+              </div>
+              <div class="content-block">
+                <p class="content-info-text" data-i18n="Or call the technical centre immediately." data-i18n-de="Oder rufen Sie die technische Zentrale direkt an."></p>
+              </div>
+              <div class="content-block">
+                <a href="tel:09419433333" class="external button center button-big button-fill color-red" data-i18n="Call Tel.: 09419433333" data-i18n-de="Anruf Tel.: 09419433333"></a>
+              </div>
+              <div class="content-block">
+                <p class="content-info-text" data-i18n="Die Daten werden zum Zwecke der Behebung technischer Störfälle
+                gemäß Art 16 BayDSG erhoben und nicht weitergegeben.
+                Es gelten die Vorschriften des Bayerischen Datenschutzgesetzes." data-i18n-de="Die Daten werden zum Zwecke der Behebung technischer Störfälle
+                gemäß Art 16 BayDSG erhoben und nicht weitergegeben.
+                Es gelten die Vorschriften des Bayerischen Datenschutzgesetzes."></p>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/libs/framework7.min.js"></script>
+    <!--
+    We need the following script to include styles depending on device's OS
+    It is important to keep it as inline script or in separate JS file with this code only!
+    -->
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/settingsController.js"></script>
+    <script type="text/javascript" src="js/utilityController.js"></script>
+    <script type="text/javascript" src="js/dataController.js"></script>
+    <script type="text/javascript" src="js/loginController.js"></script>
+    <script type="text/javascript" src="js/disturbanceController.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/libs/jquery.min.js"><\/script>')</script>
+  </body>
+</html>

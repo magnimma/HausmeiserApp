@@ -1,0 +1,58 @@
+CACHE MANIFEST
+# v1 2011-08-14
+# Here are the files specified that should be cached for offline browsing
+#html files
+index.html
+appreciation.html
+disturbance.html
+estimation.html
+help.html
+login.html
+picture.html
+
+#js files
+js/Main.js
+js/app.js
+js/dataController.js
+js/disturbanceController.js
+js/utilityController.js
+js/loginController.js
+js/settingsController.js
+js/libs/jquery.min.js
+js/libs/framework7.js
+js/libs/framework7.min.js
+
+#css files
+css/framework7.ios.colors.min.css
+css/framework7.ios.min.css
+css/framework7.ios.rtl.min.css
+css/framework7.material.colors.min.css
+css/framework7.material.min.css
+css/framework7.material.rtl.min.css
+css/my-app-ios.css
+css/my-app-material.css
+
+#csv files
+csv/raumliste.csv
+csv/fachgruppenSchluesselwoerter.csv
+
+#icon files
+img/favicon.ico
+img/group.png
+img/i-form-comment-ios.svg
+img/i-form-comment-material.svg
+img/i-form-name-ios.svg
+img/i-form-name-material.svg
+img/i-form-settings-ios.svg
+img/i-form-settings-material.svg
+img/i-form-tel-ios.svg
+img/i-form-tel-material.svg
+img/ic_home_black_24px.svg
+img/ic_store_black_24px.svg
+img/layers.png
+img/opened-door-aperture.png
+img/photo-camera.png
+
+# Fallback content
+FALLBACK:
+/ /~gog59212/FMApp/offline.html
