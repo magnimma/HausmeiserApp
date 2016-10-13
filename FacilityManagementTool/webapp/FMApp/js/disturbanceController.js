@@ -1,19 +1,20 @@
 //The disturbanceController determines and checks the necessary disturbance data and finally sends the disturbance
-//The user can enter local information according the disturbance, assign a sepcialist group and enter a brief description
-//Optionally the user can choose to send an email with an attachement to provide further information according the disturbance, which leads the user to an extra screen
-//To assist the user to enter the necessary disturbance information, the disturbanceController fetches suitable local and specialist group information from a csv and a json file
+//The user can enter room information according to the disturbance, assign a sepcialist group and enter a brief description
+//Optionally the user can choose to send images as attachement to provide further information according to the disturbance
+//To assist the user to enter the necessary disturbance information, the disturbanceController fetches suitable local and 
+//specialist group information from csv files and tries to automatically assign the correct special group
+//If the user started the webapp via QR-code the app automatically enters the according building, floor and room data
 var DisturbanceController = (function() {
 
-      //Links to data and html files
+      //Variables containing pages to redirect
   var pictureURL = "picture.html",
       appreciationURL = "appreciation.html",
+      offlineURL = "offline.html",
+      //Variables containing links to needed csv files
       localSpecialistGroupCsv = "csv/fachgruppenSchluesselwoerter.csv",
       localBuildingCsv = "csv/raumliste.csv",
-      offlineURL = "offline.html",
+      //Variables containing the server Url
       srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-
-      //Variable for the building data, containing the available buildings and the according name
-      buildingGrpMap = {},
       
       //Variables containing the building, floor and room data
       building = [],
@@ -49,16 +50,6 @@ var DisturbanceController = (function() {
       descRegex = /^[A-Za-z0-9_,;. +-ß]{1,76}$/,
       tokenRegex = /\S+/g,
 
-      //Variabel containing the set of responsible special groups for a specific building
-      responsibleSpecialGroups,
-      //Variable containing the responsible special group for a specific building
-      respSpecialGroup,
-      
-      //Variable containing the number of disturbances sent online
-
-      //Contains the different special groups data for the different building in json format
-      jsonData,
-
       //Variable containing an error message which is shown when the user
       //hasnt completely filled in all necessary fields of a disturbance
       errMsg = "Following fields are missing: \n",
@@ -68,33 +59,27 @@ var DisturbanceController = (function() {
 
       //Variables containing all the information needed to submit a valid disturbance report
       userNDS = "abc12345",
-      placeholderWebId = 1,
+      disturbanceId = 1,
       userName = "Max Mustermann",
       userMail = "example@mail.com",
       userPhone = "1234",
-      //Variable containing the current date
-      //Format: dd.mm.yyyy hh:mm
       currDate = "01.01.1991 01:01",
       description = "Disturbance description here",
-      roomCode = "BY.C.12345",
       specGrp = "Specialist group here",
 
       //Variable containing the match rating of each specialist group according to the description text
       matchRatings = [0, 0, 0, 0, 0, 0],
 
       //Array containing the keywords for automatic word detection for specialists 
-      specialistKeywords = [];   
+      specialistKeywords = [],
 
-  //Initiate the disturbanceController when the disturbance.html is iniatiated
+      //Variable to check whether a specialist group keyword was found in the description text
+      keywordFound = false; 
+
+  //Initiate the disturbanceController when the disturbance.html is initiated
   function init(){
     _setupUIListener();
     _fetchCsvData();
-  }
-
-  //Fetch the building and specialist group data from csv files
-  function _fetchCsvData(){
-    _fetchBuildingData();
-    _fetchSpecialistGroupData();
   }
 
   //Setup the UI element listener
@@ -109,62 +94,17 @@ var DisturbanceController = (function() {
     //Add click listener to the check disturbance buttons
     $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
-    //Add change listener to the description textarea
+    //Add change listener to the description textareas
     $(".desc-text")[0].addEventListener("change", _descChanged, false);
     $(".desc-text")[1].addEventListener("change", _descChanged, false);
   }
 
-  function _descChanged(){
-    //Check whether a specialist group keyword was found in dex description text
-    var keywordFound = false,
-        index = -1;  
-
-    //Save the correct description text (according to the app language) into an array of lowercase tokens
-    if(document.documentElement.lang == "de"){
-      description = $(".desc-text")[1].value.toLowerCase().match(tokenRegex);
-      activeSelectField = $(".groupSelect")[1];
-    }else{
-      description = $(".desc-text")[0].value.toLowerCase().match(tokenRegex);
-      activeSelectField = $(".groupSelect")[0];
-    }
-
-    //Iterate over the description text tokens
-    //Check every token whether it matches any specialist keyword
-    for(var i = 0, descLen = description.length; i < descLen; i ++){
-      //Iterate over the matchRatings/specialistGroup array
-      for(var j = 0, matchLen = matchRatings.length; j < matchLen; j++){
-        //Check whether the current token exists in the specific array of keywords
-        if(specialistKeywords[j].indexOf(description[i]) != -1){
-          keywordFound = true;
-          matchRatings[j]++;
-          console.log(matchRatings + description[i] + specialistKeywords[j]);
-        }
-      }
-    }
-
-    //If a keyword was found set the specialist group accordingly
-    //and reset the keywordFound Variable and the matchRatings array  
-    if(keywordFound != false){
-      activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
-      keywordFound = false;
-      matchRatings.fill(0);
-    }
+  //Fetch the building and specialist group data from csv files
+  function _fetchCsvData(){
+    _fetchBuildingData();
+    _fetchSpecialistGroupData();
   }
 
-  // Returns the index of the highest value of an given array
-  function _getMaxIndex(array) {
-    var maxValue = array[0],
-        maxIndex = 0;
-
-    for (var i = 1, len = array.length; i < len; i++) {
-        if (array[i] > maxValue) {
-            maxIndex = i;
-            maxValue = array[i];
-        }
-    }
-    return maxIndex;
-  }
-    
   //Fetch the building, room and floor csv data file
   function _fetchBuildingData(){
     $.ajax({
@@ -181,8 +121,53 @@ var DisturbanceController = (function() {
     }).done(_parseSpecialistGroupData);
   }
 
-  //Check whether the user provided a roomcode by starting
-  //the app per QR code
+  //Check whether the entered description contains keywords that match
+  //one of the available specialist groups and set the according specialist group
+  function _descChanged(){ 
+    _saveDescText();
+    _checkDescText();
+    _setSpGroup();
+  }
+
+  //If keywords were found set the specialist group accordingly
+  //and reset the keywordFound variable and the matchRatings array 
+  function _setSpGroup(){ 
+    if(keywordFound != false){
+      activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
+      keywordFound = false;
+      matchRatings.fill(0);
+    }
+  }
+
+  //Iterate over the description text tokens
+  //Check every token whether it matches any specialist keyword
+  function _checkDescText(){
+    for(var i = 0, descLen = description.length; i < descLen; i ++){
+      //Iterate over the matchRatings/specialistGroup array
+      for(var j = 0, matchLen = matchRatings.length; j < matchLen; j++){
+        //Check whether the current token exists in the specific array of keywords
+        if(specialistKeywords[j].indexOf(description[i]) != -1){
+          keywordFound = true;
+          matchRatings[j]++;
+          console.log(matchRatings + description[i] + specialistKeywords[j]);
+        }
+      }
+    }
+  }
+
+  //Save the correct description text (according to the app language)
+  //into an array of lowercase tokens
+  function _saveDescText(){
+    if(document.documentElement.lang == "de"){
+      description = $(".desc-text")[1].value.toLowerCase().match(tokenRegex);
+      activeSelectField = $(".groupSelect")[1];
+    }else{
+      description = $(".desc-text")[0].value.toLowerCase().match(tokenRegex);
+      activeSelectField = $(".groupSelect")[0];
+    }
+  }
+
+  //Check whether the user provided a roomcode by starting the app per QR code
   function _checkForQRCode(){
     if(sessionStorage.getItem("qrCode")){
       _parseRoomCode();
@@ -196,7 +181,6 @@ var DisturbanceController = (function() {
         activeBuilding = csvDataRows[i].split("*")[1];
         activeFloor = csvDataRows[i].split("*")[2];
         activeRoom = csvDataRows[i].split("*")[3];
-        console.log("Rauminfo: " + activeBuilding + activeFloor + activeRoom);
         _updateSelectFields();
         break;
       }
@@ -217,15 +201,12 @@ var DisturbanceController = (function() {
   //Format: Altes Finanzamt, ALFI*Altes Finanzamt, ALFI*_0  EG*001 Lesesaal slow.*BY.R.L.2700.2700.0.01*0000000000004O1E..
   //Extract the building data
   //Format: ["Altes Finanzamt, ALFI", "Bibliothek, Tiefgarage Ost, TGAO", ..]
-  //Save the general and the exact building data together in a map
-  //Format: {Altes Finanzamt, ALFI: "Altes Finanzamt, ALFI", Bibliothek, Tiefgarage Ost, TGAO: "Bibliothek, Tiefgarage Ost, TGAO", ..}
   function _parseBuildingData(data) {
     csvDataRows = data.split(/\r?\n|\r/);
     for (var i = 0, j = csvDataRows.length; i < j; i++) {
       rowCells = csvDataRows[i];
       if(rowCells !== ""){
         building.push(rowCells.split("*")[1]);
-        buildingGrpMap[rowCells.split("*")[1]] = rowCells.split("*")[0];
       }
     }
     _appendBuildingData(_uniqArray(building));
@@ -240,7 +221,6 @@ var DisturbanceController = (function() {
         specialistKeywords.push(rowCells.split(","));
       }
     }
-    console.log(specialistKeywords);
   }
 
   //React to user specialist group selections and log it
@@ -250,7 +230,7 @@ var DisturbanceController = (function() {
   }
 
   //React to user building selections
-  //Extract the according special groups and the floor data
+  //Extract the according floor data and enable the floor select field
   function _buildingChanged(){
     console.log("LOG: Building chosen");
     UtilityController.measureStep("Building chosen", 2);
@@ -262,21 +242,23 @@ var DisturbanceController = (function() {
   }
 
   //React to user floor selections
-  //Save the building and floor data and extract the according room data 
+  //Extract the according room data 
   function _floorChanged(){
     console.log("LOG: Floor chosen");
     UtilityController.measureStep("Floor chosen", 3);
 
+/*TODO:LÖSCHEN
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
     activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
+*/
 
     _extractRoomData(activeBuilding, activeFloor);
   }
 
   //React to user room selections
-  //Fetch the building, floor and room data and extract the roomCode
+  //Fetch the building, floor and room data
   function _roomChanged(){
     console.log("LOG: Room chosen");
     UtilityController.measureStep("Room chosen", 4);
@@ -292,11 +274,10 @@ var DisturbanceController = (function() {
   }
 
   //Check whether the user provided all the necessary disturbance information
-  //If yes: save the provided information, extract the special group and submit the disturbance 
-  //Else show error alert
+  //If yes: save the provided information and submit the disturbance 
+  //Else show an error alert
   function _checkDisturbanceData(){
     err = false;   
-    console.log();
     if(document.documentElement.lang == "de"){
       errMsg = "Folgende Felder fehlen oder sind mit ungültigem Inhalt gefühlt: ";
       activeSelectField = $(".groupSelect")[1];
@@ -337,8 +318,6 @@ var DisturbanceController = (function() {
       sessionStorage.setItem("description", activeTextField.value);
     }
     if(err === false){
-      UtilityController.measureStep("Disturbance reported");
-      //TODO:löschen _extractSpecialGroup();
       _fetchWebId();
     }else{
       FMApp.alert(errMsg, "Facility Management App");
@@ -365,15 +344,15 @@ var DisturbanceController = (function() {
     }
   }
 
-  //Fetch the web id for the currently created disturbance report
+  //Fetch the disturbance id for the currently created disturbance report
+  //Show an error alert if the user got no active internet connection
   function _fetchWebId(){
     if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
         url: srvPhpURL + "distIdCount.php",
         success: function(data) {
-          placeholderWebId = $.parseJSON(data);
-          console.log(placeholderWebId);
-          sessionStorage.setItem("webId", placeholderWebId);
+          disturbanceId = $.parseJSON(data);
+          sessionStorage.setItem("webId", disturbanceId);
           _submitDisturbance();
         }
       });
@@ -383,29 +362,13 @@ var DisturbanceController = (function() {
   }
 
   //Submit the disturbance with all the necessary data
-  //TODO: disturbance String und alert rausschmeißen
   function _submitDisturbance(){
     activeCheckBox = document.getElementById("picCheckbox");
-    disturbance = "";
 
-    //Gather all the data needed for the disturbance report
-    userNDS = localStorage.getItem("ndsAccount");
-    userName = localStorage.getItem("userName");
-    userMail = localStorage.getItem("userMail");
-    userPhone = localStorage.getItem("userPhone");
-    //Variable containing the current date
-    //Format: dd.mm.yyyy hh:mm
-    currDate = _getCurrDate();
-    //Mark the disturbance descritpion with a preceeding '<A> - ', if the user added an attachement to the report
-    if(activeCheckBox.checked === true){
-      description = "<A> - " + sessionStorage.getItem("description");
-    }else{
-      description = sessionStorage.getItem("description");
-    }
-    specGrp = sessionStorage.getItem("specialGroup");
+    _gatherDistData();
 
     //Check whether the user has internet connection
-    //If yes: submit the disturbance report
+    //If yes: submit the disturbance report to the php script
     //If no: Show the fallback offline page
     if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
@@ -418,21 +381,45 @@ var DisturbanceController = (function() {
                 "room": activeRoom, "specialGroup": specGrp}),
         success: function(data) {
           result = data;
-          console.log(result);
+          //Check whether an error occured while submitting the disturbance 
+          if(result[0] == false){
+            UtilityController.measureStep("Disturbance reported");
+            //Show a success alert
+            FMApp.alert(result[1]);
+            //Send the log data to the webserver
+            UtilityController.sendLog();
+            //If the user wants to send an aditional picture of the disturbance redirect to picture.html
+            //else redirect to appreciation.html 
+            if(activeCheckBox.checked === true){
+              mainView.router.loadPage(pictureURL);
+            }else{
+              mainView.router.loadPage(appreciationURL);
+            }             
+          }else{
+            //Show a success alert
+            FMApp.alert(result[1]);
+          }
         }
       });
-      //Send the log data to the webserver
-      UtilityController.sendLog();
-      //If the user wants to send an aditional picture of the disturbance
-      //move on to picture.html
-      if(activeCheckBox.checked === true){
-        mainView.router.loadPage(pictureURL);
-      }else{
-        mainView.router.loadPage(appreciationURL);
-      }
     }else{
       mainView.router.loadPage(offlineURL);
     }
+  }
+
+  //Gather all the data needed for the disturbance report
+  function _gatherDistData(){
+    userNDS = localStorage.getItem("ndsAccount");
+    userName = localStorage.getItem("userName");
+    userMail = localStorage.getItem("userMail");
+    userPhone = localStorage.getItem("userPhone");
+    //Mark the disturbance descritpion with a preceeding '<A> - '
+    //if the user wants to add attachements to the report
+    if(activeCheckBox.checked === true){
+      description = "<A> - " + sessionStorage.getItem("description");
+    }else{
+      description = sessionStorage.getItem("description");
+    }
+    specGrp = sessionStorage.getItem("specialGroup");
   }
 
   //Validate the disturbance description
@@ -444,28 +431,6 @@ var DisturbanceController = (function() {
     }
     console.log("validation wrong");
     return true;
-  }
-
-  //Get the current date and time and return it as string
-  //Format: dd.mm.yyyy hh:mm
-  function _getCurrDate(){
-    var today = new Date(),
-        dd = today.getDate(),
-        mm = today.getMonth()+1, //January is 0!
-        yyyy = today.getFullYear();
-        hh = today.getHours();
-        minmin = today.getMinutes();
-
-    if(dd<10) {
-        dd="0"+dd
-    } 
-
-    if(mm<10) {
-        mm="0"+mm
-    } 
-
-    today = dd + "." + mm + "." + yyyy + " " + hh + ":" + minmin;
-    return today;
   }
 
   //Extract the necessary room data from the csv file
@@ -601,6 +566,20 @@ var DisturbanceController = (function() {
       activeSelectField.appendChild(newOption);
     }
     _checkForQRCode();
+  }
+
+  //Return the index of the highest value of an given array
+  function _getMaxIndex(array){
+    var maxValue = array[0],
+        maxIndex = 0;
+
+    for (var i = 1, len = array.length; i < len; i++){
+      if (array[i] > maxValue){
+        maxIndex = i;
+        maxValue = array[i];
+      }
+    }
+    return maxIndex;
   }
 
   //Delete the redundant items of an array

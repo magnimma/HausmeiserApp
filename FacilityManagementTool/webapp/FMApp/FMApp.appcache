@@ -39,8 +39,7 @@ csv/fachgruppenSchluesselwoerter.csv
 #icon files
 img/favicon.ico
 img/group.png
-img/i-form-comment-ios.svg
-img/i-form-comment-material.svg
+img/text.jpeg
 img/i-form-name-ios.svg
 img/i-form-name-material.svg
 img/i-form-settings-ios.svg
@@ -51,7 +50,7 @@ img/ic_home_black_24px.svg
 img/ic_store_black_24px.svg
 img/layers.png
 img/opened-door-aperture.png
-img/photo-camera.png
+img/camera.jpeg
 
 # Fallback content
 FALLBACK:

@@ -1,10 +1,8 @@
 //The app.js determines whether the used device is an iOS or an android device
 //and adjusts the appearance of the app accordingly
-//Furthermore it initializes Framework7 specific page callbacks 
-var isAndroid = Framework7.prototype.device.android/* === true*/;
-var isIos = /*Framework7.prototype.device.ios ===*/ true;
-//isAndroid = true;
-//isIos = false;
+//Furthermore it initializes the Framework7, its mainview and specific page callbacks 
+var isAndroid = Framework7.prototype.device.android;
+var isIos = true;
 
 console.log(isAndroid);
 console.log(isIos);
@@ -50,7 +48,7 @@ var FMApp = new Framework7({
     }
 });
  
-// Init View
+//Init mainView
 var mainView = FMApp.addView(".view-main", {
     dynamicNavbar: true
 });
@@ -59,27 +57,27 @@ _initPageCallbacks();
 
 function _initPageCallbacks(){
   FMApp.onPageBeforeInit("disturbance", function (page) {
-    //Fetch the building, floor and room data before the disturbance page is initialized
+    //Initiate the disturbanceController before the disturbance page is initialized
     DisturbanceController.init();
   });
 
   FMApp.onPageBeforeAnimation("index", function (page) {
-    //Set the user"s NDS-Account when the index.html is loaded and reday to animate
+    //Set the user"s NDS-Account when the index page is loaded and reday to animate
     LoginController.setNDSAccount();
   });
 
   FMApp.onPageInit("picture", function (page) {
-    //Initiate the datacontroller when the picture.html is loaded and reday to animate
+    //Initiate the datacontroller when the picture page was initialized
     DataController.init();
   });
 
   FMApp.onPageInit("login", function (page) {
-    //Initiate the login and the settingsController after the login.html was initialized
+    //Initiate the loginController when the login page was initialized
     LoginController.init();
   });
 
   FMApp.onPageInit("index", function (page) {
-    //Trigger a pageInit event for the index.html afterwards it was initialized
+    //Trigger a pageInit event for the index page when it was initialized
   }).trigger();
 
 }

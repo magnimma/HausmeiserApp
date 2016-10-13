@@ -2,22 +2,24 @@
 
 //Upload image files to the server
 
-//The URL to fetch the current dist id
-define("countURL", "http://www-app.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/count");
+//The id of the disturbance report the uploaded files are related to
+$disturbanceId = $_GET["distId"];
 
 //Number of attachements for a particular disturbance
 $attachCount = 1;
+
 //Target directory to save the files on the server
 $target_dir = "../../../Anhangsverzeichnis/Bilder/";
 $temp = explode(".", $_FILES["fileToUpload"]["name"]);
-//Fetch the current dist id from the UR server and save it to $fileContent
-$fileContent = file_get_contents(countURL);
+
 //Rename the image file according to the current disturbance id of the UR server
-$newfilename = $fileContent . "(" . $attachCount . ")." . end($temp);
+$newfilename = $disturbanceId . "(" . $attachCount . ")." . end($temp);
 $target_file = $target_dir . $newfilename;
+
 //Set the variable which checks whether the file is allowed to be saved to true
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+
 // Check if image file is an actual image or fake image
 if(isset($_POST["submit"])) {
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -38,14 +40,13 @@ while (file_exists($target_file)) {
 }
 
  // Check file size
-if ($_FILES["fileToUpload"]["size"] > 2000000) {
+if ($_FILES["fileToUpload"]["size"] > 5000000) {
     echo "Sorry, your file is too large.";
     $uploadOk = 0;
 }
 
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
     echo "Sorry, only JPG, JPEG & PNG files are allowed.";
     $uploadOk = 0;
 }

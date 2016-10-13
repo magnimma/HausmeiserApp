@@ -24,7 +24,7 @@
 .icon-form-camera{
 	width:24px;
 	height:24px;
-	background-image:url(../img/photo-camera.png)
+	background-image:url(../img/camera.jpeg)
 }
 
 .icon-form-room{
@@ -43,6 +43,12 @@
 	width:24px;
 	height:24px;
 	background-image:url(../img/ic_store_black_24px.svg)
+}
+
+.icon-form-text{
+	width:24px;
+	height:24px;
+	background-image:url(../img/text.jpeg)	
 }
 
 .icon-form-group{

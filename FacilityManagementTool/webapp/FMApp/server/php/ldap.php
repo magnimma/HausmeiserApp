@@ -9,7 +9,7 @@ define("ndsRegex", "/^[a-z]{3}[0-9]{5}$/");
 $nds_account = $_POST["nds"];
 
 //Check whether the given parameter is a valid NDS-account
-if(!preg_match("ndsRegex", $nds_account)){
+if(preg_match(ndsRegex, $nds_account)){
     //Connect to the UR LDAP server
     $ds=ldap_connect("ldaps://ldap.ur.de:636");
 }else{

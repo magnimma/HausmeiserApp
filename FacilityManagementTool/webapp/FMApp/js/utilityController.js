@@ -1,17 +1,14 @@
-//The loggingController loggs the time that the user needs to reach the key steps of the disturbance report
-//Steps: 
+//The utilityController loggs the time that the user needs to reach the key steps of the disturbance report
+//Steps: nds login, user inifo login, disturbance estimation, building-, floor-, room entered, disturbance submitted
+//Furthermoreit sends the log data via ajax-request to the php server and checks for an active internet connection
 var UtilityController = (function() {
 
       //Variable containing the server URL
   var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
 
-      
-      //Variable containing the starting time of the logging process
+      //Variable containing the start/end time of the logging process
       start = 0,
       end = 0,
-
-      //Variable containing the current date
-      date = "",
 
       //Variable containing the current logging step
       currentAction = [],
@@ -32,13 +29,12 @@ var UtilityController = (function() {
 
   //Measure the current step and log it
   function measureStep(stepName, stepNumber){
-    //console.log(start);
     end = new Date().getTime();
-    //Push to the log data to an array
+    //Push the log data(timestamp, stepname, time needed) to an array
     currentAction.push(new Date(Math.floor(Date.now())));
     currentAction.push(stepName);
     currentAction.push((end - start)/1000);
-    //Push the single action log to an array containing all the actions
+    //Push the single action log to an array containing all action logs
     userActions[stepNumber] = currentAction;
     //Reset the sinle action array
     currentAction = [];
@@ -46,7 +42,7 @@ var UtilityController = (function() {
     start = new Date().getTime();
   }
 
-  //Send the log array to the webserver
+  //Send the log data array to the webserver
   function sendLog(){
     timestamp = userActions[0][0];
     userActions = JSON.stringify(userActions);
@@ -60,7 +56,7 @@ var UtilityController = (function() {
     });
   }
 
-  //Check whether the user has an internet connection or not
+  //Check whether the user has an active internet connection
   function checkOnlineStatus(){
     status = navigator.onLine;
     console.log("online: " + status);

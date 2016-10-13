@@ -1,17 +1,21 @@
-//The dataController is responsible for the mail attachements the user can send to further describe a disturbance
-//It assists the user to take pictures of the disturbance and to send an email including these pictures
+//The dataController handles the user file uploads
+//It sends the chosen attachement files via Ajax-Request to the php server and shows an error/success alert
 var DataController = (function() {
 
-  //Variable containing some needed URLs
+      //Variable containing the server Url
   var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-      appreciationURL = "appreciation",
-      offlineURL = "offline",
+      //Variable containing pages to redirect
+      appreciationURL = "appreciation.html",
+      offlineURL = "offline.html",
 
       //Variable containing a file input UI element 
       myInput,
 
       //Variable containing a button UI element 
-      activeButton;      
+      activeButton,   
+
+      //Variable containing the disturbance id for the current disturbance report
+      disturbanceId = 1;
 
   //Initiate the dataController and set the UI element listeners
   function init() {
@@ -20,14 +24,15 @@ var DataController = (function() {
     $("#fileinfo").submit(function(e) {
       e.preventDefault();
     });
-    //Initiate click listener for the send attachement buttons and the take new picture buttons
-    $(".add-attachement")[0].addEventListener("click", _takePic, false);
-    $(".add-attachement")[1].addEventListener("click", _takePic, false);
+    //Set click listener for the add-attachement buttons
+    $(".add-attachement")[0].addEventListener("click", _triggerClick, false);
+    $(".add-attachement")[1].addEventListener("click", _triggerClick, false);
+    //Set change listener for the attachement input field
     $(".attachement-input")[0].addEventListener("change", _attachementChosen, false);
   }
 
   //Rename the add attachement button element when the user has chosen an disturbance attachement
-  //Enable the Submit disturbance button
+  //Enable the Submit attachement button
   function _attachementChosen(){
     try{
       activeButton = $(".add-attachement")[0];
@@ -44,24 +49,24 @@ var DataController = (function() {
   }
 
   //Rename the add attachement button element when the user has uploaded an disturbance attachement
-  //Disable the Submit disturbance button
-function _resetUIElements(){
-  activeButton = $(".add-attachement")[0];
-  activeButton.value = "Choose attachement";
-  activeButton = $(".add-attachement")[1];
-  activeButton.value = "Anhang auswählen";
-  activeButton = $(".submit-attachement")[0];
-  activeButton.disabled = true;
-  activeButton = $(".submit-attachement")[1];
-  activeButton.disabled = true;
-}
+  //Disable the Submit attachement button
+  function _resetUIElements(){
+    activeButton = $(".add-attachement")[0];
+    activeButton.value = "Choose attachement";
+    activeButton = $(".add-attachement")[1];
+    activeButton.value = "Anhang auswählen";
+    activeButton = $(".submit-attachement")[0];
+    activeButton.disabled = true;
+    activeButton = $(".submit-attachement")[1];
+    activeButton.disabled = true;
+  }
 
-  //Trigger a click event on the "Take picture" input element
-  function _takePic() {
+  //Trigger a click event on the add-attachement input element
+  function _triggerClick() {
     _fireClick(myInput);
   }
 
-  //Trigger a click event on the "Take picture" input element
+  //Trigger a click event on the add-attachement input element
   function _fireClick(node){
     if (document.createEvent) {
         var evt = document.createEvent("MouseEvents");
@@ -74,14 +79,18 @@ function _resetUIElements(){
     }
   }
 
-  //Try to upload the chosen disturbance attachement
+  //Try to upload the chosen disturbance attachement via Ajax to the php server 
+  //if the user has a internet connection
+  //Attach the current disturbance id to the Url to help the server rename the file appropriately
+  //Redirect to the offline fallback page otherwise
+  //Show an error/success alert
   function uploadAttachement(){
     if(UtilityController.checkOnlineStatus() == "true"){  
       _resetUIElements();
+      disturbanceId = sessionStorage.getItem("webId");
       var fd = new FormData(document.getElementById("fileinfo"));
-      console.log(fd);
       $.ajax({
-        url : srvPhpURL + 'upload.php',
+        url : srvPhpURL + 'upload.php?distId=' + disturbanceId,
         type : 'POST',
         data : fd,
         processData: false,  // tell jQuery not to process the data

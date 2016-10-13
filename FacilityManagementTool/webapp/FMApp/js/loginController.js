@@ -1,16 +1,19 @@
 //The loginController handles the login functionality of the app
-//It asks for the user's NDS account, name, phone and mail data,
+//It asks for the user's nds account, name and phone data,
 //validates the provided information and saves correct data
-//Finally it redirects the user to the estimation.html page,
+//If the webapp was started via QR-code the roomcode is extracted
+//from the URL and saved to the local storage
+//Finally it redirects the user to the estimation page,
 // where the user starts to provide the disturbance information
 var LoginController = (function() {
 
-  //Links to subsequent sites
+      //Variables containing pages to redirect
   var indexURL = "index.html",
       loginUrl = "login.html",
       estimateURL = "estimation.html",
-      urSrvURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
       offlineURL = "offline.html",
+      //Variable containing the server Url
+      urSrvURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
       
       //Variables containing the user name, phone and mail
       userName = "",
@@ -30,10 +33,10 @@ var LoginController = (function() {
       //Variable containing the nds account that the user entered
       ndsUserInput,
 
-      //Variable containing the roomcode that the user provided by starting the app per QR code
+      //Variable containing the roomcode that the user provided by starting the app via QR code
       roomCode,
 
-      //Variable containing the result of the NDS account ldap request of the webserver
+      //Variable containing the result of the nds account ldap request of the webserver
       result;
 
   //Initiate the loginController
@@ -44,16 +47,6 @@ var LoginController = (function() {
     console.log("login");
   }
 
-  //Check whether the user provided a roomcode e.g. 
-  //by entering the app per QR code
-  function _checkForRoomcode(){
-    roomCode = location.search.split("&").toString();
-    if(roomCode.length > 0){
-      roomCode = roomCode.substring(1);
-      sessionStorage.setItem("qrCode", roomCode);
-    }
-  }
-
   //Setup the UI element listener
   function _setupUIListener(){
     //Add click listener to the logout buttons
@@ -61,7 +54,6 @@ var LoginController = (function() {
     $(".menu-item-user-logout")[1].addEventListener("click", _logout, false);
     //Add change listener to the user input fields
     $(".name-input")[0].addEventListener("change", _checkUserName, false);
-    //TODO:löschen $(".mail-input")[0].addEventListener("change", _checkUserMail, false);
     $(".phone-input")[0].addEventListener("change", _checkUserPhone, false);
     $(".phone-input")[1].addEventListener("change", _checkUserPhone, false);
     //Add click listener to the login buttons
@@ -69,8 +61,9 @@ var LoginController = (function() {
     $(".login-button")[1].addEventListener("click", _checkUserInfo, false);
   }
 
-  //Check whether user data(name, phone) is already saved locally and show it
-  //If no user data is saved show available data of the ldap webserver request according to the NDS account that the user entered to login
+  //Check whether user data(name, phone) is already saved locally and show it if available
+  //If no user data is saved show available data of the ldap webserver request according
+  //to the nds account that the user entered to login
   function _setUserData(){
     if(localStorage.getItem("userName")){
       $(".name-input")[0].value = localStorage.getItem("userName");
@@ -85,29 +78,21 @@ var LoginController = (function() {
       $(".phone-input")[1].value = result[3];
     }
   }
-  
-  //Move on to login.html when the user entered a correct NDS account
-  //or show an error alert when the NDS account is wrong
-  function checkUserNDS(){
-    if(document.documentElement.lang == "de"){
-      ndsUserInput = $(".login-input")[1].value.toLowerCase();
-      if(_checkStringFormat(ndsUserInput)){
-        _pyCheckNDS(ndsUserInput)
-      }else{
-        FMApp.alert("Kein valider NDS-Account. (z.B.: abc12345)");
-      }
-    }else{
-      ndsUserInput = $(".login-input")[0].value.toLowerCase();
-      if(_checkStringFormat(ndsUserInput)){
-        _pyCheckNDS(ndsUserInput)
-      }else{
-        FMApp.alert("Not a valid nds account. (e.g.: abc12345)");
-      }
+
+  //Check whether the user provided a roomcode e.g. by entering the app per QR code
+  function _checkForRoomcode(){
+    roomCode = location.search.split("&").toString();
+    if(roomCode.length > 0){
+      roomCode = roomCode.substring(1);
+      sessionStorage.setItem("qrCode", roomCode);
     }
   }
 
-  //Check whether the user entered an existing NDS account
-  //Send it to the responsible python webserver which checks the NDS account
+  //Check whether the user entered an existing nds account
+  //Send a Ldap-request to the python webserver if the user has a running internet connection
+  //Show the offline fallback page otherwise
+  //If the nds account was valid redirect to login page
+  //else show an error alert and enable the nds submit buttons
   function _pyCheckNDS(userAcc){
     if(UtilityController.checkOnlineStatus() == "true"){
      	$.ajax({
@@ -122,6 +107,8 @@ var LoginController = (function() {
           if(result[0] === "true"){
             _NDSInputSuccess();
           }else{
+            $(".button-nds")[1].disabled = false;
+            $(".button-nds")[0].disabled = false;
             _showNDSErrorMessage();
           }
         }
@@ -131,7 +118,7 @@ var LoginController = (function() {
     }
   }
 
-  //Show an error message when the entered NDS account doesnt exist
+  //Show an error message if the checked nds account doesnt exist
   function _showNDSErrorMessage(){
     if(document.documentElement.lang == "de"){
       FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
@@ -140,42 +127,17 @@ var LoginController = (function() {
     }
   }
 
-  //When the user NDS account was valid and exists redirect the user
+  //Redirect to the login page if the entered nds account exists
   function _NDSInputSuccess(){
     console.log("LOG: Correct NDS Login");
     UtilityController.measureStep("Correct NDS Login", 0);
     mainView.router.loadPage(loginUrl);
   } 
 
-  //Move on to login.html when the user is already logged in
-  function checkLoginStatus(){
-    console.log(localStorage.getItem("ndsAccount"));
-    console.log(localStorage.getItem("userPhone"));
-    console.log(localStorage.getItem("userName"));
-    if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
-      if(document.documentElement.lang == "de"){
-        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          console.log("LOG: Correct NDS Login");
-          UtilityController.measureStep("Correct NDS Login", 0);
-          mainView.router.loadPage(loginUrl);
-        }else{
-          FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
-        }
-      }else{
-        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          console.log("LOG: Correct NDS Login");
-          UtilityController.measureStep("Correct NDS Login", 0);
-          mainView.router.loadPage(loginUrl);
-        }else{
-          FMApp.alert("Not a correct NDS-account. Please try again.");
-        }
-      }
-    }
-  }
-
-  //Move on to estimation.html when the user entered a name and a phone number
-  //and show the user name in the left settings panel 
-  //otherwise show an error alert
+  //Check whether the user provided a valid name and phone number
+  //Show an error alert if the data was not valid
+  //Redirect to the estimation page, save the entered user data
+  //and update the options in the settings panel
   function _checkUserInfo(){
     if(_validateName($(".name-input")[0].value) && _checkLangUserPhone()){
       _saveUserData();
@@ -187,15 +149,6 @@ var LoginController = (function() {
       FMApp.alert("Bitte füllen Sie alle Felder korrekt aus.");
     }else{
       FMApp.alert("Please fill all fields correctly.");      
-    }
-  }
-
-  //Set the user NDS-Account when he returns back to index.html
-  function setNDSAccount(){
-    if (document.documentElement.lang == "de"){
-      $(".login-input")[1].value = localStorage.getItem("ndsAccount");
-    }else{
-      $(".login-input")[0].value = localStorage.getItem("ndsAccount");
     }
   }
 
@@ -226,7 +179,7 @@ var LoginController = (function() {
       
   }
 
-  //Logout the user, update the settings UI elements and reaload index.html
+  //Logout the user, update the settings UI elements and reload index page
   function _logout(){
     localStorage.removeItem("ndsAccount");
     localStorage.removeItem("userName");
@@ -236,7 +189,7 @@ var LoginController = (function() {
     document.location.href = indexURL;
   }
 
-  //Enable the logout button and show the user NDS-Account in the settings
+  //Enable the logout button and show the user nds account in the settings panel
   function _enableSettingsUI(){
     $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("ndsAccount");
     $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("ndsAccount");
@@ -244,15 +197,15 @@ var LoginController = (function() {
     $(".menu-item-user-logout")[1].disabled = false;
   }
 
-  //Disable the logout button and show the user NDS-Account in the settings
+  //Disable the logout button and delete the user nds account in the settings panel
   function _disableSettingsUI(){
-    $(".menu-item-user-name")[0].innerHTML = localStorage.getItem("ndsAccount");
-    $(".menu-item-user-name")[1].innerHTML = localStorage.getItem("ndsAccount");
+    $(".menu-item-user-name")[0].innerHTML = "";
+    $(".menu-item-user-name")[1].innerHTML = "";
     $(".menu-item-user-logout")[0].disabled = true;
     $(".menu-item-user-logout")[1].disabled = true;
   }
 
-  //Save the user data(NDS account, name, mail, phone) if the data was valid
+  //Save the user data(nds account, name, mail, phone) to the local storage if the data was valid
   function _saveUserData(){
     if(ndsUserInput != undefined){
       localStorage.setItem("ndsAccount", ndsUserInput);
@@ -272,7 +225,7 @@ var LoginController = (function() {
     }
   }
 
-  //Check whether the user entered a phone number in the right language phone input field
+  //Check whether the user entered a valid phone number
   function _checkLangUserPhone(){
     if(document.documentElement.lang == "de"){
       return _validatePhone($(".phone-input")[1].value);
@@ -291,19 +244,76 @@ var LoginController = (function() {
     return nameRegex.test(name);
   }  
 
-  //check whether the entered user NDS-Account has the correct format 
+  //check whether the entered user nds account is valid
   function _checkStringFormat(inputString) {
     if ((inputString.length > 0) && ndsRegex.test(inputString)) {
         return true;
     }else{
       return false;
     }
-}
+  }
+
+  //Redirect to the login page if the user saved his login information at an earlier date
+  //Show an error alert if the nds account is not valid
+  function checkLoginStatus(){
+    if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
+      if(document.documentElement.lang == "de"){
+        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
+          console.log("LOG: Correct NDS Login");
+          UtilityController.measureStep("Correct NDS Login", 0);
+          mainView.router.loadPage(loginUrl);
+        }else{
+          FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
+        }
+      }else{
+        if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
+          console.log("LOG: Correct NDS Login");
+          UtilityController.measureStep("Correct NDS Login", 0);
+          mainView.router.loadPage(loginUrl);
+        }else{
+          FMApp.alert("Not a correct NDS-account. Please try again.");
+        }
+      }
+    }
+  }
+
+  //Check whether the user entered a valid nds account
+  //If the nds account was valid check whether the entered nds account exists
+  //or show an error alert if the nds account was not valid
+  function checkUserNDS(){
+    console.log("NDS");
+    if(document.documentElement.lang == "de"){
+      ndsUserInput = $(".login-input")[1].value.toLowerCase();
+      if(_checkStringFormat(ndsUserInput)){
+        $(".button-nds")[1].disabled = true;
+        _pyCheckNDS(ndsUserInput);
+      }else{
+        FMApp.alert("Kein valider NDS-Account. (z.B.: abc12345)");
+      }
+    }else{
+      ndsUserInput = $(".login-input")[0].value.toLowerCase();
+      if(_checkStringFormat(ndsUserInput)){
+        $(".button-nds")[0].disabled = true;
+        _pyCheckNDS(ndsUserInput);
+      }else{
+        FMApp.alert("Not a valid nds account. (e.g.: abc12345)");
+      }
+    }
+  }
+
+  //Show the saved user nds account when the index html page body finished loading
+  function setNDSAccount(){
+    if (document.documentElement.lang == "de"){
+      $(".login-input")[1].value = localStorage.getItem("ndsAccount");
+    }else{
+      $(".login-input")[0].value = localStorage.getItem("ndsAccount");
+    }
+  }
 
   return {
     init: init,
+    checkLoginStatus: checkLoginStatus,
     checkUserNDS: checkUserNDS,
-    checkLoginStatus:checkLoginStatus,
     setNDSAccount: setNDSAccount
   };
   

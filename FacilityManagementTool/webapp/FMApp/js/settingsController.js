@@ -1,8 +1,11 @@
 //The settingsController is responsible for the settings panel
-//It changes the app's language and sets the default language at the start
+//It changes the app's language and sets the default language at start
+//Furthermore the user can open the help page
 var SettingsController = (function() {
 
+      //Variable containing the language select form field
   var myLangSelect = document.getElementById("languageSelect"),
+      //Variables containing pages to redirect
       helpURL = "help.html",
       indexURL = "index.html";
 
@@ -12,17 +15,14 @@ var SettingsController = (function() {
     _setupUIListeners();
   }
 
-  //Load the help.html and show the help
+  //Redirect to the help.html
   function _startHelp(){
     mainView.router.loadPage(helpURL);
   }
 
   //Setup the UI element listener
   function _setupUIListeners(){
-    //Add click listener to the help buttons in the settings panel
-    //$(".menu-item-help")[0].addEventListener("click", _startHelp, false);
-    //$(".menu-item-help")[1].addEventListener("click", _startHelp, false);
-    //Add change listener to the language select field
+    //Add change listener to the language select form field
     myLangSelect.addEventListener("change", changeLanguage, false);
   }
 
@@ -31,7 +31,6 @@ var SettingsController = (function() {
   function changeLanguage(){
     document.documentElement.lang = myLangSelect.options[myLangSelect.selectedIndex].value;
     sessionStorage.removeItem("roomCode");
-    console.log("listener");
     localStorage.setItem("lang", document.documentElement.lang);
     mainView.router.load(reload = true);
   }

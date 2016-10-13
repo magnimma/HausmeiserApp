@@ -1,7 +1,6 @@
 $(function(){
 
 	var filemanager = $('.filemanager'),
-		breadcrumbs = $('.breadcrumbs'),
 		fileList = filemanager.find('.data');
 
 	// Start by fetching the file data from scan.php with an AJAX request
@@ -10,7 +9,6 @@ $(function(){
 
 		var response = [data],
 			currentPath = '',
-			breadcrumbsUrls = [];
 
 		var folders = [],
 			files = [];
@@ -26,6 +24,18 @@ $(function(){
 			// this function on page load, so that we show the correct folder:
 
 		}).trigger('hashchange');
+
+
+		// Hiding and showing the search box
+
+		filemanager.find('.search').click(function(){
+
+			var search = $(this);
+
+			search.find('span').hide();
+			search.find('input[type=search]').show().focus();
+
+		});
 
 
 		// Listening for keyboard input on the search field.
@@ -76,6 +86,8 @@ $(function(){
 			if(!search.val().trim().length) {
 
 				window.location.hash = encodeURIComponent(currentPath);
+				search.hide();
+				search.parent().find('span').show();
 
 			}
 
@@ -93,32 +105,14 @@ $(function(){
 
 				// Building the breadcrumbs
 
-				breadcrumbsUrls = generateBreadcrumbs(nextDir);
 
 				filemanager.removeClass('searching');
+				filemanager.find('input[type=search]').val('').hide();
 				filemanager.find('span').show();
-			}
-			else {
-				breadcrumbsUrls.push(nextDir);
 			}
 
 			window.location.hash = encodeURIComponent(nextDir);
 			currentPath = nextDir;
-		});
-
-
-		// Clicking on breadcrumbs
-
-		breadcrumbs.on('click', 'a', function(e){
-			e.preventDefault();
-
-			var index = breadcrumbs.find('a').index($(this)),
-				nextDir = breadcrumbsUrls[index];
-
-			breadcrumbsUrls.length = Number(index);
-
-			window.location.hash = encodeURIComponent(nextDir);
-
 		});
 
 
@@ -157,13 +151,11 @@ $(function(){
 					if (rendered.length) {
 
 						currentPath = hash[0];
-						breadcrumbsUrls = generateBreadcrumbs(hash[0]);
 						render(rendered);
 
 					}
 					else {
 						currentPath = hash[0];
-						breadcrumbsUrls = generateBreadcrumbs(hash[0]);
 						render(rendered);
 					}
 
@@ -173,20 +165,9 @@ $(function(){
 
 				else {
 					currentPath = data.path;
-					breadcrumbsUrls.push(data.path);
 					render(searchByPath(data.path));
 				}
 			}
-		}
-
-		// Splits a file path and turns it into clickable breadcrumbs
-
-		function generateBreadcrumbs(nextDir){
-			var path = nextDir.split('/').slice(0);
-			for(var i=1;i<path.length;i++){
-				path[i] = path[i-1]+ '/' +path[i];
-			}
-			return path;
 		}
 
 
@@ -319,40 +300,6 @@ $(function(){
 					var file = $('<li class="files"><a href="'+ f.path+'" title="'+ f.path +'" class="files">'+icon+'<span class="name">'+ name +'</span> <span class="details">'+fileSize+'</span></a></li>');
 					file.appendTo(fileList);
 				});
-
-			}
-
-
-			// Generate the breadcrumbs
-
-			var url = '';
-
-			if(filemanager.hasClass('searching')){
-
-				url = '<span>Search results: </span>';
-				fileList.removeClass('animated');
-
-			}
-			else {
-
-				fileList.addClass('animated');
-
-				breadcrumbsUrls.forEach(function (u, i) {
-
-					var name = u.split('/');
-
-					if (i !== breadcrumbsUrls.length - 1) {
-						url += '<a href="'+u+'"><span class="folderName">' + name[name.length-1] + '</span></a> <span class="arrow">→</span> ';
-					}
-					else {
-						url += '<span class="folderName">' + name[name.length-1] + '</span>';
-					}
-
-				});
-
-			}
-
-			breadcrumbs.text('').append(url);
 
 
 			// Show the generated elements
