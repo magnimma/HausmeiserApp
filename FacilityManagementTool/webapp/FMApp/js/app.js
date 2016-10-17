@@ -9,9 +9,6 @@ https://framework7.io
 var isAndroid = Framework7.prototype.device.android;
 var isIos = true;
 
-console.log(isAndroid);
-console.log(isIos);
-
 Template7.global = {
     android: isAndroid,
     ios: isIos
