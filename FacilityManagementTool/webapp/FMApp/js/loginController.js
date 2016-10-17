@@ -7,16 +7,8 @@
 // where the user starts to provide the disturbance information
 var LoginController = (function() {
 
-      //Variables containing pages to redirect
-  var indexURL = "index.html",
-      loginUrl = "login.html",
-      estimateURL = "estimation.html",
-      offlineURL = "offline.html",
-      //Variable containing the server Url
-      urSrvURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-      
       //Variables containing the user name, phone and mail
-      userName = "",
+  var userName = "",
       userPhone = "",
       userMail = "",
 
@@ -96,7 +88,7 @@ var LoginController = (function() {
   function _pyCheckNDS(userAcc){
     if(UtilityController.checkOnlineStatus() == "true"){
      	$.ajax({
-        url: urSrvURL + "ldap.php",
+        url: myApp.urSrvURL + "ldap.php",
         type: "POST",
         dataType: 'json',
         data: ({ "nds": userAcc}),
@@ -114,7 +106,7 @@ var LoginController = (function() {
         }
       }); 
     }else{
-      mainView.router.loadPage(offlineURL);
+      mainView.router.loadPage(myApp.offlineURL);
     }
   }
 
@@ -131,7 +123,7 @@ var LoginController = (function() {
   function _NDSInputSuccess(){
     console.log("LOG: Correct NDS Login");
     UtilityController.measureStep("Correct NDS Login", 0);
-    mainView.router.loadPage(loginUrl);
+    mainView.router.loadPage("login.html");
   } 
 
   //Check whether the user provided a valid name and phone number
@@ -144,7 +136,7 @@ var LoginController = (function() {
       _enableSettingsUI();
       console.log("LOG: Valid User Info entered");
       UtilityController.measureStep("Valid User Info entered", 1);
-      mainView.router.loadPage(estimateURL);
+      mainView.router.loadPage(myApp.estimateURL);
     }else if (document.documentElement.lang == "de"){
       FMApp.alert("Bitte füllen Sie alle Felder korrekt aus.");
     }else{
@@ -186,7 +178,7 @@ var LoginController = (function() {
     localStorage.removeItem("userMail");
     localStorage.removeItem("userPhone");
     _disableSettingsUI();
-    document.location.href = indexURL;
+    document.location.href = myApp.indexURL;
   }
 
   //Enable the logout button and show the user nds account in the settings panel
@@ -261,7 +253,7 @@ var LoginController = (function() {
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
           console.log("LOG: Correct NDS Login");
           UtilityController.measureStep("Correct NDS Login", 0);
-          mainView.router.loadPage(loginUrl);
+          mainView.router.loadPage(myApp.loginUrl);
         }else{
           FMApp.alert("Kein gültiger NDS-Account. Bitte versuchen Sie es erneut.");
         }
@@ -269,7 +261,7 @@ var LoginController = (function() {
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
           console.log("LOG: Correct NDS Login");
           UtilityController.measureStep("Correct NDS Login", 0);
-          mainView.router.loadPage(loginUrl);
+          mainView.router.loadPage(myApp.loginUrl);
         }else{
           FMApp.alert("Not a correct NDS-account. Please try again.");
         }

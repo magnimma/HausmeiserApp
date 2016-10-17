@@ -6,18 +6,8 @@
 //If the user started the webapp via QR-code the app automatically enters the according building, floor and room data
 var DisturbanceController = (function() {
 
-      //Variables containing pages to redirect
-  var pictureURL = "picture.html",
-      appreciationURL = "appreciation.html",
-      offlineURL = "offline.html",
-      //Variables containing links to needed csv files
-      localSpecialistGroupCsv = "csv/fachgruppenSchluesselwoerter.csv",
-      localBuildingCsv = "csv/raumliste.csv",
-      //Variables containing the server Url
-      srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-      
       //Variables containing the building, floor and room data
-      building = [],
+  var building = [],
       floor = [],
       room = [],
 
@@ -108,7 +98,7 @@ var DisturbanceController = (function() {
   //Fetch the building, room and floor csv data file
   function _fetchBuildingData(){
     $.ajax({
-      url: localBuildingCsv,
+      url: myApp.localBuildingCsv,
       dataType: "text",
     }).done(_parseBuildingData);
   }
@@ -116,7 +106,7 @@ var DisturbanceController = (function() {
   //Fetch the specialist group csv data file
   function _fetchSpecialistGroupData(){
     $.ajax({
-      url: localSpecialistGroupCsv,
+      url: myApp.localSpecialistGroupCsv,
       dataType: "text",
     }).done(_parseSpecialistGroupData);
   }
@@ -136,6 +126,7 @@ var DisturbanceController = (function() {
       activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
       keywordFound = false;
       matchRatings.fill(0);
+      UtilityController.measureStep("Specialist group chosen", 6);
     }
   }
 
@@ -226,14 +217,14 @@ var DisturbanceController = (function() {
   //React to user specialist group selections and log it
   function _specialistGroupChanged(){
     console.log("LOG: Specialist group chosen");
-    UtilityController.measureStep("Specialist group chosen", 5);
+    UtilityController.measureStep("Specialist group chosen", 6);
   }
 
   //React to user building selections
   //Extract the according floor data and enable the floor select field
   function _buildingChanged(){
     console.log("LOG: Building chosen");
-    UtilityController.measureStep("Building chosen", 2);
+    UtilityController.measureStep("Building chosen", 3);
 
     $("#floorSelect")[0].disabled = false;
     activeSelectField = $("#buildingSelect")[0];
@@ -245,14 +236,13 @@ var DisturbanceController = (function() {
   //Extract the according room data 
   function _floorChanged(){
     console.log("LOG: Floor chosen");
-    UtilityController.measureStep("Floor chosen", 3);
+    UtilityController.measureStep("Floor chosen", 4);
 
-/*TODO:LÖSCHEN
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
     activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
-*/
+
 
     _extractRoomData(activeBuilding, activeFloor);
   }
@@ -261,7 +251,7 @@ var DisturbanceController = (function() {
   //Fetch the building, floor and room data
   function _roomChanged(){
     console.log("LOG: Room chosen");
-    UtilityController.measureStep("Room chosen", 4);
+    UtilityController.measureStep("Room chosen", 5);
 
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
@@ -283,15 +273,15 @@ var DisturbanceController = (function() {
       activeSelectField = $(".groupSelect")[1];
       activeTextField = $(".desc-text")[1];
       if($("#roomSelect")[0].selectedIndex === 0){
-        errMsg += "- Raum";
+        errMsg += " - Raum";
         err = true;
       }
       if(activeSelectField.selectedIndex === 0){
-        errMsg += "- Fachgruppe";
+        errMsg += " - Fachgruppe";
         err = true;
       }
       if(_validateDescription(activeTextField.value)){
-        errMsg += "- Beschreibung";
+        errMsg += " - Beschreibung";
         err = true;
       }
       //Save the disturbance data(specialGroup, description)
@@ -302,15 +292,15 @@ var DisturbanceController = (function() {
       activeSelectField = $(".groupSelect")[0];
       activeTextField = $(".desc-text")[0];
       if($("#roomSelect")[0].selectedIndex === 0){
-        errMsg += "- Room";
+        errMsg += " - Room";
         err = true;
       }
       if(activeSelectField.selectedIndex === 0){
-        errMsg += "- Specialist group";
+        errMsg += " - Specialist group";
         err = true;
       }
       if(_validateDescription(activeTextField.value)){
-        errMsg += "- Description";
+        errMsg += " - Description";
         err = true;
       }
       //Save the disturbance data(specialGroup, description)
@@ -349,7 +339,7 @@ var DisturbanceController = (function() {
   function _fetchWebId(){
     if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
-        url: srvPhpURL + "distIdCount.php",
+        url: myApp.urSrvURL + "distIdCount.php",
         success: function(data) {
           disturbanceId = $.parseJSON(data);
           sessionStorage.setItem("webId", disturbanceId);
@@ -357,7 +347,7 @@ var DisturbanceController = (function() {
         }
       });
     }else{
-      mainView.router.loadPage(offlineURL);
+      mainView.router.loadPage(myApp.offlineURL);
     }
   }
 
@@ -372,7 +362,7 @@ var DisturbanceController = (function() {
     //If no: Show the fallback offline page
     if(UtilityController.checkOnlineStatus() == "true"){
       $.ajax({
-        url: srvPhpURL + "submitDist.php",
+        url: myApp.urSrvURL + "submitDist.php",
         type: "POST",
         dataType: 'json',
         data: ({"userNDS": userNDS, "userName": userName, "userMail": userMail,
@@ -383,7 +373,7 @@ var DisturbanceController = (function() {
           result = data;
           //Check whether an error occured while submitting the disturbance 
           if(result[0] == false){
-            UtilityController.measureStep("Disturbance reported");
+            UtilityController.measureStep("Disturbance reported", 7);
             //Show a success alert
             FMApp.alert(result[1]);
             //Send the log data to the webserver
@@ -391,18 +381,19 @@ var DisturbanceController = (function() {
             //If the user wants to send an aditional picture of the disturbance redirect to picture.html
             //else redirect to appreciation.html 
             if(activeCheckBox.checked === true){
-              mainView.router.loadPage(pictureURL);
+              mainView.router.loadPage(myApp.pictureURL);
             }else{
-              mainView.router.loadPage(appreciationURL);
+              mainView.router.loadPage(myApp.appreciationURL);
             }             
           }else{
             //Show a success alert
             FMApp.alert(result[1]);
+            console.log(result[2]);
           }
         }
       });
     }else{
-      mainView.router.loadPage(offlineURL);
+      mainView.router.loadPage(myApp.offlineURL);
     }
   }
 

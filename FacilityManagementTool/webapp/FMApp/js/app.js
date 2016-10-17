@@ -47,6 +47,24 @@ var FMApp = new Framework7({
         FMApp.hideIndicator();
     }
 });
+
+//Initiate a global variable containing all globally needed variables
+myApp = {
+    //All available pages of the FMApp
+    indexURL: "index.html",
+    loginUrl: "login.html",
+    estimateURL: "estimation.html",
+    pictureURL: "picture.html",
+    helpURL: "help.html",
+    appreciationURL: "appreciation.html",
+    offlineURL: "offline.html",
+    //Variables containing links to needed csv files
+    localSpecialistGroupCsv: "csv/fachgruppenSchluesselwoerter.csv",
+    localBuildingCsv: "csv/raumliste.csv",
+    //Variable containing the server Url
+    urSrvURL: 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
+      
+}
  
 //Init mainView
 var mainView = FMApp.addView(".view-main", {

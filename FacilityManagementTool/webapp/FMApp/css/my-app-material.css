@@ -1,3 +1,35 @@
+html {font-size: 62.5%;}
+body {font-size: 1em;}
+span {font-size: 62.5%;}
+/*button {font-size: 80% !important;}*/
+
+@media (min-width: 300px) {
+    html {font-size: 70%;}
+    span {font-size: 70%;}
+/*    button {font-size: 90% !important;}*/
+/*	body {font-size: 1.5em;}*/
+}
+
+@media (min-width: 500px) {
+    html {font-size: 80%;}
+    span {font-size: 80%;}
+/*    button {font-size: 100% !important;}*/
+/*	body {font-size: 2em;}*/
+}
+
+@media (min-width: 700px) {
+    html {font-size: 120%;}
+/*    body {font-size: 2.5em;}*/
+/*    span {font-size: 120%;}*/
+/*    button {font-size: 150% !important;}*/
+}
+
+@media (min-width: 1200px) {
+    html {font-size: 200% ;}
+/*    span {font-size: 200%;}*/
+/*    button {font-size: 230% !important;}*/
+}
+
 .content-info-text{
 	text-align: center;
 }

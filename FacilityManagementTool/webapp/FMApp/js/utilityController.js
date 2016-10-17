@@ -1,13 +1,10 @@
 //The utilityController loggs the time that the user needs to reach the key steps of the disturbance report
-//Steps: nds login, user inifo login, disturbance estimation, building-, floor-, room entered, disturbance submitted
+//Steps: nds login, user info login, disturbance estimation, building-, floor-, room entered, specialist group chosen, disturbance submitted
 //Furthermoreit sends the log data via ajax-request to the php server and checks for an active internet connection
 var UtilityController = (function() {
 
-      //Variable containing the server URL
-  var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-
       //Variable containing the start/end time of the logging process
-      start = 0,
+  var start = 0,
       end = 0,
 
       //Variable containing the current logging step
@@ -47,7 +44,7 @@ var UtilityController = (function() {
     timestamp = userActions[0][0];
     userActions = JSON.stringify(userActions);
     $.ajax({
-      url: srvPhpURL + "log.php",
+      url: myApp.urSrvURL + "log.php",
       type: "POST",
       data: ({"logData": userActions, "timestamp": timestamp}),
       success: function(data) {

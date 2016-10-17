@@ -2,14 +2,8 @@
 //It sends the chosen attachement files via Ajax-Request to the php server and shows an error/success alert
 var DataController = (function() {
 
-      //Variable containing the server Url
-  var srvPhpURL = 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-      //Variable containing pages to redirect
-      appreciationURL = "appreciation.html",
-      offlineURL = "offline.html",
-
       //Variable containing a file input UI element 
-      myInput,
+  var myInput,
 
       //Variable containing a button UI element 
       activeButton,   
@@ -90,7 +84,7 @@ var DataController = (function() {
       disturbanceId = sessionStorage.getItem("webId");
       var fd = new FormData(document.getElementById("fileinfo"));
       $.ajax({
-        url : srvPhpURL + 'upload.php?distId=' + disturbanceId,
+        url : myApp.urSrvURL + 'upload.php?distId=' + disturbanceId,
         type : 'POST',
         data : fd,
         processData: false,  // tell jQuery not to process the data
@@ -100,7 +94,7 @@ var DataController = (function() {
        }
       });
     }else{
-      mainView.loadPage(offlineURL);
+      mainView.loadPage(myApp.offlineURL);
     }
   }
 

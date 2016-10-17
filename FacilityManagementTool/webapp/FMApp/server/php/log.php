@@ -3,8 +3,8 @@
 //Save the given log data
 
 //Save the given parameters
-$logData = json_decode($_POST['logData'], true);
-$timestamp = $_POST['timestamp'];
+$logData = json_decode(strip_tags(trim($_POST['logData'])), true);
+$timestamp = strip_tags(trim($_POST['timestamp']));
 
 //Save the data locally
 $fp = fopen('../../logs/' . $timestamp . '.csv', 'w');

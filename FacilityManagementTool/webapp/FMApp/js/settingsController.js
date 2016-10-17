@@ -4,10 +4,7 @@
 var SettingsController = (function() {
 
       //Variable containing the language select form field
-  var myLangSelect = document.getElementById("languageSelect"),
-      //Variables containing pages to redirect
-      helpURL = "help.html",
-      indexURL = "index.html";
+  var myLangSelect = document.getElementById("languageSelect");
 
   //Initiate the settingsController
   function init(){
@@ -17,7 +14,7 @@ var SettingsController = (function() {
 
   //Redirect to the help.html
   function _startHelp(){
-    mainView.router.loadPage(helpURL);
+    mainView.router.loadPage(myApp.helpURL);
   }
 
   //Setup the UI element listener

@@ -1,31 +1,53 @@
 <?php
 
-define("placeHolder", "http://www-app.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/count");
+//Url to post a disturbance report to the UR webformular
 define("submitUrl", "http://www-app.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/auswertenstoerungcsv.php");
+
+//Regular expresses to check the validity of disturbance data
 define("ndsRegex", "/^[a-z]{3}[0-9]{5}$/");
 define("nameRegex", "/^[a-z,A-Z +]{3,40}$/");
 define("mailRegex", "/\S+@\S+\.\S+/");
 define("phoneRegex", "/^[0-9 +]{1,20}$/");
 define("descRegex", "/^[A-Za-z0-9_,;. +-ß]{1,76}$/");
-define("buildingRegex", "/^[A-Za-z0-9_,;. +-ß*\/()]{1,200}$/");
+define("buildingRegex", "/^([A-Za-z0-9_,;. +-ß*\/()]{1,200})$/");
 define("floorRegex", "/^[A-Za-z0-9_,;. +-ß*]{1,40}$/");
-define("roomRegex", "/^[A-Za-z0-9_,;. +-ß*\/()]{1,150}$/");
+define("roomRegex", "/^([A-Za-z0-9_,;. +-ß*\/()]{1,150})$/");
 define("spGrRegex", "/^[A-Za-z0-9\/äü]{3,30}$/");
 
-//Save the given parameters
-$userNDS = $_POST['userNDS'];
-$userName = $_POST['userName'];
-$userMail = $_POST['userMail'];
-$userPhone = $_POST['userPhone'];
-$description = $_POST['description'];
-$building = $_POST['building'];
-$floor = $_POST['floor'];
-$room = $_POST['room'];
-$specialGroup = $_POST['specialGroup'];
-$sendValue = "Abschicken";
+/*TODO:LÖSCHEN
+$userNDS = strip_tags(trim($_POST["userNDS"]));
+$userName = strip_tags(trim($_POST["userName"]));
+$userMail = strip_tags(trim($_POST["userMail"]));
+$userPhone = strip_tags(trim($_POST["userPhone"]));
+$description = strip_tags(trim($_POST["description"]));
+$building = strip_tags(trim($_POST["building"]));
+$floor = strip_tags(trim($_POST["floor"]));
+$room = strip_tags(trim($_POST["room"]));
+$specialGroup = strip_tags(trim($_POST["specialGroup"]));
+$sendValue = "Abschicken";*/
 
 //Check whether the given disturbance data is valid using the regular expresses
-if(preg_match(ndsRegex, $userNDS) && preg_match(nameRegex, $userName) && preg_match(mailRegex, $userMail) && preg_match(phoneRegex, $userPhone) && preg_match(descRegex, $description) && preg_match(buildingRegex, $building) && preg_match(floorRegex, $floor) && preg_match(roomRegex, $room) && preg_match(spGrRegex, $specialGroup)){
+if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
+   preg_match(nameRegex, ($_POST["userName"])) &&
+   preg_match(mailRegex, ($_POST["userMail"])) &&
+   preg_match(phoneRegex, ($_POST["userPhone"])) &&
+   preg_match(descRegex, ($_POST["description"])) &&
+   preg_match(buildingRegex, ($_POST["building"])) &&
+   preg_match(floorRegex, ($_POST["floor"])) &&
+   preg_match(roomRegex, ($_POST["room"])) &&
+   preg_match(spGrRegex, ($_POST["specialGroup"]))){
+
+  //Save the given parameters
+  $userNDS = strip_tags(trim($_POST["userNDS"]));
+  $userName = strip_tags(trim($_POST["userName"]));
+  $userMail = strip_tags(trim($_POST["userMail"]));
+  $userPhone = strip_tags(trim($_POST["userPhone"]));
+  $description = strip_tags(trim($_POST["description"]));
+  $building = strip_tags(trim($_POST["building"]));
+  $floor = strip_tags(trim($_POST["floor"]));
+  $room = strip_tags(trim($_POST["room"]));
+  $specialGroup = strip_tags(trim($_POST["specialGroup"]));
+  $sendValue = "Abschicken";
 
   //Set the POST-Request parameter
   $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
@@ -72,7 +94,9 @@ if(preg_match(ndsRegex, $userNDS) && preg_match(nameRegex, $userName) && preg_ma
   echo json_encode(array(false,"Störung wurde erfolgreich übermittelt"));
 
 }else{
-    echo json_encode(array(true,"Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."));
+    //Set the POST-Request parameter
+  $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
+    echo json_encode(array(true, "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.", $data));
 }
 
 ?>

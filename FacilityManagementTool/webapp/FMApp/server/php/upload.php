@@ -3,7 +3,7 @@
 //Upload image files to the server
 
 //The id of the disturbance report the uploaded files are related to
-$disturbanceId = $_GET["distId"];
+$disturbanceId = preg_replace("/[^0-9]/","",$_GET["distId"]);
 
 //Number of attachements for a particular disturbance
 $attachCount = 1;
@@ -35,7 +35,7 @@ if(isset($_POST["submit"])) {
 // Check if file already exists and rename it if necessary
 while (file_exists($target_file)) {
     $attachCount = $attachCount + 1;
-    $newfilename = $fileContent . "(" . $attachCount . ")." . end($temp);
+    $newfilename = $disturbanceId . "(" . $attachCount . ")." . end($temp);
     $target_file = $target_dir . $newfilename;
 }
 

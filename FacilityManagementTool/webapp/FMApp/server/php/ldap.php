@@ -5,11 +5,11 @@ define("ndsRegex", "/^[a-z]{3}[0-9]{5}$/");
 // basic sequence with LDAP is connect, bind, search, interpret search
 // result, close connection
 
-//Save the given NDS-account parameter
-$nds_account = $_POST["nds"];
-
 //Check whether the given parameter is a valid NDS-account
-if(preg_match(ndsRegex, $nds_account)){
+if(preg_match(ndsRegex, ($_POST["nds"]))){
+    //Save the given NDS-account parameter
+    $nds_account = $_POST["nds"];
+    
     //Connect to the UR LDAP server
     $ds=ldap_connect("ldaps://ldap.ur.de:636");
 }else{
