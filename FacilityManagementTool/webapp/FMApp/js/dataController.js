@@ -1,3 +1,8 @@
+/*------------------------
+Externe Quelle:
+http://www.nonobtrusive.com/2011/11/29/programatically-fire-crossbrowser-click-event-with-javascript/
+------------------------*/
+
 //The dataController handles the user file uploads
 //It sends the chosen attachement files via Ajax-Request to the php server and shows an error/success alert
 var DataController = (function() {
@@ -74,8 +79,8 @@ var DataController = (function() {
   }
 
   //Try to upload the chosen disturbance attachement via Ajax to the php server 
-  //if the user has a internet connection
-  //Attach the current disturbance id to the Url to help the server rename the file appropriately
+  //if the user has an internet connection attach the current disturbance id 
+  //to the Url to help the server rename the file appropriately
   //Redirect to the offline fallback page otherwise
   //Show an error/success alert
   function uploadAttachement(){

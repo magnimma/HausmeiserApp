@@ -1,4 +1,4 @@
-//The disturbanceController determines and checks the necessary disturbance data and finally sends the disturbance
+//The disturbanceController determines and checks the necessary disturbance data and finally submits the disturbance
 //The user can enter room information according to the disturbance, assign a sepcialist group and enter a brief description
 //Optionally the user can choose to send images as attachement to provide further information according to the disturbance
 //To assist the user to enter the necessary disturbance information, the disturbanceController fetches suitable local and 
@@ -26,7 +26,7 @@ var DisturbanceController = (function() {
       //Variable containing the currently active button
       activeButton,
 
-      //Variables containing the currently active building, floor and room
+      //Variables containing the currently chosen building, floor and room
       activeBuilding = "",
       activeFloor = "",
       activeRoom = "",
@@ -37,7 +37,7 @@ var DisturbanceController = (function() {
       rowCells,
 
       //Regular expressions used to validate user content(disturbance description)
-      descRegex = /^[A-Za-z0-9_,;. +-ß]{1,76}$/,
+      descRegex = /^[A-Za-z0-9_,;. +-ß]{1,75}$/,
       tokenRegex = /\S+/g,
 
       //Variable containing an error message which is shown when the user
@@ -60,7 +60,7 @@ var DisturbanceController = (function() {
       //Variable containing the match rating of each specialist group according to the description text
       matchRatings = [0, 0, 0, 0, 0, 0],
 
-      //Array containing the keywords for automatic word detection for specialists 
+      //Array containing keywords for automatic word detection for specialists 
       specialistKeywords = [],
 
       //Variable to check whether a specialist group keyword was found in the description text
@@ -140,7 +140,6 @@ var DisturbanceController = (function() {
         if(specialistKeywords[j].indexOf(description[i]) != -1){
           keywordFound = true;
           matchRatings[j]++;
-          console.log(matchRatings + description[i] + specialistKeywords[j]);
         }
       }
     }
@@ -216,14 +215,12 @@ var DisturbanceController = (function() {
 
   //React to user specialist group selections and log it
   function _specialistGroupChanged(){
-    console.log("LOG: Specialist group chosen");
     UtilityController.measureStep("Specialist group chosen", 6);
   }
 
   //React to user building selections
   //Extract the according floor data and enable the floor select field
   function _buildingChanged(){
-    console.log("LOG: Building chosen");
     UtilityController.measureStep("Building chosen", 3);
 
     $("#floorSelect")[0].disabled = false;
@@ -235,7 +232,6 @@ var DisturbanceController = (function() {
   //React to user floor selections
   //Extract the according room data 
   function _floorChanged(){
-    console.log("LOG: Floor chosen");
     UtilityController.measureStep("Floor chosen", 4);
 
     activeSelectField = $("#buildingSelect")[0];
@@ -243,14 +239,12 @@ var DisturbanceController = (function() {
     activeSelectField = $("#floorSelect")[0];
     activeFloor = activeSelectField.options[activeSelectField.selectedIndex].value;
 
-
     _extractRoomData(activeBuilding, activeFloor);
   }
 
   //React to user room selections
   //Fetch the building, floor and room data
   function _roomChanged(){
-    console.log("LOG: Room chosen");
     UtilityController.measureStep("Room chosen", 5);
 
     activeSelectField = $("#buildingSelect")[0];
@@ -263,7 +257,7 @@ var DisturbanceController = (function() {
     activeRoom = activeSelectField.options[activeSelectField.selectedIndex].value;
   }
 
-  //Check whether the user provided all the necessary disturbance information
+  //Check whether the user provided the necessary disturbance information
   //If yes: save the provided information and submit the disturbance 
   //Else show an error alert
   function _checkDisturbanceData(){
@@ -355,6 +349,7 @@ var DisturbanceController = (function() {
   function _submitDisturbance(){
     activeCheckBox = document.getElementById("picCheckbox");
 
+    //Gather the necessary data for the disturbance
     _gatherDistData();
 
     //Check whether the user has internet connection
@@ -370,30 +365,34 @@ var DisturbanceController = (function() {
                 "building": activeBuilding, "floor": activeFloor, 
                 "room": activeRoom, "specialGroup": specGrp}),
         success: function(data) {
-          result = data;
-          //Check whether an error occured while submitting the disturbance 
-          if(result[0] == false){
-            UtilityController.measureStep("Disturbance reported", 7);
-            //Show a success alert
-            FMApp.alert(result[1]);
-            //Send the log data to the webserver
-            UtilityController.sendLog();
-            //If the user wants to send an aditional picture of the disturbance redirect to picture.html
-            //else redirect to appreciation.html 
-            if(activeCheckBox.checked === true){
-              mainView.router.loadPage(myApp.pictureURL);
-            }else{
-              mainView.router.loadPage(myApp.appreciationURL);
-            }             
-          }else{
-            //Show a success alert
-            FMApp.alert(result[1]);
-            console.log(result[2]);
-          }
+          _distSubmitted(data);
         }
       });
     }else{
       mainView.router.loadPage(myApp.offlineURL);
+    }
+  }
+
+  //Show an error/success alert and redirect the user accordingly
+  function _distSubmitted(result){
+    //Check whether an error occured while submitting the disturbance 
+    //If the disturbance was successfully submitted
+    if(result[0] == false){
+      UtilityController.measureStep("Disturbance reported", 7);
+      //Show a success alert
+      FMApp.alert(result[1]);
+      //Send the log data to the webserver
+      UtilityController.sendLog();
+      //If the user wants to send an aditional picture of the disturbance
+      //redirect to picture.html, else redirect to appreciation.html 
+      if(activeCheckBox.checked === true){
+        mainView.router.loadPage(myApp.pictureURL);
+      }else{
+        mainView.router.loadPage(myApp.appreciationURL);
+      }             
+    }else{
+      //If an error occured show an error alert
+      FMApp.alert(result[1]);
     }
   }
 
@@ -413,14 +412,12 @@ var DisturbanceController = (function() {
     specGrp = sessionStorage.getItem("specialGroup");
   }
 
-  //Validate the disturbance description
-  //Allowed figures: a-Z,;.+-
+  //Validate the disturbance descriptio
+  //Allowed figures: a-Z,;.+-_ ? ß
   function _validateDescription(description){
     if(descRegex.test(description)){
-      console.log("validation correct");
       return false;
     }
-    console.log("validation wrong");
     return true;
   }
 

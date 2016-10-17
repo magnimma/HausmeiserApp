@@ -36,7 +36,6 @@ var LoginController = (function() {
     _setupUIListener();
     _setUserData();
     _checkForRoomcode();
-    console.log("login");
   }
 
   //Setup the UI element listener
@@ -94,7 +93,6 @@ var LoginController = (function() {
         data: ({ "nds": userAcc}),
         success: function(data) {
           result = data;
-          console.log(result);
           //CHeck whether the success value of the json object is true or false
           if(result[0] === "true"){
             _NDSInputSuccess();
@@ -121,7 +119,6 @@ var LoginController = (function() {
 
   //Redirect to the login page if the entered nds account exists
   function _NDSInputSuccess(){
-    console.log("LOG: Correct NDS Login");
     UtilityController.measureStep("Correct NDS Login", 0);
     mainView.router.loadPage("login.html");
   } 
@@ -134,7 +131,6 @@ var LoginController = (function() {
     if(_validateName($(".name-input")[0].value) && _checkLangUserPhone()){
       _saveUserData();
       _enableSettingsUI();
-      console.log("LOG: Valid User Info entered");
       UtilityController.measureStep("Valid User Info entered", 1);
       mainView.router.loadPage(myApp.estimateURL);
     }else if (document.documentElement.lang == "de"){
@@ -171,7 +167,7 @@ var LoginController = (function() {
       
   }
 
-  //Logout the user, update the settings UI elements and reload index page
+  //Logout the user, update the settings UI elements and reload the index page
   function _logout(){
     localStorage.removeItem("ndsAccount");
     localStorage.removeItem("userName");
@@ -251,7 +247,6 @@ var LoginController = (function() {
     if(localStorage.getItem("ndsAccount") != "undefined" && localStorage.getItem("ndsAccount") != null){
       if(document.documentElement.lang == "de"){
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          console.log("LOG: Correct NDS Login");
           UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(myApp.loginUrl);
         }else{
@@ -259,7 +254,6 @@ var LoginController = (function() {
         }
       }else{
         if(_checkStringFormat(localStorage.getItem("ndsAccount"))){
-          console.log("LOG: Correct NDS Login");
           UtilityController.measureStep("Correct NDS Login", 0);
           mainView.router.loadPage(myApp.loginUrl);
         }else{
@@ -273,7 +267,6 @@ var LoginController = (function() {
   //If the nds account was valid check whether the entered nds account exists
   //or show an error alert if the nds account was not valid
   function checkUserNDS(){
-    console.log("NDS");
     if(document.documentElement.lang == "de"){
       ndsUserInput = $(".login-input")[1].value.toLowerCase();
       if(_checkStringFormat(ndsUserInput)){

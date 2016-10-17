@@ -1,3 +1,8 @@
+/*----------------------------
+Externe Quelle:
+https://framework7.io
+----------------------------*/
+
 //The app.js determines whether the used device is an iOS or an android device
 //and adjusts the appearance of the app accordingly
 //Furthermore it initializes the Framework7, its mainview and specific page callbacks 
@@ -71,6 +76,7 @@ var mainView = FMApp.addView(".view-main", {
     dynamicNavbar: true
 });
 
+//Init callbacks for specific pages and page events
 _initPageCallbacks();
 
 function _initPageCallbacks(){

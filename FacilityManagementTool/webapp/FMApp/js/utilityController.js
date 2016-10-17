@@ -1,6 +1,7 @@
 //The utilityController loggs the time that the user needs to reach the key steps of the disturbance report
-//Steps: nds login, user info login, disturbance estimation, building-, floor-, room entered, specialist group chosen, disturbance submitted
-//Furthermoreit sends the log data via ajax-request to the php server and checks for an active internet connection
+//Steps: nds login, user info login, disturbance estimation, building-, floor-, room entered,
+//specialist group chosen, disturbance submitted
+//Furthermore it sends the log data via ajax-request to the php server and checks for an active internet connection
 var UtilityController = (function() {
 
       //Variable containing the start/end time of the logging process
@@ -46,17 +47,13 @@ var UtilityController = (function() {
     $.ajax({
       url: myApp.urSrvURL + "log.php",
       type: "POST",
-      data: ({"logData": userActions, "timestamp": timestamp}),
-      success: function(data) {
-        console.log("RETURN" + data);
-      }
+      data: ({"logData": userActions, "timestamp": timestamp})
     });
   }
 
   //Check whether the user has an active internet connection
   function checkOnlineStatus(){
     status = navigator.onLine;
-    console.log("online: " + status);
     return status;
   }
 

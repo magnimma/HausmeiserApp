@@ -1,3 +1,8 @@
+/*----------------------------
+Externe Quelle:
+https://framework7.io
+----------------------------*/
+
 (function () {
         if (Framework7.prototype.device.android) {
               Dom7('head').append(

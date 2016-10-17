@@ -1,6 +1,6 @@
 //The settingsController is responsible for the settings panel
 //It changes the app's language and sets the default language at start
-//Furthermore the user can open the help page
+//Furthermore it starts the help page
 var SettingsController = (function() {
 
       //Variable containing the language select form field
@@ -8,13 +8,7 @@ var SettingsController = (function() {
 
   //Initiate the settingsController
   function init(){
-    console.log("settings");
     _setupUIListeners();
-  }
-
-  //Redirect to the help.html
-  function _startHelp(){
-    mainView.router.loadPage(myApp.helpURL);
   }
 
   //Setup the UI element listener

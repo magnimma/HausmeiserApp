@@ -1,5 +1,9 @@
 <?php
 
+/*-----------------------
+http://www.w3schools.com/php/php_file_upload.asp
+-----------------------*/
+
 //Upload image files to the server
 
 //The id of the disturbance report the uploaded files are related to
