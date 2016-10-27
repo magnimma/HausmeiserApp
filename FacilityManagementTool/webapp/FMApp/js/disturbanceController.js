@@ -263,7 +263,7 @@ var DisturbanceController = (function() {
   function _checkDisturbanceData(){
     err = false;   
     if(document.documentElement.lang == "de"){
-      errMsg = "Folgende Felder fehlen oder sind mit ungültigem Inhalt gefühlt: ";
+      errMsg = "Folgende Felder fehlen oder sind mit ungültigem Inhalt gefüllt: ";
       activeSelectField = $(".groupSelect")[1];
       activeTextField = $(".desc-text")[1];
       if($("#roomSelect")[0].selectedIndex === 0){

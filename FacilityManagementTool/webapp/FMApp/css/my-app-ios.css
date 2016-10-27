@@ -39,6 +39,10 @@ span {font-size: 62.5%;}
 	text-align: center;
 }
 
+.progress-text{
+	text-align: center;
+}
+
 .ionav{
 	vertical-align:middle;
 }

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1 2011-08-14
+# v1 2016-10-27
 # Here are the files specified that should be cached for offline browsing
 #html files
 index.html
@@ -55,3 +55,7 @@ img/camera.jpeg
 # Fallback content
 FALLBACK:
 / /~gog59212/FMApp/offline.html
+
+# Files listed here may come from the network if they arent available in the cache and the user is online
+NETWORK:
+*

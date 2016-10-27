@@ -74,6 +74,11 @@ var LoginController = (function() {
   function _checkForRoomcode(){
     roomCode = location.search.split("&").toString();
     if(roomCode.length > 0){
+      if(document.documentElement.lang == "de"){
+      FMApp.alert("Raumdaten wurden erkannt und werden automatisch im Störungsformular eingefügt.");
+      }else{
+        FMApp.alert("Room data has been recognized and will be automatically inserted into the disturbance form.");
+      }
       roomCode = roomCode.substring(1);
       sessionStorage.setItem("qrCode", roomCode);
     }
