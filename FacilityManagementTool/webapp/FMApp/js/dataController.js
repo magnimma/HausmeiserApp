@@ -14,7 +14,10 @@ var DataController = (function() {
       activeButton,   
 
       //Variable containing the disturbance id for the current disturbance report
-      disturbanceId = 1;
+      disturbanceId = 1,
+
+      //Array containing the selected files which the user wants to upload
+      filesToUpload = [];
 
   //Initiate the dataController and set the UI element listeners
   function init() {
@@ -30,34 +33,58 @@ var DataController = (function() {
     $(".attachement-input")[0].addEventListener("change", _attachementChosen, false);
   }
 
-  //Rename the add attachement button element when the user has chosen an disturbance attachement
-  //Enable the Submit attachement button
+  //Returns whether the user has chosen files to upload
+  function uploadsAvailable(){
+    if(filesToUpload.length > 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  //Add a file chosen from the user to the array of files to upload
+  //and add the item to the list in the webapp
   function _attachementChosen(){
     try{
-      activeButton = $(".add-attachement")[0];
-      activeButton.value = myInput.files[0].name;
-      activeButton = $(".add-attachement")[1];
-      activeButton.value = myInput.files[0].name;
-      activeButton = $(".submit-attachement")[0];
-      activeButton.disabled = false;
-      activeButton = $(".submit-attachement")[1];
-      activeButton.disabled = false;
+      //Add the chosen image file to the files array
+      filesToUpload.push(myInput.files[0]);
+      _addListItem();
     }catch(err){
       console.log("Error: " + err);
     }
   }
 
-  //Rename the add attachement button element when the user has uploaded an disturbance attachement
-  //Disable the Submit attachement button
-  function _resetUIElements(){
-    activeButton = $(".add-attachement")[0];
-    activeButton.value = "Choose attachement";
-    activeButton = $(".add-attachement")[1];
-    activeButton.value = "Anhang auswählen";
-    activeButton = $(".submit-attachement")[0];
-    activeButton.disabled = true;
-    activeButton = $(".submit-attachement")[1];
-    activeButton.disabled = true;
+  //Add a list item containing the name of the added image file
+  //to the files list in the picture upload element of the disturbance page  
+  function _addListItem(){
+    //Add a new li element containing the file name and an icon to the ul
+    $("#disturbance-file-upload ul").append('<li class="file-list-element"><div><span>' + filesToUpload[filesToUpload.length - 1].name
+      + '</span><i class="icon icon-form-delete"></i></div></li>');
+    //Add a click listener to each li element of the ul
+    $(".icon-form-delete").each(function(){
+      var listIcon = this;
+      listIcon.addEventListener("click", _deleteUploadFile, false);
+    });  
+  }
+
+  //Delete the chosen file from the list of files to upload
+  function _deleteUploadFile(event){
+    //Get the index of the clicked file in the array of file to upload
+    var fileIndex = _getFileIndex(event.target.parentNode.childNodes[0].innerHTML);
+    //Delete the file from the array
+    filesToUpload.splice(fileIndex, 1);
+    //Delete the file from the list of files in the app 
+    event.target.parentNode.parentNode.remove();
+  }
+
+  //Return the index of the file to be deleted in the upload files array
+  //Returns the index of the first appearance if multiple files share the same name
+  function _getFileIndex(fileName){
+    for(var i = 0, j = filesToUpload.length; i < j; i++){
+      if(filesToUpload[i].name == fileName){
+        return i;
+      }
+    }
   }
 
   //Trigger a click event on the add-attachement input element
@@ -78,6 +105,24 @@ var DataController = (function() {
     }
   }
 
+  //Show an error message if the file upload failed
+  function _fileUploadFailure(fileName){
+    if(document.documentElement.lang == "de"){
+      FMApp.alert("Die Datei " + fileName + " konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.");
+    }else{
+      FMApp.alert("The file " + fileName + " was not uploaded successfully. Please try again.");
+    }
+  }
+
+  //Show an success message if the file upload was successfull
+  function _fileUploadSuccess(fileName){
+    if(document.documentElement.lang == "de"){
+      FMApp.alert("Die Datei " + fileName + " wurde erfolgreich hochgeladen.");
+    }else{
+      FMApp.alert("The file " + fileName + " was successfully uploaded.");
+    }
+  }
+
   //Try to upload the chosen disturbance attachement via Ajax to the php server 
   //if the user has an internet connection attach the current disturbance id 
   //to the Url to help the server rename the file appropriately
@@ -85,19 +130,30 @@ var DataController = (function() {
   //Show an error/success alert
   function uploadAttachement(){
     if(UtilityController.checkOnlineStatus() == "true"){  
-      _resetUIElements();
       disturbanceId = sessionStorage.getItem("webId");
-      var fd = new FormData(document.getElementById("fileinfo"));
-      $.ajax({
-        url : myApp.urSrvURL + 'upload.php?distId=' + disturbanceId,
-        type : 'POST',
-        data : fd,
-        processData: false,  // tell jQuery not to process the data
-        contentType: false,  // tell jQuery not to set contentType
-        success : function(data) {
-          FMApp.alert(data);
-       }
-      });
+
+      for(var i = 0, j = filesToUpload.length; i < j; i++){
+        /*var fd = new FormData(document.getElementById("fileinfo"));*/
+        var fd = new FormData();
+        fd.append("fileToUpload", filesToUpload[i]);
+        $.ajax({
+          url : myApp.urSrvURL + 'upload.php?distId=' + disturbanceId,
+          type : 'POST',
+          data : fd,
+          processData: false,  // tell jQuery not to process the data
+          contentType: false,  // tell jQuery not to set contentType
+          success : function(data) {
+            result = JSON.parse(data);
+            //CHeck whether the success value of the returned json object is 
+            //true or false and show the according message
+            if(result[0] == "true"){
+              _fileUploadSuccess(result[1]);
+            }else{
+              _fileUploadFailure(result[1]);
+            }
+          }
+        });
+      }
     }else{
       mainView.loadPage(myApp.offlineURL);
     }
@@ -105,7 +161,8 @@ var DataController = (function() {
 
   return {
     init: init,
-    uploadAttachement: uploadAttachement
+    uploadAttachement: uploadAttachement,
+    uploadsAvailable: uploadsAvailable
   };
   
 })();

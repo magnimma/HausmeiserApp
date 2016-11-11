@@ -37,7 +37,7 @@ var DisturbanceController = (function() {
       rowCells,
 
       //Regular expressions used to validate user content(disturbance description)
-      descRegex = /^[A-Za-z0-9_,;. +-ß]{1,75}$/,
+      descRegex = /^[A-Za-z0-9_,;. +-ßäöü]{1,75}$/,
       tokenRegex = /\S+/g,
 
       //Variable containing an error message which is shown when the user
@@ -113,10 +113,14 @@ var DisturbanceController = (function() {
 
   //Check whether the entered description contains keywords that match
   //one of the available specialist groups and set the according specialist group
-  function _descChanged(){ 
+  function _descChanged(){
     _saveDescText();
+    //Check whether the description exists
+    if(description != null){
     _checkDescText();
     _setSpGroup();
+    }else{
+    }
   }
 
   //If keywords were found set the specialist group accordingly
@@ -126,7 +130,7 @@ var DisturbanceController = (function() {
       activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
       keywordFound = false;
       matchRatings.fill(0);
-      UtilityController.measureStep("Specialist group chosen", 6);
+      UtilityController.measureStep("Specialist group selected", 6);
     }
   }
 
@@ -215,13 +219,13 @@ var DisturbanceController = (function() {
 
   //React to user specialist group selections and log it
   function _specialistGroupChanged(){
-    UtilityController.measureStep("Specialist group chosen", 6);
+    UtilityController.measureStep("Specialist group selected", 6);
   }
 
   //React to user building selections
   //Extract the according floor data and enable the floor select field
   function _buildingChanged(){
-    UtilityController.measureStep("Building chosen", 3);
+    UtilityController.measureStep("Building selected", 3);
 
     $("#floorSelect")[0].disabled = false;
     activeSelectField = $("#buildingSelect")[0];
@@ -232,7 +236,7 @@ var DisturbanceController = (function() {
   //React to user floor selections
   //Extract the according room data 
   function _floorChanged(){
-    UtilityController.measureStep("Floor chosen", 4);
+    UtilityController.measureStep("Floor selected", 4);
 
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
@@ -245,7 +249,7 @@ var DisturbanceController = (function() {
   //React to user room selections
   //Fetch the building, floor and room data
   function _roomChanged(){
-    UtilityController.measureStep("Room chosen", 5);
+    UtilityController.measureStep("Room selected", 5);
 
     activeSelectField = $("#buildingSelect")[0];
     activeBuilding = activeSelectField.options[activeSelectField.selectedIndex].value;
@@ -365,7 +369,14 @@ var DisturbanceController = (function() {
                 "building": activeBuilding, "floor": activeFloor, 
                 "room": activeRoom, "specialGroup": specGrp}),
         success: function(data) {
-          _distSubmitted(data);
+          result = JSON.parse(data);
+            //CHeck whether the success value of the returned json object is 
+            //true or false and show the according message
+            if(result == true){
+              _distSubmitSuccess();
+            }else{
+              _distSubmitFailure();
+            }
         }
       });
     }else{
@@ -373,26 +384,37 @@ var DisturbanceController = (function() {
     }
   }
 
-  //Show an error/success alert and redirect the user accordingly
-  function _distSubmitted(result){
-    //Check whether an error occured while submitting the disturbance 
-    //If the disturbance was successfully submitted
-    if(result[0] == false){
-      UtilityController.measureStep("Disturbance reported", 7);
-      //Show a success alert
-      FMApp.alert(result[1]);
-      //Send the log data to the webserver
-      UtilityController.sendLog();
-      //If the user wants to send an aditional picture of the disturbance
-      //redirect to picture.html, else redirect to appreciation.html 
-      if(activeCheckBox.checked === true){
-        mainView.router.loadPage(myApp.pictureURL);
-      }else{
-        mainView.router.loadPage(myApp.appreciationURL);
-      }             
+  //Show an error alert
+  function _distSubmitFailure(result){
+    //Show an error alert
+    if(document.documentElement.lang == "de"){
+      //Show an error alert
+      FMApp.alert("Ein Fehler beim Senden der Störungsmeldung ist aufgetreten. Bitte versuchen Sie es erneut.");
+      
     }else{
-      //If an error occured show an error alert
-      FMApp.alert(result[1]);
+      //Show an error alert
+      FMApp.alert("An error occurred while submitting your disturbance report. Please try again");
+    }
+  }
+
+  //Show a success alert, send the log data to the server, upload chosen image files and redirect the user accordingly
+  function _distSubmitSuccess(result){
+    //Log the final time of the disturbance submit
+    UtilityController.measureStep("Disturbance reported", 7);
+    //Send the log data to the webserver
+    UtilityController.sendLog();
+    //Upload the chosen image files to the server
+    DataController.uploadAttachement();
+    //Redirect to appreciation.html 
+    mainView.router.loadPage(myApp.appreciationURL);
+    //Show a success alert
+    if(document.documentElement.lang == "de"){
+      //Show a success alert
+      FMApp.alert("Störung wurde erfolgreich übermittelt. Falls Sie Bilder beigefügt haben, warten Sie bitte bis Sie eine Meldung zum jeweiligen Bild erhalten haben. Dies kann je nach Dateigröße einige Augenblicke dauern.");
+      
+    }else{
+      //Show a success alert
+      FMApp.alert("Disturbance successfully submitted. If you attached image files to the disturbance report wait until you receive a sucess message for each file. This may take a few moments.");
     }
   }
 
@@ -404,7 +426,7 @@ var DisturbanceController = (function() {
     userPhone = localStorage.getItem("userPhone");
     //Mark the disturbance descritpion with a preceeding '<A> - '
     //if the user wants to add attachements to the report
-    if(activeCheckBox.checked === true){
+    if(DataController.uploadsAvailable() === true){
       description = "<A> - " + sessionStorage.getItem("description");
     }else{
       description = sessionStorage.getItem("description");

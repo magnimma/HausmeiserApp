@@ -1,33 +1,23 @@
 html {font-size: 62.5%;}
 body {font-size: 1em;}
 span {font-size: 62.5%;}
-/*button {font-size: 80% !important;}*/
 
 @media (min-width: 300px) {
     html {font-size: 70%;}
     span {font-size: 70%;}
-/*    button {font-size: 90% !important;}*/
-/*	body {font-size: 1.5em;}*/
 }
 
 @media (min-width: 500px) {
     html {font-size: 80%;}
     span {font-size: 80%;}
-/*    button {font-size: 100% !important;}*/
-/*	body {font-size: 2em;}*/
 }
 
 @media (min-width: 700px) {
     html {font-size: 120%;}
-/*    body {font-size: 2.5em;}*/
-/*    span {font-size: 120%;}*/
-/*    button {font-size: 150% !important;}*/
 }
 
-@media (min-width: 1200px) {
-    html {font-size: 200% ;}
-/*    span {font-size: 200%;}*/
-/*    button {font-size: 230% !important;}*/
+#disturbance-file-upload{
+	display: block;
 }
 
 .content-info-text{
@@ -38,40 +28,89 @@ span {font-size: 62.5%;}
 	text-align: center;
 }
 
+.settings-text{
+	font-size: 14px;
+}
+
+
+.upload-files-list{
+	font-size: 16px;
+}
+
+.file-list-element{
+	list-style-type: none;
+	margin-left:0px;
+	padding-left:0px;
+}
+
+.file-list-element i{
+	float: right;
+}
+
+.file-list-element div{
+	display: inline-block;
+}
+
+.file-list-element span{
+	width: 150px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left; 
+	display:inline-block;
+	padding: 0;
+}
+
+.file-list{
+	height: 100%;
+}
+
 .center{
 	position: relative;
 	display: block;
 	margin: 5px auto;
 }
 
+.icon-form-name{
+	width:24px;
+	height:24px;
+	background-image:url(../img/name.png)
+}
+
+.icon-form-tel{
+	width:24px;
+	height:24px;
+	background-image:url(../img/phone.png)
+}
+
 .icon-form-camera{
 	width:24px;
 	height:24px;
-	background-image:url(../img/camera.jpeg)
+	background-image:url(../img/camera.png)
 }
 
 .icon-form-room{
 	width:24px;
 	height:24px;
-	background-image:url(../img/opened-door-aperture.png)
+	background-image:url(../img/door.png)
 }
 
 .icon-form-floor{
 	width:24px;
 	height:24px;
-	background-image:url(../img/layers.png)
+	background-image:url(../img/floor.png)
 }
 
 .icon-form-building{
 	width:24px;
 	height:24px;
-	background-image:url(../img/ic_store_black_24px.svg)
+	background-image:url(../img/building.png)
 }
 
 .icon-form-text{
 	width:24px;
 	height:24px;
-	background-image:url(../img/text.jpeg)	
+	background-image:url(../img/text.png)	
 }
 
 .icon-form-group{
@@ -80,6 +119,16 @@ span {font-size: 62.5%;}
 	background-image:url(../img/group.png)
 }
 
+.icon-form-delete{
+	width:16px;
+	height:24px;
+	float: right;
+	background-image:url(../img/delete.png)
+}
+
+.item-back{
+	padding-bottom: 2px;
+}
 
 /* (default) Hide ther german localization */
 [data-l11n=de] {

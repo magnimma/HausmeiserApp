@@ -8,7 +8,6 @@ disturbance.html
 estimation.html
 help.html
 login.html
-picture.html
 
 #js files
 js/Main.js
@@ -39,18 +38,17 @@ csv/fachgruppenSchluesselwoerter.csv
 #icon files
 img/favicon.ico
 img/group.png
-img/text.jpeg
-img/i-form-name-ios.svg
-img/i-form-name-material.svg
+img/text.png
+img/building.png
+img/camera.png
+img/delete.png
+img/door.png
+img/floor.png
+img/name.png
+img/phone.png
+
 img/i-form-settings-ios.svg
 img/i-form-settings-material.svg
-img/i-form-tel-ios.svg
-img/i-form-tel-material.svg
-img/ic_home_black_24px.svg
-img/ic_store_black_24px.svg
-img/layers.png
-img/opened-door-aperture.png
-img/camera.jpeg
 
 # Fallback content
 FALLBACK:

@@ -80,6 +80,7 @@ function _initPageCallbacks(){
   FMApp.onPageBeforeInit("disturbance", function (page) {
     //Initiate the disturbanceController before the disturbance page is initialized
     DisturbanceController.init();
+    DataController.init();
   });
 
   FMApp.onPageBeforeAnimation("index", function (page) {

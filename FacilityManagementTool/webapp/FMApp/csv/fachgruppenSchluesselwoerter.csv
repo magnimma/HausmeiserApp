@@ -1,6 +1,6 @@
-kabel,lampe,licht,neonröhre,leuchtstoffröhre,cable,lamp,light,striplight
-heiß,heizung,heizkörper,radiator,heating,heat
-toilette,sanitär,waschbecken,wasserhahn,faucet,toilet,sanitary,sink
-kalt,kälte,cold
-tür,fenster,rahmen,schlüssel,schloss,door,window,frame,key,keys,lock
-internet,telefon,fax,telephon,telephone
+kabel,lampe,licht,neonröhre,leuchtstoffröhre,cable,lamp,light,striplight,halogenlampe,halogen,neon,fluorescent,steckdose,steckdose,strom,electricity,elektrizität,socket,neonlampe,,,,,,
+heiß,heizung,heizkörper,radiator,heating,heat,thermostat,lüftung,lüfter,air,conditioning,ventilation,Luft,Klimaanlage,,,,,,,,,,,,
+toilette,sanitär,waschbecken,wasserhahn,faucet,toilet,sanitary,sink,blocked,clogged,soap,puddle,water,drop,spülbecken,verstopft,wc,spülung,seife,seifenspender,urinal,klopapier,pfütze,urin,tropft,wasser
+kalt,kälte,cold,kühlraum,klimakammer,,,,,,,,,,,,,,,,,,,,,
+tür,fenster,rahmen,schlüssel,schloss,door,window,frame,key,keys,lock,jalousie,klinke,rollladen,rollo,handle,shutter,,,,,,,,,
+internet,telefon,fax,telephon,telephone,beamer mikroport,verstärker,brandmelder,feuermelder,löschanlage,anrufbeantworter,projektor,mikrofon,fernseher,tv,voicemail,touchpanel,microphone,,,,,,,,

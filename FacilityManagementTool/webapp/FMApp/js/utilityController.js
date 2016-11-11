@@ -23,6 +23,20 @@ var UtilityController = (function() {
   //Initiate the UtilityController and start logging
   function init(){
     start = new Date().getTime();
+    _initLog();
+  }
+
+  //Create a new variable containing the log data
+  //and set the header row for the log file
+  function _initLog(){
+    //Push the log header to an array
+    currentAction.push("Timestamp");
+    currentAction.push("User Action");
+    currentAction.push("Time needed in s");
+    //Push the single action log to an array containing all action logs
+    userActions[0] = currentAction;
+    //Reset the sinle action array
+    currentAction = [];
   }
 
   //Measure the current step and log it
@@ -33,7 +47,7 @@ var UtilityController = (function() {
     currentAction.push(stepName);
     currentAction.push((end - start)/1000);
     //Push the single action log to an array containing all action logs
-    userActions[stepNumber] = currentAction;
+    userActions[stepNumber + 1] = currentAction;
     //Reset the sinle action array
     currentAction = [];
     //Save a new start time
@@ -42,7 +56,7 @@ var UtilityController = (function() {
 
   //Send the log data array to the webserver
   function sendLog(){
-    timestamp = userActions[0][0];
+    timestamp = userActions[1][0];
     userActions = JSON.stringify(userActions);
     $.ajax({
       url: myApp.urSrvURL + "log.php",

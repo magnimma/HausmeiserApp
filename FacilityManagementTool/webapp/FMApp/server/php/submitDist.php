@@ -14,18 +14,6 @@ define("floorRegex", "/^[A-Za-z0-9_,;. +-ß*]{1,40}$/");
 define("roomRegex", "/^([A-Za-z0-9_,;. +-ß*\/()]{1,150})$/");
 define("spGrRegex", "/^[A-Za-z0-9\/äü]{3,30}$/");
 
-/*TODO:LÖSCHEN
-$userNDS = strip_tags(trim($_POST["userNDS"]));
-$userName = strip_tags(trim($_POST["userName"]));
-$userMail = strip_tags(trim($_POST["userMail"]));
-$userPhone = strip_tags(trim($_POST["userPhone"]));
-$description = strip_tags(trim($_POST["description"]));
-$building = strip_tags(trim($_POST["building"]));
-$floor = strip_tags(trim($_POST["floor"]));
-$room = strip_tags(trim($_POST["room"]));
-$specialGroup = strip_tags(trim($_POST["specialGroup"]));
-$sendValue = "Abschicken";*/
-
 //Check whether the given disturbance data is valid using the regular expresses
 if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
    preg_match(nameRegex, ($_POST["userName"])) &&
@@ -91,12 +79,12 @@ if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
   */
 
   //PLACEHOLDER return example values
-  echo json_encode(array(false,"Störung wurde erfolgreich übermittelt"));
+  echo "true";
 
 }else{
     //Set the POST-Request parameter
   $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
-    echo json_encode(array(true, "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.", $data));
+    echo "false";
 }
 
 ?>
