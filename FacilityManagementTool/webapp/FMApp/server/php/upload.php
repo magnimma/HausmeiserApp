@@ -45,21 +45,18 @@ while (file_exists($target_file)) {
 
  // Check file size
 if ($_FILES["fileToUpload"]["size"] > 5000000) {
-    echo "Sorry, your file is too large.";
+    echo json_encode(array("size", basename( $_FILES["fileToUpload"]["name"])));
     $uploadOk = 0;
 }
 
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-    echo "Sorry, only JPG, JPEG & PNG files are allowed.";
+    echo json_encode(array("type", basename( $_FILES["fileToUpload"]["name"])));
     $uploadOk = 0;
 }
 
-// Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "Your file was not uploaded.";
 // if everything is ok, try to upload file
-} else {
+if($uploadOk == 1) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo json_encode(array("true", basename( $_FILES["fileToUpload"]["name"])));
     } else {

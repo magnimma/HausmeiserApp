@@ -1,5 +1,10 @@
 <?php
 
+/*
+Externe Quelle:
+http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php/5647987
+*/
+
 //Url to post a disturbance report to the UR webformular
 define("submitUrl", "http://www-app.uni-regensburg.de/Einrichtungen/TZ/famos/stoerung/auswertenstoerungcsv.php");
 
@@ -8,11 +13,11 @@ define("ndsRegex", "/^[a-z]{3}[0-9]{5}$/");
 define("nameRegex", "/^[a-z,A-Z +]{3,40}$/");
 define("mailRegex", "/\S+@\S+\.\S+/");
 define("phoneRegex", "/^[0-9 +]{1,20}$/");
-define("descRegex", "/^[A-Za-z0-9_,;. +-ß]{1,76}$/");
+define("descRegex", "/^[A-Za-z0-9_,;. +-ßäöüÄÖÜ?!]{1,76}$/");
 define("buildingRegex", "/^([A-Za-z0-9_,;. +-ß*\/()]{1,200})$/");
 define("floorRegex", "/^[A-Za-z0-9_,;. +-ß*]{1,40}$/");
 define("roomRegex", "/^([A-Za-z0-9_,;. +-ß*\/()]{1,150})$/");
-define("spGrRegex", "/^[A-Za-z0-9\/äü]{3,30}$/");
+define("spGrRegex", "/^[A-Za-z0-9\/äü_]{3,30}$/");
 
 //Check whether the given disturbance data is valid using the regular expresses
 if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
@@ -39,9 +44,8 @@ if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
 
   //Set the POST-Request parameter
   $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
-
+/*Einkommentieren um Meldungen an das Famossystem schicken zu können
   //Submit the disturbance report
-  /* METHODE 1
   $options = array(
       'http' => array(
           'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -50,40 +54,19 @@ if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
       )
   );
   $context  = stream_context_create($options);
-  $result = file_get_contents($submitUrl, false, $context);
+  $result = file_get_contents(submitUrl, false, $context);
   if ($result === FALSE) {
     echo $result;
   }
-
-  var_dump($result);
-
-  METHODE 2
-  // Build Http query using params
-  $query = http_build_query ($data);
-   
-  // Create Http context details
-  $contextData = array ( 
-                  'method' => 'POST',
-                  'header' => "Connection: close\r\n".
-                              "Content-Length: ".strlen($query)."\r\n",
-                  'content'=> $query );
-   
-  // Create context resource for our request
-  $context = stream_context_create (array ( 'http' => $contextData ));
-   
-  // Read page rendered as result of your POST request
-  $result =  file_get_contents (
-                    submitUrl,
-                    false,
-                    $context);
   */
 
-  //PLACEHOLDER return example values
+  //Return the fault report success
   echo "true";
 
 }else{
     //Set the POST-Request parameter
   $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
+    //Return the fault report failure
     echo "false";
 }
 

@@ -26,6 +26,7 @@ if ($ds) {
     //Interpret and save the search results
     $nds = $info[0]["cn"][0];
     $mail = $info[0]["mail"][0];
+    //Phone number can be empty
     $phone = $info[0]["telephonenumber"][0];
     $fullname = $info[0]["fullname"][0];
     if($nds != null){

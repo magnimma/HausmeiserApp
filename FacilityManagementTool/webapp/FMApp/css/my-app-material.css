@@ -20,6 +20,20 @@ span {font-size: 62.5%;}
 	display: block;
 }
 
+.icon-estimation{
+	height: 24px;
+	width: 24px;
+	position: absolute;
+	left: 5%;
+	bottom: 10px;
+}
+
+.groupPreloader{
+	display: none;
+	position: relative;
+	margin: 5px auto;
+}
+
 .content-info-text{
 	text-align: center;
 }
@@ -69,6 +83,12 @@ span {font-size: 62.5%;}
 	position: relative;
 	display: block;
 	margin: 5px auto;
+}
+
+.icon-form-form{
+	width:24px;
+	height:24px;
+	background-image:url(../img/form.png)
 }
 
 .icon-form-name{

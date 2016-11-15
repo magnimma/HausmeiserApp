@@ -11,7 +11,7 @@
       </a>
     </div>
     <div class="center sliding">
-      <p data-i18n="Fault report" data-i18n-de="Störungsmeldung"></p>
+      <p data-i18n="malfunction report" data-i18n-de="Störungsmeldung"></p>
     </div>
     <div class="right">
       <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -33,7 +33,7 @@
                 </a>
             </div>
             <div class="center">
-              <p data-i18n="Fault report" data-i18n-de="Störungsmeldung"></p>
+              <p data-i18n="malfunction report" data-i18n-de="Störungsmeldung"></p>
             </div>
             <div class="right">
               <!-- Right link contains only icon - additional "icon-only" class--><a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
@@ -44,7 +44,7 @@
     <!-- Scrollable page content-->
     <div class="page-content">
         <div class="progress-indicator">
-          <progress class="progress-bar center" max="1.0" value="0.8"></progress>
+          <progress class="progress-bar center" max="1.0" value="0.75"></progress>
           <p class="progress-text" data-i18n="Step 4/4" data-i18n-de="Schritt 4/4"></p>
         </div>
       <div class="content-block">
@@ -102,7 +102,7 @@
                   <span data-i18n="Description" data-i18n-de="Beschreibung"></span><span style="color: red;"> *</span>
                 </div>
                 <div class="item-input" data-l11n>
-                  <textarea class="desc-text" maxLength="74" placeholder="Please enter a brief description of the disturbance."></textarea>
+                  <textarea class="desc-text" maxLength="74" placeholder="Please enter a brief description of the malfunction."></textarea>
                 </div>
                 <div class="item-input" data-l11n="de">
                   <textarea class="desc-text" maxLength="74" placeholder="Bitte geben Sie eine kurze Beschreibung der Störung ein."></textarea>
@@ -118,25 +118,27 @@
                   <span data-i18n="Specialist group" data-i18n-de="Fachgruppe"></span><span style="color: red;"> *</span>
                 </div>
                 <div class="item-input" data-l11n>
+                  <span class="preloader groupPreloader"></span>
                   <select class="groupSelect">
-                    <option>Please choose</option>
-                    <option>Electric</option>
-                    <option>Heating/Ventilation</option>
-                    <option>Sanitary</option>
-                    <option>Refrigeration</option>
-                    <option>Windows/Doors</option>
-                    <option>Telecommunications</option>
+                    <option value="leitwarte">Please choose</option>
+                    <option value="elektro">Electric</option>
+                    <option value="heizung_lueftung">Heating/Ventilation</option>
+                    <option value="sanitaertechnik">Sanitary</option>
+                    <option value="kaeltetechnik">Refrigeration</option>
+                    <option value="fenster_tueren">Windows/Doors</option>
+                    <option value="nachrichtentechnik">Telecommunications</option>
                   </select>
                 </div>
                 <div class="item-input" data-l11n="de">
+                  <span class="preloader groupPreloader"></span>
                   <select class="groupSelect">
-                    <option>Bitte wählen</option>
-                    <option>Elektro</option>
-                    <option>Heizung/Lüftung</option>
-                    <option>Sanitär</option>
-                    <option>Kältetechnik</option>
-                    <option>Fenster/Türen</option>
-                    <option>Nachrichtentechnik</option>
+                    <option value="leitwarte">Bitte wählen</option>
+                    <option value="elektro">Elektro</option>
+                    <option value="heizung_lueftung">Heizung/Lüftung</option>
+                    <option value="sanitaertechnik">Sanitär</option>
+                    <option value="kaeltetechnik">Kältetechnik</option>
+                    <option value="fenster_tueren">Fenster/Türen</option>
+                    <option value="nachrichtentechnik">Nachrichtentechnik</option>
                   </select>
                 </div>
               </div>
@@ -168,7 +170,7 @@
           <span style="color: red;" data-i18n="* required" data-i18n-de="* Pflichtfeld"></span>              
         </div>
       </div>
-      <button class="button center check-button" data-l11n>Submit disturbance</button>
+      <button class="button center check-button" data-l11n>Submit malfunction report</button>
       <button class="button center check-button" data-l11n="de">Störung melden</button>
     </div>
   </div>

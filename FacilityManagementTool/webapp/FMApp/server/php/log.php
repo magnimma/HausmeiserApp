@@ -14,8 +14,4 @@ foreach ($logData as $fields) {
 }
 
 fclose($fp);
-
-//TODO:LÖSCHEN return example values
-echo json_encode($logData);
-
 ?>

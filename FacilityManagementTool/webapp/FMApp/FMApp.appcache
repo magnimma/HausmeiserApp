@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1 2016-10-27
+# v1 2016-11-11
 # Here are the files specified that should be cached for offline browsing
 #html files
 index.html
@@ -46,6 +46,7 @@ img/door.png
 img/floor.png
 img/name.png
 img/phone.png
+img/form.png
 
 img/i-form-settings-ios.svg
 img/i-form-settings-material.svg

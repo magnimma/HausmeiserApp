@@ -37,7 +37,7 @@ var DisturbanceController = (function() {
       rowCells,
 
       //Regular expressions used to validate user content(disturbance description)
-      descRegex = /^[A-Za-z0-9_,;. +-ßäöü]{1,75}$/,
+      descRegex = /^[A-Za-z0-9_,;. +-ßäöüÄÖÜ?!]{1,75}$/,
       tokenRegex = /\S+/g,
 
       //Variable containing an error message which is shown when the user
@@ -64,7 +64,10 @@ var DisturbanceController = (function() {
       specialistKeywords = [],
 
       //Variable to check whether a specialist group keyword was found in the description text
-      keywordFound = false; 
+      keywordFound = false,
+
+      //Variable containing the time a preloader is showed before a specilaist group is automatically inserted in ms
+      groupInsertionDelay = 1000; 
 
   //Initiate the disturbanceController when the disturbance.html is initiated
   function init(){
@@ -123,15 +126,31 @@ var DisturbanceController = (function() {
     }
   }
 
-  //If keywords were found set the specialist group accordingly
+  //If keywords were found show a prealoder animaion which indicates the change of the specialist group
+  //and set the specialist group accordingly
   //and reset the keywordFound variable and the matchRatings array 
   function _setSpGroup(){ 
     if(keywordFound != false){
+      _indicateGroupInsertion();
       activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
       keywordFound = false;
       matchRatings.fill(0);
       UtilityController.measureStep("Specialist group selected", 6);
     }
+  }
+
+  //Hide the Select field and show a preloader instead to indicate
+  //the automatic change of the specialist group
+  function _indicateGroupInsertion(){
+    $(".groupSelect").hide();
+    $(".groupPreloader").css('display', 'block');
+    //Wait for a period of time until the groupselect is displayed again
+    //Amount is specified in the groupInsertionDelay variable
+    setTimeout(
+      function(){
+        $(".groupSelect").css('display', 'block')
+        $(".groupPreloader").css('display', 'none');
+      }, groupInsertionDelay);
   }
 
   //Iterate over the description text tokens
@@ -374,8 +393,10 @@ var DisturbanceController = (function() {
             //true or false and show the according message
             if(result == true){
               _distSubmitSuccess();
-            }else{
+            }else if(result == false){
               _distSubmitFailure();
+            }else{
+              FMApp.alert("Error while submitting the malfunction report: " + result);
             }
         }
       });
@@ -393,14 +414,14 @@ var DisturbanceController = (function() {
       
     }else{
       //Show an error alert
-      FMApp.alert("An error occurred while submitting your disturbance report. Please try again");
+      FMApp.alert("An error occurred while submitting your fault report. Please try again");
     }
   }
 
   //Show a success alert, send the log data to the server, upload chosen image files and redirect the user accordingly
   function _distSubmitSuccess(result){
     //Log the final time of the disturbance submit
-    UtilityController.measureStep("Disturbance reported", 7);
+    UtilityController.measureStep("Malfunction reported", 7);
     //Send the log data to the webserver
     UtilityController.sendLog();
     //Upload the chosen image files to the server
@@ -414,7 +435,7 @@ var DisturbanceController = (function() {
       
     }else{
       //Show a success alert
-      FMApp.alert("Disturbance successfully submitted. If you attached image files to the disturbance report wait until you receive a sucess message for each file. This may take a few moments.");
+      FMApp.alert("Malfunction successfully submitted. If you attached image files to the malfunction report wait until you receive a sucess message for each file. This may take a few moments.");
     }
   }
 

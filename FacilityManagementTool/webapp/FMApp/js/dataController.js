@@ -73,7 +73,7 @@ var DataController = (function() {
     var fileIndex = _getFileIndex(event.target.parentNode.childNodes[0].innerHTML);
     //Delete the file from the array
     filesToUpload.splice(fileIndex, 1);
-    //Delete the file from the list of files in the app 
+    //Delete the file from the list of files to be uploaded in the app 
     event.target.parentNode.parentNode.remove();
   }
 
@@ -114,6 +114,24 @@ var DataController = (function() {
     }
   }
 
+  //Show an error message if the file size is too big
+  function _fileSizeError(fileName){
+    if(document.documentElement.lang == "de"){
+      FMApp.alert("Die Datei " + fileName + " überschreitet die maximal zulässige Dateigröße von 5 MB. Die Datei konnte nicht hochgeladen werden");
+    }else{
+      FMApp.alert("The file " + fileName + " is bigger than the allowed file size of 5 MB. The file could not be uploaded");
+    }
+  }
+
+  //Show an error message if the file type is not supported
+  function _fileTypeError(fileName){
+    if(document.documentElement.lang == "de"){
+      FMApp.alert("Das Format der Datei " + fileName + " wird leider nicht unterstützt. Erlaubte Dateiformate sind Jpg, Jpeg und Png. Die Datei konnte nicht hochgeladen werden");
+    }else{
+      FMApp.alert("The type of the file " + fileName + " is not supported. Jpg, Jpeg and Png files are allowed. The file could not be uploaded");
+    }
+  }
+
   //Show an success message if the file upload was successfull
   function _fileUploadSuccess(fileName){
     if(document.documentElement.lang == "de"){
@@ -133,7 +151,6 @@ var DataController = (function() {
       disturbanceId = sessionStorage.getItem("webId");
 
       for(var i = 0, j = filesToUpload.length; i < j; i++){
-        /*var fd = new FormData(document.getElementById("fileinfo"));*/
         var fd = new FormData();
         fd.append("fileToUpload", filesToUpload[i]);
         $.ajax({
@@ -143,11 +160,17 @@ var DataController = (function() {
           processData: false,  // tell jQuery not to process the data
           contentType: false,  // tell jQuery not to set contentType
           success : function(data) {
+            console.log(data);
             result = JSON.parse(data);
+            console.log(result);
             //CHeck whether the success value of the returned json object is 
             //true or false and show the according message
             if(result[0] == "true"){
               _fileUploadSuccess(result[1]);
+            }else if(result[0] == "size"){
+              _fileSizeError(result[1]);
+            }else if(result[0] == "type"){
+              _fileTypeError(result[1]);
             }else{
               _fileUploadFailure(result[1]);
             }
