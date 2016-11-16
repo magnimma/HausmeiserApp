@@ -47,13 +47,16 @@ img/floor.png
 img/name.png
 img/phone.png
 img/form.png
+img/phone_red.png
+img/form_green_material.png
+img/form_green_ios.png
 
 img/i-form-settings-ios.svg
 img/i-form-settings-material.svg
 
 # Fallback content
 FALLBACK:
-/ /~gog59212/FMApp/offline.html
+/~gog59212/FMApp /~gog59212/FMApp/offline.html
 
 # Files listed here may come from the network if they arent available in the cache and the user is online
 NETWORK:

@@ -91,6 +91,8 @@ var LoginController = (function() {
   //else show an error alert and enable the nds submit buttons
   function _pyCheckNDS(userAcc){
     if(UtilityController.checkOnlineStatus() == "true"){
+      $(".button-nds")[0].disabled = true;
+      $(".button-nds")[1].disabled = true;
      	$.ajax({
         url: myApp.urSrvURL + "ldap.php",
         type: "POST",
@@ -275,7 +277,6 @@ var LoginController = (function() {
     if(document.documentElement.lang == "de"){
       ndsUserInput = $(".login-input")[1].value.toLowerCase();
       if(_checkStringFormat(ndsUserInput)){
-        $(".button-nds")[1].disabled = true;
         _pyCheckNDS(ndsUserInput);
       }else{
         FMApp.alert("Kein valider NDS-Account. (z.B.: abc12345)");
@@ -283,7 +284,6 @@ var LoginController = (function() {
     }else{
       ndsUserInput = $(".login-input")[0].value.toLowerCase();
       if(_checkStringFormat(ndsUserInput)){
-        $(".button-nds")[0].disabled = true;
         _pyCheckNDS(ndsUserInput);
       }else{
         FMApp.alert("Not a valid nds account. (e.g.: abc12345)");
