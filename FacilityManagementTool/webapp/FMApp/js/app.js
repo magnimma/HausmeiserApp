@@ -50,7 +50,7 @@ var FMApp = new Framework7({
     }
 });
 
-//Initiate a global variable containing all globally needed variables
+//Initiate a global object containing all globally needed variables
 myApp = {
     //All available pages of the FMApp
     indexURL: "index.html",
@@ -65,7 +65,14 @@ myApp = {
     localBuildingCsv: "csv/raumliste.csv",
     //Variable containing the server Url
     urSrvURL: 'http://oa.mi.ur.de/~gog59212/FMApp/server/php/',
-      
+    //In testmode the server doesnt send the malfunction report
+    testMode: true,
+    //If updateGrpOnChar is true the specialist group in the normal malfunction 
+    //formular is checked for automatic group detection each time a character of
+    //the malfunction description changes
+    //If updateGrpOnChar is false the specialist group is checked each time the 
+    //malfunction description changes(when the formular field is left)
+    updateGrpOnChar: true,
 }
  
 //Init mainView

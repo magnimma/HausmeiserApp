@@ -41,24 +41,23 @@ if(preg_match(ndsRegex, ($_POST["userNDS"])) &&
   $room = strip_tags(trim($_POST["room"]));
   $specialGroup = strip_tags(trim($_POST["specialGroup"]));
   $sendValue = "Abschicken";
+  $testMode = strip_tags(trim($_POST["testMode"]));
 
   //Set the POST-Request parameter
   $data = array('nds_eintrag' => $userNDS, 'Name' => $userName, 'eMail' => $userMail, 'Telefon' => $userPhone, 'Gebaeude' => $building, 'Etage' => $floor, 'Raum' => $room, 'fachgruppe' => $specialGroup, 'Nachricht' => $description, 'Send' => $sendValue);
-/*Einkommentieren um Meldungen an das Famossystem schicken zu können
-  //Submit the disturbance report
-  $options = array(
-      'http' => array(
-          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-          'method'  => 'POST',
-          'content' => http_build_query($data)
-      )
-  );
-  $context  = stream_context_create($options);
-  $result = file_get_contents(submitUrl, false, $context);
-  if ($result === FALSE) {
-    echo $result;
+
+  if($testMode == "false"){
+    //Submit the disturbance report
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data)
+        )
+    );
+    $context  = stream_context_create($options);
+    $result = file_get_contents(submitUrl, false, $context);
   }
-  */
 
   //Return the fault report success
   echo "true";

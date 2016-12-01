@@ -87,9 +87,20 @@ var DisturbanceController = (function() {
     //Add click listener to the check disturbance buttons
     $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
-    //Add change listener to the description textareas
-    $(".desc-text")[0].addEventListener("change", _descChanged, false);
-    $(".desc-text")[1].addEventListener("change", _descChanged, false);
+    
+    //Add change listener to the description textareas, for logging
+    $(".desc-text")[0].addEventListener("change", _logDescChange, false);
+    $(".desc-text")[1].addEventListener("change", _logDescChange, false);
+    //CHeck whether the config variable updateGroOnChar is set to true and set the according eventlistener
+    if(myApp.updateGrpOnChar === true){
+      //Add input listener to the description textareas
+      $(".desc-text")[0].addEventListener("input", _descChanged, false);
+      $(".desc-text")[1].addEventListener("input", _descChanged, false);
+    }else{
+      //Add change listener to the description textareas
+      $(".desc-text")[0].addEventListener("change", _descChanged, false);
+      $(".desc-text")[1].addEventListener("change", _descChanged, false);
+    }
   }
 
   //Fetch the building and specialist group data from csv files
@@ -135,7 +146,7 @@ var DisturbanceController = (function() {
       activeSelectField.selectedIndex = (_getMaxIndex(matchRatings) + 1);
       keywordFound = false;
       matchRatings.fill(0);
-      UtilityController.measureStep("Specialist group selected", 6);
+      UtilityController.measureStep("Specialist group selected", 7);
     }
   }
 
@@ -151,6 +162,11 @@ var DisturbanceController = (function() {
         $(".groupSelect").css('display', 'block')
         $(".groupPreloader").css('display', 'none');
       }, groupInsertionDelay);
+  }
+
+  //Log the amount of time the user needed to enter the malfunction description
+  function _logDescChange(){
+    UtilityController.measureStep("Description entered", 6);
   }
 
   //Iterate over the description text tokens
@@ -238,7 +254,7 @@ var DisturbanceController = (function() {
 
   //React to user specialist group selections and log it
   function _specialistGroupChanged(){
-    UtilityController.measureStep("Specialist group selected", 6);
+    UtilityController.measureStep("Specialist group selected", 7);
   }
 
   //React to user building selections
@@ -386,7 +402,7 @@ var DisturbanceController = (function() {
         data: ({"userNDS": userNDS, "userName": userName, "userMail": userMail,
                 "userPhone": userPhone, "description": description,
                 "building": activeBuilding, "floor": activeFloor, 
-                "room": activeRoom, "specialGroup": specGrp}),
+                "room": activeRoom, "specialGroup": specGrp, "testMode": myApp.testMode}),
         success: function(data) {
           result = JSON.parse(data);
             //CHeck whether the success value of the returned json object is 
@@ -421,9 +437,9 @@ var DisturbanceController = (function() {
   //Show a success alert, send the log data to the server, upload chosen image files and redirect the user accordingly
   function _distSubmitSuccess(result){
     //Log the final time of the disturbance submit
-    UtilityController.measureStep("Malfunction reported", 7);
+    UtilityController.measureStep("Malfunction reported", 9);
     //Send the log data to the webserver
-    UtilityController.sendLog();
+    UtilityController.sendLog(sessionStorage.getItem("webId"));
     //Upload the chosen image files to the server
     DataController.uploadAttachement();
     //Redirect to appreciation.html 

@@ -160,9 +160,7 @@ var DataController = (function() {
           processData: false,  // tell jQuery not to process the data
           contentType: false,  // tell jQuery not to set contentType
           success : function(data) {
-            console.log(data);
             result = JSON.parse(data);
-            console.log(result);
             //CHeck whether the success value of the returned json object is 
             //true or false and show the according message
             if(result[0] == "true"){

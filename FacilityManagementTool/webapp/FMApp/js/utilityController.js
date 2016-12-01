@@ -55,13 +55,13 @@ var UtilityController = (function() {
   }
 
   //Send the log data array to the webserver
-  function sendLog(){
+  function sendLog(malfunctionId){
     timestamp = userActions[1][0];
     userActions = JSON.stringify(userActions);
     $.ajax({
       url: myApp.urSrvURL + "log.php",
       type: "POST",
-      data: ({"logData": userActions, "timestamp": timestamp})
+      data: ({"logData": userActions, "timestamp": timestamp, "malfunctionId": malfunctionId})
     });
   }
 
