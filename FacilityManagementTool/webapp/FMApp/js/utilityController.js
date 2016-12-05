@@ -45,7 +45,11 @@ var UtilityController = (function() {
     //Push the log data(timestamp, stepname, time needed) to an array
     currentAction.push(new Date(Math.floor(Date.now())));
     currentAction.push(stepName);
-    currentAction.push((end - start)/1000);
+    if(userActions[stepNumber+1] != undefined){
+    	currentAction.push((end - start)/1000 + userActions[stepNumber+1][2]);    	
+    }else{
+    	currentAction.push((end - start)/1000);
+    }
     //Push the single action log to an array containing all action logs
     userActions[stepNumber + 1] = currentAction;
     //Reset the sinle action array

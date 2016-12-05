@@ -48,6 +48,7 @@ var DataController = (function() {
     try{
       //Add the chosen image file to the files array
       filesToUpload.push(myInput.files[0]);
+      UtilityController.measureStep("File to upload selected", 9);
       _addListItem();
     }catch(err){
       console.log("Error: " + err);

@@ -88,9 +88,6 @@ var DisturbanceController = (function() {
     $(".check-button")[0].addEventListener("click", _checkDisturbanceData, false);
     $(".check-button")[1].addEventListener("click", _checkDisturbanceData, false);
     
-    //Add change listener to the description textareas, for logging
-    $(".desc-text")[0].addEventListener("change", _logDescChange, false);
-    $(".desc-text")[1].addEventListener("change", _logDescChange, false);
     //CHeck whether the config variable updateGroOnChar is set to true and set the according eventlistener
     if(myApp.updateGrpOnChar === true){
       //Add input listener to the description textareas
@@ -164,11 +161,6 @@ var DisturbanceController = (function() {
       }, groupInsertionDelay);
   }
 
-  //Log the amount of time the user needed to enter the malfunction description
-  function _logDescChange(){
-    UtilityController.measureStep("Description entered", 6);
-  }
-
   //Iterate over the description text tokens
   //Check every token whether it matches any specialist keyword
   function _checkDescText(){
@@ -194,6 +186,7 @@ var DisturbanceController = (function() {
       description = $(".desc-text")[0].value.toLowerCase().match(tokenRegex);
       activeSelectField = $(".groupSelect")[0];
     }
+    UtilityController.measureStep("Description entered", 6);
   }
 
   //Check whether the user provided a roomcode by starting the app per QR code
@@ -437,7 +430,7 @@ var DisturbanceController = (function() {
   //Show a success alert, send the log data to the server, upload chosen image files and redirect the user accordingly
   function _distSubmitSuccess(result){
     //Log the final time of the disturbance submit
-    UtilityController.measureStep("Malfunction reported", 9);
+    UtilityController.measureStep("Malfunction reported", 10);
     //Send the log data to the webserver
     UtilityController.sendLog(sessionStorage.getItem("webId"));
     //Upload the chosen image files to the server
